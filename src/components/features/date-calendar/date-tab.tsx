@@ -8,7 +8,7 @@ const DateTab = () => {
   // 현재 월의 시작 요일과 일 수 계산
   const startOfMonth = currentDate.startOf('month');
   const startDay = startOfMonth.day(); // 0(일) ~ 6(토)
-  const daysInMonth = currentDate.daysInMonth();
+  const daysInMonth = currentDate.daysInMonth(); // 해당 월의 총 일 수
 
   // 월 이동 핸들러
   const handlePrevMonth = () =>
