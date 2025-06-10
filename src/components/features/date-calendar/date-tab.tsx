@@ -1,14 +1,33 @@
+import { getHolidaysByMonth } from '@/lib/services/holiday.services';
+import { Holiday } from '@/types/calendar.type';
 import dayjs from 'dayjs';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const DateTab = () => {
   const [currentDate, setCurrentDate] = useState(dayjs());
+  const [holidays, setHolidays] = useState<Holiday[]>([]);
 
   // 현재 월의 시작 요일과 일 수 계산
   const startOfMonth = currentDate.startOf('month');
-  const startDay = startOfMonth.day(); // 0(일) ~ 6(토)
-  const daysInMonth = currentDate.daysInMonth(); // 해당 월의 총 일 수
+  const startDay = startOfMonth.day();
+  const daysInMonth = currentDate.daysInMonth();
+
+  useEffect(() => {
+    const loadHolidays = async () => {
+      const year = currentDate.year();
+      const month = currentDate.month() + 1;
+
+      try {
+        const data = await getHolidaysByMonth(year, month);
+        setHolidays(data);
+      } catch (err) {
+        console.error('공휴일 로딩 실패', err);
+      }
+    };
+
+    loadHolidays();
+  }, [currentDate]);
 
   // 월 이동 핸들러
   const handlePrevMonth = () =>
@@ -17,9 +36,7 @@ const DateTab = () => {
 
   // 캘린더 날짜 배열 생성
   const days = [];
-  // 시작 요일까지 빈 칸 추가
   for (let i = 0; i < startDay; i++) days.push(null);
-  // 월의 일수만큼 날짜 추가
   for (let i = 1; i <= daysInMonth; i++) days.push(i);
 
   // 날짜 클릭 핸들러
@@ -28,12 +45,19 @@ const DateTab = () => {
       `${currentDate.year()}-${currentDate.month() + 1}-${day}`,
     ).format('YYYY-MM-DD');
     console.log('Selected date:', selectedDate);
-    // 상세 페이지로 이동 또는 모달 표시 예정
+  };
+
+  // 공휴일 스타일 결정 함수
+  const getHolidayStyle = (holiday?: Holiday) => {
+    if (!holiday) return '';
+    return holiday.isLegalHoliday
+      ? 'bg-red-100 text-red-600'
+      : 'bg-green-100 text-green-600';
   };
 
   return (
     <div className="space-y-4">
-      {/* 캘린더 헤더 (월 이동 및 현재 월 표시) */}
+      {/* 캘린더 헤더 */}
       <div className="flex items-center justify-between px-4">
         <button
           onClick={handlePrevMonth}
@@ -59,9 +83,9 @@ const DateTab = () => {
             key={index}
             className={`py-2 text-sm font-medium ${
               index === 0
-                ? 'text-red-500' // 일요일
+                ? 'text-red-500'
                 : index === 6
-                  ? 'text-blue-500' // 토요일
+                  ? 'text-blue-500'
                   : 'text-gray-700'
             }`}
           >
@@ -80,33 +104,46 @@ const DateTab = () => {
             currentDate.month() === dayjs().month() &&
             day === dayjs().date();
 
+          const holiday = isCurrentMonth
+            ? holidays.find(
+                (h) =>
+                  dayjs(h.date).date() === day &&
+                  dayjs(h.date).month() === currentDate.month() &&
+                  dayjs(h.date).year() === currentDate.year(),
+              )
+            : null;
+
           return (
             <div
               key={index}
               onClick={() => isCurrentMonth && handleDateClick(day)}
-              className={`aspect-square flex flex-col items-center justify-center rounded-md text-sm ${
-                !isCurrentMonth
-                  ? 'text-gray-300'
-                  : 'cursor-pointer hover:bg-gray-100'
-              } ${
-                isToday
-                  ? 'border-2 border-blue-500 font-bold'
-                  : index % 7 === 0
-                    ? 'text-red-500' // 일요일
-                    : index % 7 === 6
-                      ? 'text-blue-500' // 토요일
-                      : 'text-gray-700'
-              }`}
+              className={`aspect-square flex flex-col items-center justify-center rounded-md text-sm
+                ${!isCurrentMonth ? 'text-gray-300' : 'cursor-pointer hover:bg-gray-50'}
+                ${isToday ? 'border-2 border-blue-500 font-bold' : ''}
+                ${holiday ? getHolidayStyle(holiday) : ''}
+                ${
+                  isCurrentMonth && !holiday
+                    ? index % 7 === 0
+                      ? 'text-red-500'
+                      : index % 7 === 6
+                        ? 'text-blue-500'
+                        : 'text-gray-700'
+                    : ''
+                }
+              `}
             >
               {isCurrentMonth && day}
-              {/* 데이트 기록이 있는 경우 표시 예정 */}
+              {holiday && (
+                <span
+                  className={`text-[10px] ${holiday.isLegalHoliday ? 'text-red-600' : 'text-green-600'}`}
+                >
+                  {holiday.summary}
+                </span>
+              )}
             </div>
           );
         })}
       </div>
-
-      {/* 한국 공휴일 표시 기능 추가 예정 */}
-      {/* 데이트 기록 표시 기능 추가 예정 */}
     </div>
   );
 };
