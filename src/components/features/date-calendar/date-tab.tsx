@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 
 const DateTab = () => {
   // 백엔드 연동 시 수정 - holidays 상태를 Holiday[] 대신 BackendHoliday[]로 변경
-  // 수정할할 부분: 현재 Holiday[]는 백엔드 연동 시 BackendHoliday[]로 교체 필요
+  // 수정할 부분: 현재 Holiday[]는 백엔드 연동 시 BackendHoliday[](임시이름)로 교체 예정
   const [currentDate, setCurrentDate] = useState(dayjs());
   const [holidays, setHolidays] = useState<Holiday[]>([]);
 
@@ -24,7 +24,7 @@ const DateTab = () => {
         const data = await getHolidaysByMonth(year, month);
         setHolidays(data);
       } catch (err) {
-        // TODO: 백엔드 연동 시 수정 - 사용자 친화적 에러 처리 추가 (예: toast 알림)
+        // 백엔드 연동 시 수정 - 사용자 친화적 에러 처리 추가 (예: toast 알림)
         console.error('공휴일 로딩 실패', err);
       }
     };
@@ -51,7 +51,7 @@ const DateTab = () => {
   };
 
   // 백엔드 연동 시 수정 - BackendHoliday.items[]를 기반으로 스타일 결정
-  // 수정할 부분: isLegalHoliday 기반 스타일링은 백엔드 연동 시 items[].type으로 변경 필요
+  // 수정할 부분: isLegalHoliday 기반 스타일링은 백엔드 연동 시 items[].type으로 변경 예정
   // 예: const hasLegalHoliday = holiday.items.some(item => item.type === '법정공휴일');
   const getHolidayStyle = (holiday?: Holiday) => {
     if (!holiday) return '';
@@ -110,7 +110,7 @@ const DateTab = () => {
             day === dayjs().date();
 
           // 백엔드 연동 시 수정 - holiday 검색을 BackendHoliday[] 기반으로 변경
-          // 수정할할 부분: Holiday 타입의 summary, isLegalHoliday 사용은 백엔드 연동 시 items[]로 대체
+          // 수정할 부분: Holiday 타입의 summary, isLegalHoliday 사용은 백엔드 연동 시 items[]로 대체
           // 예: holiday.items.map(item => item.name).join(' / ')
           const holiday = isCurrentMonth
             ? holidays.find(
@@ -142,7 +142,7 @@ const DateTab = () => {
             >
               {isCurrentMonth && day}
               {/* 백엔드 연동 시 수정 - holiday.summary 대신 holiday.items[]를 순회하여 다중 이벤트 표시, meta 사용 가능성 검토 */}
-              {/* 수정할할 부분: summary 단일 문자열 표시 대신 items[].name을 사용, meta.description 등이 있으면 추가 표시 가능 */}
+              {/* 수정할 부분: summary 단일 문자열 표시 대신 items[].name을 사용, meta.description 등이 있으면 추가 표시 가능 */}
               {holiday && (
                 <span
                   className={`text-[10px] ${holiday.isLegalHoliday ? 'text-red-600' : 'text-green-600'}`}

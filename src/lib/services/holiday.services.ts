@@ -15,7 +15,7 @@ export const getHolidaysByMonth = async (
 ): Promise<Holiday[]> => {
   // 백엔드 연동 시 수정 - 환경 변수는 constants/env.constant.ts에서 상수로 가져오기
   // 예: import ENV from '@/constants/env.constant'; const apiKey = ENV.GOOGLE_CALENDAR_API_KEY;
-  // 수정할 부분: process.env 직접 사용은 코드 컨벤션 위반 가능성, 상수화 권장
+  // 수정할 부분: process.env 직접 사용은 코드 컨벤션 위반 가능성, 상수화 할 예정
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_CALENDAR_API_KEY;
 
   const timeMin = dayjs(`${year}-${month}-01`).startOf('month').toISOString();
@@ -37,7 +37,7 @@ export const getHolidaysByMonth = async (
   if (!res.ok) throw new Error(data.error?.message || '공휴일 가져오기 실패');
 
   // 백엔드 연동 시 수정 - 백엔드 API 응답이 BackendHoliday[] 형식이므로 데이터 가공 로직 제거
-  // 수정할할 부분: 현재 Promise<Holiday[]> 반환 타입은 백엔드 연동 시 Promise<BackendHoliday[]>로 변경 필요
+  // 수정할 부분: 현재 Promise<Holiday[]> 반환 타입은 백엔드 연동 시 Promise<BackendHoliday[]>로 변경
   // 백엔드 응답 예: [{ date: '2025-05-05', items: [{ name: '어린이날', type: '법정공휴일', meta?: {...} }, ...] }]
   const groupedByDate: Record<
     string,
