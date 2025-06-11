@@ -1,3 +1,5 @@
+// 백엔드 연동시 수정 - 아래 상수는 백엔드 API로 대체 가능하면 삭제
+
 export const CALENDAR_ID = 'ko.south_korea#holiday@group.v.calendar.google.com';
 
 // 법정공휴일 목록
