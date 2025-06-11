@@ -1,7 +1,7 @@
-// 백엔드 연동시 수정 - 아래 상수는 백엔드 API로 대체 가능하면 삭제
+// 백엔드 연동 시 수정 - 백엔드 API에서 공휴일 데이터를 정제하여 제공하면 이 상수 삭제 가능
 export const CALENDAR_ID = 'ko.south_korea#holiday@group.v.calendar.google.com';
 
-// 법정공휴일 목록
+// 백엔드 연동 시 수정 - 법정 공휴일 목록은 백엔드에서 처리하므로 이 상수 삭제 가능
 export const LEGAL_HOLIDAYS = [
   '새해첫날',
   '설날',

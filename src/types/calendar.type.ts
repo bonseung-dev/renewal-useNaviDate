@@ -27,6 +27,13 @@ export type BackendHoliday = {
   items: BackendHolidayItem[];
 };
 
+// 백엔드 연동 시 수정 - meta 필드는 백엔드 API 스펙에 따라 유지 또는 제거
+// 예: meta가 필요 없으면 BackendHolidayItem에서 meta 필드 삭제
+// 예: meta 구조가 명확하면 Record<string, unknown>을 구체적 타입(예: { description: string })으로 변경
+/**
+ * 백엔드 연동 시 사용할 공휴일 항목 타입
+ * @description meta 필드는 선택적으로 포함, 백엔드 스펙에 따라 조정 가능
+ */
 export type BackendHolidayItem = {
   name: string;
   type: '법정공휴일' | '기념일' | '대체공휴일';
