@@ -1,56 +1,55 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import { Anniversary } from '@/types/anniversary.type';
-import { useState } from 'react';
+import { getAnniversaries } from '@/lib/hooks/use-anniversaries';
 import AnniversaryForm from './anniversary-form';
 import AnniversaryList from './anniversary-list';
 
-// 테스트용 더미 기념일 데이터
-const dummyAnniversaries: Anniversary[] = [
-  {
-    id: '1',
-    couple_id: 'c1',
-    title: '100일',
-    date: '2025-09-29',
-    repeat: 'none',
-    memo: '',
-    created_by: 'u1',
-  },
-  {
-    id: '2',
-    couple_id: 'c1',
-    title: '1주년',
-    date: '2026-01-01',
-    repeat: 'yearly',
-    memo: '첫 해',
-    created_by: 'u1',
-  },
-  {
-    id: '3',
-    couple_id: 'c1',
-    title: '남자친구 생일',
-    date: '2026-05-15',
-    repeat: 'yearly',
-    memo: '선물 준비하기',
-    created_by: 'u1',
-  },
-];
-
 const AnniversaryTab = () => {
-  const [isFormVisible, setIsFormVisible] = useState(false);
+  const [anniversaries, setAnniversaries] = useState<Anniversary[]>([]);
+  const [showForm, setShowForm] = useState(false);
   const [repeat, setRepeat] = useState(false);
 
+  useEffect(() => {
+    const coupleId = 'sample-couple-id';
+    const startDate = '2025-06-01'; // 연애 시작일 (테스트용)
+    const data = getAnniversaries(coupleId, startDate);
+    setAnniversaries(data);
+  }, []);
+
+  const handleAddClick = () => setShowForm(true);
+  const handleCancel = () => setShowForm(false);
+
   return (
-    <div className="w-full max-w-md mx-auto p-4">
-      {isFormVisible ? (
+    <div className="flex items-center justify-center flex-col">
+      {/* 상단: 커플 정보 */}
+      <div className="w-[320px] h-[52px] flex items-center justify-between bg-[#7BB4DD] rounded-[40px] px-4">
+        <div className="flex items-center gap-2">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-Og0eTxPdFSH4GjaCkkbiqyeAjlLkafGbqA&s"
+            alt="커플 이미지"
+            className="w-8 h-8 rounded-full object-cover"
+          />
+          <span className="font-semibold text-sm text-white">짱구 ❤️ 수지</span>
+        </div>
+        <button
+          onClick={handleAddClick}
+          className="text-xs bg-white/20 hover:bg-white/30 px-3 py-1 rounded-full text-white font-medium"
+        >
+          기념일 추가
+        </button>
+      </div>
+
+      {/* 리스트 또는 폼 표시 */}
+      {showForm ? (
         <AnniversaryForm
           repeat={repeat}
           onRepeatChange={setRepeat}
-          onCancel={() => setIsFormVisible(false)}
+          onCancel={handleCancel}
         />
       ) : (
-        <AnniversaryList
-          anniversaries={dummyAnniversaries}
-          onAddClick={() => setIsFormVisible(true)}
-        />
+        <AnniversaryList anniversaries={anniversaries} />
       )}
     </div>
   );
