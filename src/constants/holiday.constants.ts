@@ -16,3 +16,17 @@ export const LEGAL_HOLIDAYS = [
   '대체공휴일',
   '대통령 선거',
 ];
+
+export const REPEAT_OPTIONS = {
+  NONE: '없음',
+  YEARLY: '매년',
+  DAILY: '매일',
+  HUNDRED_DAYS: '100일 단위',
+} as const;
+
+export const REPEAT_OPTION_LIST = [
+  { value: 'NONE', label: '없음' },
+  { value: 'YEARLY', label: '매년' },
+  { value: 'DAILY', label: '매일' },
+  { value: 'HUNDRED_DAYS', label: '100일 단위' },
+] as const;
