@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Anniversary } from '@/types/anniversary.type';
+import { Anniversary, RepeatOption } from '@/types/anniversary.type';
 import { getAnniversaries } from '@/lib/hooks/use-anniversaries';
 import AnniversaryForm from './anniversary-form';
 import AnniversaryList from './anniversary-list';
@@ -16,12 +16,12 @@ import {
 
 const AnniversaryTab = () => {
   const [anniversaries, setAnniversaries] = useState<Anniversary[]>([]);
-  const [repeat, setRepeat] = useState(false);
-  const [open, setOpen] = useState(false); // 모달 열기 상태 제어
+  const [repeat, setRepeat] = useState<RepeatOption>('YEARLY');
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const coupleId = 'sample-couple-id';
-    const startDate = '2025-06-01';
+    const startDate = '2025-06-01'; //테스트용 시작 날짜
     const data = getAnniversaries(coupleId, startDate);
     setAnniversaries(data);
   }, []);
@@ -29,7 +29,7 @@ const AnniversaryTab = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <div className="flex items-center justify-center flex-col">
-        {/* 상단: 커플 정보 */}
+        {/* 커플 정보 */}
         <div className="w-[320px] h-[52px] flex items-center justify-between bg-[#7BB4DD] rounded-[40px] px-4">
           <div className="flex items-center gap-2">
             <Image
@@ -44,7 +44,7 @@ const AnniversaryTab = () => {
             </span>
           </div>
 
-          {/* 모달 여는 버튼 (트리거) */}
+          {/* 모달 열기 버튼 */}
           <DialogTrigger asChild>
             <button className="text-xs bg-[#7BB4DD] border border-white hover:bg-white hover:text-[#7BB4DD] px-3 py-1 rounded-full text-white font-medium">
               기념일 추가
@@ -56,12 +56,13 @@ const AnniversaryTab = () => {
         <AnniversaryList anniversaries={anniversaries} />
       </div>
 
-      {/* 모달은 최상단 위치에서 렌더됨 */}
-      <DialogContent className="bg-white p-0 border-none shadow-lg rounded-xl w-[90vw] max-w-md">
+      {/* 모달 내용 */}
+      <DialogContent className="bg-white p-1 shadow-lg rounded-xl w-[320px] h-[330px]">
         <DialogTitle className="sr-only">기념일 추가</DialogTitle>
         <DialogDescription className="sr-only">
           기념일 정보를 입력해 주세요.
         </DialogDescription>
+
         <AnniversaryForm repeat={repeat} onRepeatChange={setRepeat} />
       </DialogContent>
     </Dialog>

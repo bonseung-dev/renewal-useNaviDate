@@ -1,59 +1,95 @@
-import { Switch } from '@/components/ui/switch';
+import NumberPicker from '@/components/ui/number-picker';
+import { REPEAT_OPTION_LIST } from '@/constants/holiday.constants';
+import { RepeatOption } from '@/types/anniversary.type';
 import { DialogClose } from '@radix-ui/react-dialog';
+import { useState } from 'react';
 
 type AnniversaryFormProps = {
-  repeat: boolean;
-  onRepeatChange: (checked: boolean) => void;
+  repeat: RepeatOption;
+  onRepeatChange: (value: RepeatOption) => void;
 };
 
 const AnniversaryForm = ({ repeat, onRepeatChange }: AnniversaryFormProps) => {
+  const today = new Date();
+
+  const [year, setYear] = useState(today.getFullYear());
+  const [month, setMonth] = useState(today.getMonth() + 1);
+  const [day, setDay] = useState(today.getDate());
+
   return (
-    <div className="bg-white p-4 space-y-4 text-sm">
-      <h2 className="font-semibold text-base">기념일 입력</h2>
-      <div className="grid grid-cols-[80px_1fr] items-center gap-3">
-        <label htmlFor="title">제목</label>
-        <input
-          id="title"
-          type="text"
-          placeholder="기념일 제목"
-          className="border rounded px-2 py-1"
-        />
+    <div className="flex flex-col h-full p-4">
+      <h2 className="font-semibold text-sm mb-4">기념일 입력</h2>
 
-        <label htmlFor="date">날짜</label>
-        <input
-          id="date"
-          type="text"
-          placeholder="날짜 선택 (day-picker 예정)"
-          className="border rounded px-2 py-1"
-        />
-
-        <label htmlFor="repeat">반복</label>
-        <div className="flex items-center gap-2">
-          <Switch
-            id="repeat"
-            checked={repeat}
-            onCheckedChange={onRepeatChange}
+      <div className="space-y-4 flex-1">
+        <div className="grid grid-cols-[70px_1fr] items-center gap-3">
+          <label htmlFor="title" className="text-xs">
+            제목
+          </label>
+          <input
+            id="title"
+            type="text"
+            placeholder="기념일 제목"
+            className="border rounded px-2 py-1.5 text-xs w-full"
           />
-          <span className="text-sm">{repeat ? '매년' : '반복 없음'}</span>
         </div>
 
-        <label htmlFor="memo">메모</label>
-        <textarea
-          id="memo"
-          placeholder="기념일 메모"
-          className="border rounded px-2 py-1 h-16 resize-none"
-        />
+        <div className="grid grid-cols-[70px_1fr] items-center gap-3">
+          <label className="text-xs">날짜</label>
+          <div className="flex gap-2">
+            <NumberPicker
+              label="년"
+              min={2000}
+              max={2050}
+              value={year}
+              onChange={setYear}
+            />
+            <NumberPicker
+              label="월"
+              min={1}
+              max={12}
+              value={month}
+              onChange={(v) => {
+                setMonth(v);
+                const maxDay = new Date(year, v, 0).getDate();
+                if (day > maxDay) setDay(maxDay);
+              }}
+            />
+            <NumberPicker
+              label="일"
+              min={1}
+              max={new Date(year, month, 0).getDate()}
+              value={day}
+              onChange={setDay}
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-[70px_1fr] items-center gap-3">
+          <label htmlFor="repeat" className="text-xs">
+            반복
+          </label>
+          <select
+            id="repeat"
+            value={repeat}
+            onChange={(e) => onRepeatChange(e.target.value as RepeatOption)}
+            className="border rounded px-2 py-1.5 text-xs w-full"
+          >
+            {REPEAT_OPTION_LIST.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
-      <div className="flex gap-2">
-        {/* 취소 버튼 */}
+      <div className="flex items-center justify-center gap-2 mt-6">
         <DialogClose asChild>
-          <button className="w-full bg-gray-200 hover:bg-gray-300 rounded py-2 font-semibold">
+          <button className="w-[128px] h-[40px] bg-gray-200 hover:bg-gray-300 rounded font-semibold text-xs">
             취소
           </button>
         </DialogClose>
-        {/* 저장은 임시로 일반 버튼 */}
-        <button className="w-full bg-black text-white rounded py-2 font-semibold">
+        <button className="w-[128px] h-[40px] bg-black text-white rounded font-semibold text-xs">
           저장
         </button>
       </div>
