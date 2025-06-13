@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { Anniversary, RepeatOption } from '@/types/anniversary.type';
-import { getAnniversaries } from '@/lib/hooks/use-anniversaries';
+import {
+  addAnniversary,
+  getAnniversaries,
+} from '@/lib/hooks/use-anniversaries';
 import AnniversaryForm from './anniversary-form';
 import AnniversaryList from './anniversary-list';
 import Image from 'next/image';
@@ -14,17 +17,44 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 
+// 새로운 기념일 생성 타입 정의
+type NewAnniversary = {
+  title: string;
+  date: string;
+  repeat: RepeatOption;
+};
+
 const AnniversaryTab = () => {
   const [anniversaries, setAnniversaries] = useState<Anniversary[]>([]);
   const [repeat, setRepeat] = useState<RepeatOption>('YEARLY');
   const [open, setOpen] = useState(false);
+  const coupleId = 'sample-couple-id';
+  const startDate = '2025-06-01'; // 테스트용 시작 날짜
 
   useEffect(() => {
-    const coupleId = 'sample-couple-id';
-    const startDate = '2025-06-01'; //테스트용 시작 날짜
     const data = getAnniversaries(coupleId, startDate);
     setAnniversaries(data);
   }, []);
+
+  const handleAddAnniversary = (newAnniversary: NewAnniversary) => {
+    const added = addAnniversary(coupleId, {
+      ...newAnniversary,
+      created_by: 'user',
+      couple_id: coupleId,
+    });
+    setAnniversaries((prev) => [...prev, added]);
+    setOpen(false);
+  };
+
+  const handleDeleteAnniversary = (id: string) => {
+    setAnniversaries((prev) => prev.filter((a) => a.id !== id));
+  };
+
+  const handleEditAnniversary = (id: string) => {
+    // 수정 로직 구현
+    console.log('수정할 기념일 ID:', id);
+    // 여기에 수정 모달을 열거나 수정 로직을 구현
+  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -47,13 +77,17 @@ const AnniversaryTab = () => {
           {/* 모달 열기 버튼 */}
           <DialogTrigger asChild>
             <button className="text-xs bg-[#7BB4DD] border border-white hover:bg-white hover:text-[#7BB4DD] px-3 py-1 rounded-full text-white font-medium">
-              기념일 추가
+              추가하기
             </button>
           </DialogTrigger>
         </div>
 
         {/* 기념일 리스트 */}
-        <AnniversaryList anniversaries={anniversaries} />
+        <AnniversaryList
+          anniversaries={anniversaries}
+          onDelete={handleDeleteAnniversary}
+          onEdit={handleEditAnniversary}
+        />
       </div>
 
       {/* 모달 내용 */}
@@ -63,7 +97,11 @@ const AnniversaryTab = () => {
           기념일 정보를 입력해 주세요.
         </DialogDescription>
 
-        <AnniversaryForm repeat={repeat} onRepeatChange={setRepeat} />
+        <AnniversaryForm
+          repeat={repeat}
+          onRepeatChange={setRepeat}
+          onSubmit={handleAddAnniversary}
+        />
       </DialogContent>
     </Dialog>
   );

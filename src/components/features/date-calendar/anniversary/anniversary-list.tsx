@@ -1,18 +1,36 @@
 import { Anniversary } from '@/types/anniversary.type';
 import dayjs from 'dayjs';
+import { Pencil, Trash2 } from 'lucide-react';
 
 type AnniversaryListProps = {
   anniversaries: Anniversary[];
+  onDelete: (id: string) => void;
+  onEdit: (id: string) => void;
 };
 
-const AnniversaryList = ({ anniversaries }: AnniversaryListProps) => {
+const AnniversaryList = ({
+  anniversaries,
+  onDelete,
+  onEdit,
+}: AnniversaryListProps) => {
+  // D-day 계산 함수
+  const calculateDDay = (date: string) => {
+    const today = dayjs().startOf('day');
+    const targetDate = dayjs(date).startOf('day');
+    const diff = targetDate.diff(today, 'day');
+
+    if (diff === 0) return 'D-Day';
+    if (diff > 0) return `D-${diff}`;
+    return `D+${Math.abs(diff)}`;
+  };
+
   // 날짜 오름차순 정렬
   const sorted = [...anniversaries].sort((a, b) =>
     dayjs(a.date).isAfter(dayjs(b.date)) ? 1 : -1,
   );
 
   return (
-    <div>
+    <>
       <ul>
         {sorted.map((a) => {
           const isUserCreated = a.created_by === 'user';
@@ -21,13 +39,13 @@ const AnniversaryList = ({ anniversaries }: AnniversaryListProps) => {
           return (
             <li
               key={a.id}
-              className="w-[320px] h-[80px] relative flex items-center justify-between bg-white rounded-lg px-4"
+              className="w-[320px] h-[80px] relative flex items-center justify-between bg-white px-4"
             >
               {/* 왼쪽 세로줄 */}
               <div className="absolute left-6 top-0 bottom-0 w-[1px] bg-[#7BB4DD]" />
 
               {/* 하트 아이콘 */}
-              <div className="ml-[34px] mr-3 flex items-center justify-center">
+              <div className="ml-[24px] mr-2 flex items-center justify-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill={heartColor}
@@ -45,22 +63,44 @@ const AnniversaryList = ({ anniversaries }: AnniversaryListProps) => {
               </div>
 
               {/* 텍스트 정보 */}
-              <div className="flex flex-col justify-center">
-                <p className="font-semibold text-sm">{a.title}</p>
+              <div className="flex flex-col justify-center flex-1">
+                <div className="flex items-center gap-2">
+                  <p className="font-semibold text-sm">{a.title}</p>
+                  {/* 사용자 생성 기념일일 경우 수정/삭제 버튼 표시 */}
+                  {isUserCreated && (
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => onEdit(a.id)}
+                        className="text-gray-500 hover:text-blue-500 transition-colors"
+                        aria-label="수정"
+                      >
+                        <Pencil size={14} />
+                      </button>
+                      <button
+                        onClick={() => onDelete(a.id)}
+                        className="text-gray-500 hover:text-red-500 transition-colors"
+                        aria-label="삭제"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  )}
+                </div>
                 <p className="text-xs text-gray-500">{a.date}</p>
               </div>
 
-              {/* D-day 표시 */}
-              <div>
+              {/* 버튼 그룹 (수정, 삭제) */}
+              <div className="flex flex-col items-center gap-1">
+                {/* D-day 표시 */}
                 <span className="border border-[#7BB4DD] text-[#7BB4DD] text-xs rounded-full px-3 py-0.5">
-                  d-day 들어갈곳
+                  {calculateDDay(a.date)}
                 </span>
               </div>
             </li>
           );
         })}
       </ul>
-    </div>
+    </>
   );
 };
 

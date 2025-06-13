@@ -32,7 +32,6 @@ export const getDummyCustomAnniversaries = (
       title: '남자친구 생일',
       date: '2025-08-15',
       repeat: 'YEARLY',
-      memo: '선물 준비!',
       created_by: 'user',
     },
     {
@@ -41,16 +40,14 @@ export const getDummyCustomAnniversaries = (
       title: '내 생일',
       date: '2025-10-10',
       repeat: 'YEARLY',
-      memo: '파티 🎉',
       created_by: 'user',
     },
     {
       id: generateId(),
       couple_id: coupleId,
-      title: '여행 가는 날',
+      title: '처음 여행간 날',
       date: '2025-07-20',
       repeat: 'NONE',
-      memo: '제주도 여행 ✈️',
       created_by: 'user',
     },
   ];

@@ -7,14 +7,35 @@ import { useState } from 'react';
 type AnniversaryFormProps = {
   repeat: RepeatOption;
   onRepeatChange: (value: RepeatOption) => void;
+  onSubmit: (data: {
+    title: string;
+    date: string;
+    repeat: RepeatOption;
+    memo?: string;
+  }) => void;
 };
 
-const AnniversaryForm = ({ repeat, onRepeatChange }: AnniversaryFormProps) => {
+const AnniversaryForm = ({
+  repeat,
+  onRepeatChange,
+  onSubmit,
+}: AnniversaryFormProps) => {
   const today = new Date();
-
+  const [title, setTitle] = useState('');
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth() + 1);
   const [day, setDay] = useState(today.getDate());
+
+  const handleSubmit = () => {
+    if (!title) return;
+
+    const date = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    onSubmit({
+      title,
+      date,
+      repeat,
+    });
+  };
 
   return (
     <div className="flex flex-col h-full p-4">
@@ -30,6 +51,9 @@ const AnniversaryForm = ({ repeat, onRepeatChange }: AnniversaryFormProps) => {
             type="text"
             placeholder="기념일 제목"
             className="border rounded px-2 py-1.5 text-xs w-full"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
           />
         </div>
 
@@ -89,7 +113,11 @@ const AnniversaryForm = ({ repeat, onRepeatChange }: AnniversaryFormProps) => {
             취소
           </button>
         </DialogClose>
-        <button className="w-[128px] h-[40px] bg-black text-white rounded font-semibold text-xs">
+        <button
+          className="w-[128px] h-[40px] bg-black text-white rounded font-semibold text-xs"
+          onClick={handleSubmit}
+          disabled={!title}
+        >
           저장
         </button>
       </div>
