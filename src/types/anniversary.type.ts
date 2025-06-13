@@ -7,3 +7,5 @@ export type Anniversary = {
   memo?: string;
   created_by: string;
 };
+
+export type RepeatType = 'none' | 'yearly';
