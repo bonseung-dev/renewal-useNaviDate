@@ -1,18 +1,14 @@
 import { Switch } from '@/components/ui/switch';
+import { DialogClose } from '@radix-ui/react-dialog';
 
 type AnniversaryFormProps = {
   repeat: boolean;
   onRepeatChange: (checked: boolean) => void;
-  onCancel: () => void;
 };
 
-const AnniversaryForm = ({
-  repeat,
-  onRepeatChange,
-  onCancel,
-}: AnniversaryFormProps) => {
+const AnniversaryForm = ({ repeat, onRepeatChange }: AnniversaryFormProps) => {
   return (
-    <div className="bg-white border rounded-lg p-4 space-y-4 text-sm">
+    <div className="bg-white p-4 space-y-4 text-sm">
       <h2 className="font-semibold text-base">기념일 입력</h2>
       <div className="grid grid-cols-[80px_1fr] items-center gap-3">
         <label htmlFor="title">제목</label>
@@ -27,7 +23,7 @@ const AnniversaryForm = ({
         <input
           id="date"
           type="text"
-          placeholder="날짜 선택 (day-picker 적용 예정)"
+          placeholder="날짜 선택 (day-picker 예정)"
           className="border rounded px-2 py-1"
         />
 
@@ -50,12 +46,13 @@ const AnniversaryForm = ({
       </div>
 
       <div className="flex gap-2">
-        <button
-          className="w-full bg-gray-200 hover:bg-gray-300 rounded py-2 font-semibold"
-          onClick={onCancel}
-        >
-          취소
-        </button>
+        {/* 취소 버튼 */}
+        <DialogClose asChild>
+          <button className="w-full bg-gray-200 hover:bg-gray-300 rounded py-2 font-semibold">
+            취소
+          </button>
+        </DialogClose>
+        {/* 저장은 임시로 일반 버튼 */}
         <button className="w-full bg-black text-white rounded py-2 font-semibold">
           저장
         </button>
