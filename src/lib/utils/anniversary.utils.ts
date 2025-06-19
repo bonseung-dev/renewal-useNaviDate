@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import { Anniversary } from '@/types/anniversary.type';
+import { STORAGE_KEY } from '@/constants/holiday.constants';
 
 export const generateAutoAnniversaries = (
   startDate: string,
@@ -19,6 +20,8 @@ export const generateAutoAnniversaries = (
   }));
 };
 
+// 백엔드 연결 후: 이 함수는 테스트용 더미 데이터를 생성하므로 삭제할 예정
+// API에서 사용자 커스텀 기념일을 가져오는 엔드포인트로 대체
 export const getDummyCustomAnniversaries = (
   coupleId: string,
 ): Anniversary[] => {
@@ -50,5 +53,25 @@ export const getDummyCustomAnniversaries = (
       repeat: 'NONE',
       created_by: 'user',
     },
+    {
+      id: generateId(),
+      couple_id: coupleId,
+      title: '첫 데이트',
+      date: '2024-12-25',
+      repeat: 'NONE',
+      created_by: 'user',
+    },
   ];
+};
+
+// 초기화 함수: localStorage에 더미 데이터를 저장
+// 백엔드 연결 후: 이 함수는 삭제해야 하며, 대신 API 호출로 데이터를 초기화
+export const initializeDummyData = (coupleId: string) => {
+  const existingData = JSON.parse(
+    localStorage.getItem(STORAGE_KEY) || '[]',
+  ) as Anniversary[];
+  if (existingData.length === 0) {
+    const dummyData = getDummyCustomAnniversaries(coupleId);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(dummyData));
+  }
 };

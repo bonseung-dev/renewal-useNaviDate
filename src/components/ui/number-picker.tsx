@@ -1,28 +1,33 @@
+import { ChangeEvent } from 'react';
+
+type NumberPickerProps = {
+  label: string;
+  min: number;
+  max: number;
+  value: number;
+  onChange: (v: number) => void;
+};
+
 const NumberPicker = ({
   label,
   min,
   max,
   value,
   onChange,
-}: {
-  label: string;
-  min: number;
-  max: number;
-  value: number;
-  onChange: (v: number) => void;
-}) => {
-  const options = [];
-  for (let i = min; i <= max; i++) {
-    options.push(i);
-  }
+}: NumberPickerProps) => {
+  const options = Array.from({ length: max - min + 1 }, (_, i) => min + i);
+
+  const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    onChange(Number(e.target.value));
+  };
 
   return (
     <div className="flex items-center space-x-1">
       <select
         value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="border rounded px-1 py-[2px] text-xs"
-        style={{ minWidth: 40 }}
+        onChange={handleChange}
+        className="border rounded px-1 py-[2px] text-xs min-w-10"
+        aria-label={`${label} 선택`}
       >
         {options.map((num) => (
           <option key={num} value={num}>

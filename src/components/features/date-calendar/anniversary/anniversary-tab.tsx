@@ -5,6 +5,8 @@ import { Anniversary, RepeatOption } from '@/types/anniversary.type';
 import {
   addAnniversary,
   getAnniversaries,
+  updateAnniversary,
+  deleteAnniversary,
 } from '@/lib/hooks/use-anniversaries';
 import AnniversaryForm from './anniversary-form';
 import AnniversaryList from './anniversary-list';
@@ -17,26 +19,28 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 
-// 새로운 기념일 생성 타입 정의
 type NewAnniversary = {
   title: string;
   date: string;
   repeat: RepeatOption;
 };
 
-const AnniversaryTab = () => {
+type AnniversaryTabProps = {
+  coupleId: string;
+  startDate: string;
+};
+
+const AnniversaryTab = ({ coupleId, startDate }: AnniversaryTabProps) => {
   const [anniversaries, setAnniversaries] = useState<Anniversary[]>([]);
   const [repeat, setRepeat] = useState<RepeatOption>('YEARLY');
   const [open, setOpen] = useState(false);
   const [editingAnniversary, setEditingAnniversary] =
     useState<Anniversary | null>(null);
-  const coupleId = 'sample-couple-id';
-  const startDate = '2025-06-01';
 
   useEffect(() => {
     const data = getAnniversaries(coupleId, startDate);
     setAnniversaries(data);
-  }, []);
+  }, [coupleId, startDate]);
 
   const handleAddAnniversary = (newAnniversary: NewAnniversary) => {
     const added = addAnniversary(coupleId, {
@@ -46,6 +50,7 @@ const AnniversaryTab = () => {
     });
     setAnniversaries((prev) => [...prev, added]);
     setOpen(false);
+    console.log('기념일 추가:', added); // 디버깅 로그
   };
 
   const handleEditAnniversary = (id: string) => {
@@ -59,23 +64,25 @@ const AnniversaryTab = () => {
 
   const handleUpdateAnniversary = (updatedAnniversary: NewAnniversary) => {
     if (!editingAnniversary) return;
-
     const updated = {
       ...editingAnniversary,
       ...updatedAnniversary,
       created_by: 'user',
       couple_id: coupleId,
     };
-
+    updateAnniversary(updated);
     setAnniversaries((prev) =>
       prev.map((a) => (a.id === editingAnniversary.id ? updated : a)),
     );
     setEditingAnniversary(null);
     setOpen(false);
+    console.log('기념일 수정:', updated); // 디버깅 로그
   };
 
   const handleDeleteAnniversary = (id: string) => {
+    deleteAnniversary(id);
     setAnniversaries((prev) => prev.filter((a) => a.id !== id));
+    console.log('기념일 삭제:', id); // 디버깅 로그
   };
 
   return (
@@ -105,7 +112,10 @@ const AnniversaryTab = () => {
           </div>
 
           <DialogTrigger asChild>
-            <button className="text-xs bg-[#7BB4DD] border border-white hover:bg-white hover:text-[#7BB4DD] px-3 py-1 rounded-full text-white font-medium">
+            <button
+              className="text-xs bg-[#7BB4DD] border border-white hover:bg-white hover:text-[#7BB4DD] px-3 py-1 rounded-full text-white font-medium"
+              aria-label="기념일 추가"
+            >
               추가하기
             </button>
           </DialogTrigger>

@@ -30,3 +30,8 @@ export const REPEAT_OPTION_LIST = [
   { value: 'DAILY', label: '매일' },
   { value: 'HUNDRED_DAYS', label: '100일 단위' },
 ] as const;
+
+// test용 상수 - 백엔드 연동 후 삭제 예정
+export const TEST_COUPLE_ID = 'sample-couple-id';
+export const TEST_START_DATE = '2025-06-01';
+export const STORAGE_KEY = 'custom_anniversaries';

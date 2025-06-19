@@ -2,7 +2,8 @@ import NumberPicker from '@/components/ui/number-picker';
 import { REPEAT_OPTION_LIST } from '@/constants/holiday.constants';
 import { Anniversary, RepeatOption } from '@/types/anniversary.type';
 import { DialogClose } from '@radix-ui/react-dialog';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+import dayjs from 'dayjs';
 
 type AnniversaryFormProps = {
   repeat: RepeatOption;
@@ -22,11 +23,11 @@ const AnniversaryForm = ({
   onSubmit,
   editingAnniversary,
 }: AnniversaryFormProps) => {
-  const today = new Date();
+  const today = dayjs();
   const [title, setTitle] = useState('');
-  const [year, setYear] = useState(today.getFullYear());
-  const [month, setMonth] = useState(today.getMonth() + 1);
-  const [day, setDay] = useState(today.getDate());
+  const [year, setYear] = useState(today.year());
+  const [month, setMonth] = useState(today.month() + 1);
+  const [day, setDay] = useState(today.date());
 
   useEffect(() => {
     if (editingAnniversary) {
@@ -40,9 +41,13 @@ const AnniversaryForm = ({
   }, [editingAnniversary, onRepeatChange]);
 
   const handleSubmit = () => {
-    if (!title) return;
+    if (!title) {
+      alert('제목을 입력해주세요.');
+      return;
+    }
 
     const date = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+
     onSubmit({
       title,
       date,
@@ -51,9 +56,9 @@ const AnniversaryForm = ({
 
     if (!editingAnniversary) {
       setTitle('');
-      setYear(today.getFullYear());
-      setMonth(today.getMonth() + 1);
-      setDay(today.getDate());
+      setYear(today.year());
+      setMonth(today.month() + 1);
+      setDay(today.date());
     }
   };
 
@@ -76,7 +81,11 @@ const AnniversaryForm = ({
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
+            aria-describedby="title-description"
           />
+          <span id="title-description" className="sr-only">
+            기념일의 제목을 입력하세요.
+          </span>
         </div>
 
         <div className="grid grid-cols-[70px_1fr] items-center gap-3">
@@ -96,14 +105,14 @@ const AnniversaryForm = ({
               value={month}
               onChange={(v) => {
                 setMonth(v);
-                const maxDay = new Date(year, v, 0).getDate();
+                const maxDay = dayjs(`${year}-${v}`).daysInMonth();
                 if (day > maxDay) setDay(maxDay);
               }}
             />
             <NumberPicker
               label="일"
               min={1}
-              max={new Date(year, month, 0).getDate()}
+              max={dayjs(`${year}-${month}`).daysInMonth()}
               value={day}
               onChange={setDay}
             />
@@ -131,14 +140,16 @@ const AnniversaryForm = ({
 
       <div className="flex items-center justify-center gap-2 mt-6">
         <DialogClose asChild>
-          <button className="w-[128px] h-[40px] bg-gray-200 hover:bg-gray-300 rounded font-semibold text-xs">
+          <button
+            className="w-[128px] h-[40px] bg-gray-200 hover:bg-gray-300 rounded font-semibold text-xs"
+            aria-label="취소"
+          >
             취소
           </button>
         </DialogClose>
         <button
           className="w-[128px] h-[40px] bg-black text-white rounded font-semibold text-xs"
           onClick={handleSubmit}
-          disabled={!title}
         >
           {editingAnniversary ? '수정' : '저장'}
         </button>
