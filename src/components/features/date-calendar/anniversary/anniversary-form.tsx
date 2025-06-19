@@ -1,8 +1,8 @@
 import NumberPicker from '@/components/ui/number-picker';
 import { REPEAT_OPTION_LIST } from '@/constants/holiday.constants';
-import { RepeatOption } from '@/types/anniversary.type';
+import { Anniversary, RepeatOption } from '@/types/anniversary.type';
 import { DialogClose } from '@radix-ui/react-dialog';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type AnniversaryFormProps = {
   repeat: RepeatOption;
@@ -13,18 +13,31 @@ type AnniversaryFormProps = {
     repeat: RepeatOption;
     memo?: string;
   }) => void;
+  editingAnniversary?: Anniversary | null;
 };
 
 const AnniversaryForm = ({
   repeat,
   onRepeatChange,
   onSubmit,
+  editingAnniversary,
 }: AnniversaryFormProps) => {
   const today = new Date();
   const [title, setTitle] = useState('');
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth() + 1);
   const [day, setDay] = useState(today.getDate());
+
+  useEffect(() => {
+    if (editingAnniversary) {
+      setTitle(editingAnniversary.title);
+      const dateParts = editingAnniversary.date.split('-');
+      setYear(parseInt(dateParts[0]));
+      setMonth(parseInt(dateParts[1]));
+      setDay(parseInt(dateParts[2]));
+      onRepeatChange(editingAnniversary.repeat);
+    }
+  }, [editingAnniversary, onRepeatChange]);
 
   const handleSubmit = () => {
     if (!title) return;
@@ -35,11 +48,20 @@ const AnniversaryForm = ({
       date,
       repeat,
     });
+
+    if (!editingAnniversary) {
+      setTitle('');
+      setYear(today.getFullYear());
+      setMonth(today.getMonth() + 1);
+      setDay(today.getDate());
+    }
   };
 
   return (
     <div className="flex flex-col h-full p-4">
-      <h2 className="font-semibold text-sm mb-4">기념일 입력</h2>
+      <h2 className="font-semibold text-sm mb-4">
+        {editingAnniversary ? '기념일 수정' : '기념일 입력'}
+      </h2>
 
       <div className="space-y-4 flex-1">
         <div className="grid grid-cols-[70px_1fr] items-center gap-3">
@@ -118,7 +140,7 @@ const AnniversaryForm = ({
           onClick={handleSubmit}
           disabled={!title}
         >
-          저장
+          {editingAnniversary ? '수정' : '저장'}
         </button>
       </div>
     </div>

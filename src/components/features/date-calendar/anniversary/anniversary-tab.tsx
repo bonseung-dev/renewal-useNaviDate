@@ -28,8 +28,10 @@ const AnniversaryTab = () => {
   const [anniversaries, setAnniversaries] = useState<Anniversary[]>([]);
   const [repeat, setRepeat] = useState<RepeatOption>('YEARLY');
   const [open, setOpen] = useState(false);
+  const [editingAnniversary, setEditingAnniversary] =
+    useState<Anniversary | null>(null);
   const coupleId = 'sample-couple-id';
-  const startDate = '2025-06-01'; // 테스트용 시작 날짜
+  const startDate = '2025-06-01';
 
   useEffect(() => {
     const data = getAnniversaries(coupleId, startDate);
@@ -46,20 +48,48 @@ const AnniversaryTab = () => {
     setOpen(false);
   };
 
+  const handleEditAnniversary = (id: string) => {
+    const anniversaryToEdit = anniversaries.find((a) => a.id === id);
+    if (anniversaryToEdit) {
+      setEditingAnniversary(anniversaryToEdit);
+      setRepeat(anniversaryToEdit.repeat);
+      setOpen(true);
+    }
+  };
+
+  const handleUpdateAnniversary = (updatedAnniversary: NewAnniversary) => {
+    if (!editingAnniversary) return;
+
+    const updated = {
+      ...editingAnniversary,
+      ...updatedAnniversary,
+      created_by: 'user',
+      couple_id: coupleId,
+    };
+
+    setAnniversaries((prev) =>
+      prev.map((a) => (a.id === editingAnniversary.id ? updated : a)),
+    );
+    setEditingAnniversary(null);
+    setOpen(false);
+  };
+
   const handleDeleteAnniversary = (id: string) => {
     setAnniversaries((prev) => prev.filter((a) => a.id !== id));
   };
 
-  const handleEditAnniversary = (id: string) => {
-    // 수정 로직 구현
-    console.log('수정할 기념일 ID:', id);
-    // 여기에 수정 모달을 열거나 수정 로직을 구현
-  };
-
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(isOpen) => {
+        setOpen(isOpen);
+        if (!isOpen) {
+          setEditingAnniversary(null);
+          setRepeat('YEARLY');
+        }
+      }}
+    >
       <div className="flex items-center justify-center flex-col">
-        {/* 커플 정보 */}
         <div className="w-[320px] h-[52px] flex items-center justify-between bg-[#7BB4DD] rounded-[40px] px-4">
           <div className="flex items-center gap-2">
             <Image
@@ -74,7 +104,6 @@ const AnniversaryTab = () => {
             </span>
           </div>
 
-          {/* 모달 열기 버튼 */}
           <DialogTrigger asChild>
             <button className="text-xs bg-[#7BB4DD] border border-white hover:bg-white hover:text-[#7BB4DD] px-3 py-1 rounded-full text-white font-medium">
               추가하기
@@ -82,7 +111,6 @@ const AnniversaryTab = () => {
           </DialogTrigger>
         </div>
 
-        {/* 기념일 리스트 */}
         <AnniversaryList
           anniversaries={anniversaries}
           onDelete={handleDeleteAnniversary}
@@ -90,9 +118,10 @@ const AnniversaryTab = () => {
         />
       </div>
 
-      {/* 모달 내용 */}
       <DialogContent className="bg-white p-1 shadow-lg rounded-xl w-[320px] h-[330px]">
-        <DialogTitle className="sr-only">기념일 추가</DialogTitle>
+        <DialogTitle className="sr-only">
+          {editingAnniversary ? '기념일 수정' : '기념일 추가'}
+        </DialogTitle>
         <DialogDescription className="sr-only">
           기념일 정보를 입력해 주세요.
         </DialogDescription>
@@ -100,7 +129,10 @@ const AnniversaryTab = () => {
         <AnniversaryForm
           repeat={repeat}
           onRepeatChange={setRepeat}
-          onSubmit={handleAddAnniversary}
+          onSubmit={
+            editingAnniversary ? handleUpdateAnniversary : handleAddAnniversary
+          }
+          editingAnniversary={editingAnniversary}
         />
       </DialogContent>
     </Dialog>
