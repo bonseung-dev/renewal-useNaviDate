@@ -1,10 +1,16 @@
+'use client';
+
+import UploadImageCarousel from '@/components/features/write-date/upload-image-carousel';
 import { Switch } from '@/components/ui/switch';
-import React from 'react';
+import React, { useState } from 'react';
 
 const WriteDate = () => {
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
+
   return (
     <form>
-      <section>{/* 캐러셀 이미지 업로드 */}</section>
+      {/* 캐러셀 이미지 업로드 */}
+      <UploadImageCarousel imageUrls={imageUrls} setImageUrls={setImageUrls} />
 
       {/* 주소 검색 */}
       <section>
