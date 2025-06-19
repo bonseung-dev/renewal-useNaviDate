@@ -37,21 +37,21 @@ const AnniversaryList = ({
       <ul>
         {sorted.map((a) => {
           const isUserCreated = a.created_by === 'user';
-          const heartColor = isUserCreated ? '#FAE9A8' : '#7BB4DD';
+          const heartColor = isUserCreated ? 'fill-skin6' : 'fill-skin1';
 
           return (
             <li
               key={a.id}
               className="w-[320px] h-[80px] relative flex items-center justify-between bg-white px-4"
             >
-              <div className="absolute left-6 top-0 bottom-0 w-[1px] bg-[#7BB4DD]" />
+              <div className="absolute left-6 top-0 bottom-0 w-[1px] bg-skin1" />
               <div className="ml-[24px] mr-2 flex items-center justify-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill={heartColor}
                   viewBox="0 0 24 24"
                   stroke="none"
-                  className="w-5 h-5"
+                  className={`w-5 h-5 ${heartColor}`}
                 >
                   <path
                     d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 
@@ -68,14 +68,14 @@ const AnniversaryList = ({
                     <div className="flex gap-2">
                       <button
                         onClick={() => onEdit(a.id)}
-                        className="text-gray-500 hover:text-[#7BB4DD] transition-colors"
+                        className="text-gray-500 hover:text-skin1 transition-colors"
                         aria-label="수정"
                       >
                         <Pencil size={14} />
                       </button>
                       <button
                         onClick={() => onDelete(a.id)}
-                        className="text-gray-500 hover:text-red-400 transition-colors"
+                        className="text-gray-500 hover:text-skin7 transition-colors"
                         aria-label="삭제"
                       >
                         <Trash2 size={14} />
@@ -86,7 +86,7 @@ const AnniversaryList = ({
                 <p className="text-xs text-gray-500">{a.date}</p>
               </div>
               <div className="flex flex-col items-center gap-1">
-                <span className="border border-[#7BB4DD] text-[#7BB4DD] text-xs rounded-full px-3 py-0.5">
+                <span className="border border-skin1 text-skin1 text-xs rounded-full px-3 py-0.5">
                   {calculateDDay(a.date)}
                 </span>
               </div>
