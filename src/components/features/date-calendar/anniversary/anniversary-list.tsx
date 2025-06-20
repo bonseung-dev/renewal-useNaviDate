@@ -63,30 +63,30 @@ const AnniversaryList = ({
               </div>
               <div className="flex flex-col justify-center flex-1">
                 <div className="flex items-center gap-2">
-                  <p className="font-semibold text-sm">{a.title}</p>
+                  <p className="font-bold text-b-h3 text-font1">{a.title}</p>
                   {isUserCreated && (
                     <div className="flex gap-2">
                       <button
                         onClick={() => onEdit(a.id)}
-                        className="text-gray-500 hover:text-skin1 transition-colors"
+                        className="text-font4 hover:text-skin1 transition-colors"
                         aria-label="수정"
                       >
-                        <Pencil size={14} />
+                        <Pencil size={12} />
                       </button>
                       <button
                         onClick={() => onDelete(a.id)}
-                        className="text-gray-500 hover:text-skin7 transition-colors"
+                        className="text-font4 hover:text-skin7 transition-colors"
                         aria-label="삭제"
                       >
-                        <Trash2 size={14} />
+                        <Trash2 size={12} />
                       </button>
                     </div>
                   )}
                 </div>
-                <p className="text-xs text-gray-500">{a.date}</p>
+                <p className="text-m-h4 text-font1">{a.date}</p>
               </div>
               <div className="flex flex-col items-center gap-1">
-                <span className="border border-skin1 text-skin1 text-xs rounded-full px-3 py-0.5">
+                <span className="w-[60px] h-[24px] flex items-center justify-center border border-skin1 text-skin1 text-m-h4 rounded-full px-3 py-0.5">
                   {calculateDDay(a.date)}
                 </span>
               </div>

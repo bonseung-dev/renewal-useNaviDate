@@ -15,15 +15,15 @@ const CalendarTabs = ({ coupleId, startDate }: CalendarTabsProps) => {
   return (
     <>
       {/* 탭 헤더 */}
-      <div className="flex justify-around mb-4">
+      <div className="flex justify-center mb-[20px]">
         <button
-          className={`py-2 px-8 ${activeTab === 'date' ? 'border-b-2 border-black font-bold' : ''}`}
+          className={`py-2 px-8 text-skin1 text-L-title3 ${activeTab === 'date' ? 'border-b-2 border-skin1 font-bold' : ''}`}
           onClick={() => setActiveTab('date')}
         >
           데이트
         </button>
         <button
-          className={`py-2 px-8 ${activeTab === 'anniversary' ? 'border-b-2 border-black font-bold' : ''}`}
+          className={`py-2 px-8 text-skin1 text-L-title3 ${activeTab === 'anniversary' ? 'border-b-2 border-skin1 font-bold' : ''}`}
           onClick={() => setActiveTab('anniversary')}
         >
           기념일
