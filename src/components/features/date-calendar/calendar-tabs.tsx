@@ -4,7 +4,12 @@ import { useState } from 'react';
 import DateTab from './date-tab';
 import AnniversaryTab from './anniversary/anniversary-tab';
 
-const CalendarTabs = () => {
+type CalendarTabsProps = {
+  coupleId: string;
+  startDate: string;
+};
+
+const CalendarTabs = ({ coupleId, startDate }: CalendarTabsProps) => {
   const [activeTab, setActiveTab] = useState<'date' | 'anniversary'>('date');
 
   return (
@@ -26,7 +31,13 @@ const CalendarTabs = () => {
       </div>
 
       {/* 탭 내용 */}
-      <div>{activeTab === 'date' ? <DateTab /> : <AnniversaryTab />}</div>
+      <div>
+        {activeTab === 'date' ? (
+          <DateTab />
+        ) : (
+          <AnniversaryTab coupleId={coupleId} startDate={startDate} />
+        )}
+      </div>
     </>
   );
 };
