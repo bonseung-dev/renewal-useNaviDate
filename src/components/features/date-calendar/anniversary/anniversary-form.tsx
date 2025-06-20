@@ -63,34 +63,36 @@ const AnniversaryForm = ({
   };
 
   return (
-    <div className="flex flex-col h-full p-4">
-      <h2 className="font-semibold text-sm mb-4">
-        {editingAnniversary ? '기념일 수정' : '기념일 입력'}
-      </h2>
+    <div className="w-[258px] h-[251px] mt-[48px] mx-[32px] mb-[32px] box-border flex flex-col justify-between">
+      <div>
+        <h2 className="font-bold text-b-h2 text-skin1 mb-[16px]">
+          {editingAnniversary ? '기념일 수정' : '기념일 추가'}
+        </h2>
 
-      <div className="space-y-4 flex-1">
-        <div className="grid grid-cols-[70px_1fr] items-center gap-3">
-          <label htmlFor="title" className="text-xs">
+        <div className="flex items-center mb-[12px]">
+          <label
+            htmlFor="title"
+            className="text-b-h3 font-bold w-[56px] text-skin1"
+          >
             제목
           </label>
           <input
             id="title"
             type="text"
-            placeholder="기념일 제목"
-            className="border rounded px-2 py-1.5 text-xs w-full"
+            placeholder="제목(1~15자)을 입력해주세요"
+            className="bg-skin3 rounded px-2 py-1 text-l-title4 text-font1 h-[32px] w-[200px]  placeholder:text-l-title4 placeholder:text-font4"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
             aria-describedby="title-description"
           />
-          <span id="title-description" className="sr-only">
-            기념일의 제목을 입력하세요.
-          </span>
         </div>
 
-        <div className="grid grid-cols-[70px_1fr] items-center gap-3">
-          <label className="text-xs">날짜</label>
-          <div className="flex gap-2">
+        <div className="flex items-center mb-[12px]">
+          <label className="text-b-h3 font-bold w-[56px] text-skin1">
+            날짜
+          </label>
+          <div className="flex gap-2 w-[200px]">
             <NumberPicker
               label="년"
               min={2000}
@@ -119,15 +121,18 @@ const AnniversaryForm = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-[70px_1fr] items-center gap-3">
-          <label htmlFor="repeat" className="text-xs">
+        <div className="flex items-center mb-[32px]">
+          <label
+            htmlFor="repeat"
+            className="text-b-h3 font-bold w-[56px] text-skin1"
+          >
             반복
           </label>
           <select
             id="repeat"
             value={repeat}
             onChange={(e) => onRepeatChange(e.target.value as RepeatOption)}
-            className="border rounded px-2 py-1.5 text-xs w-full"
+            className="bg-skin3 rounded px-2 py-1 text-l-title4 h-[32px] w-[200px] text-font4 appearance-none"
           >
             {REPEAT_OPTION_LIST.map((option) => (
               <option key={option.value} value={option.value}>
@@ -138,21 +143,21 @@ const AnniversaryForm = ({
         </div>
       </div>
 
-      <div className="flex items-center justify-center gap-2 mt-6">
+      <div className="flex items-center justify-center gap-2 mt-2">
+        <button
+          className="w-[100px] h-[32px] bg-skin1 text-font2 rounded-[20px] text-m-h2"
+          onClick={handleSubmit}
+        >
+          {editingAnniversary ? '수정' : '저장'}
+        </button>
         <DialogClose asChild>
           <button
-            className="w-[128px] h-[40px] bg-gray-200 hover:bg-gray-300 rounded font-semibold text-xs"
+            className="w-[100px] h-[32px] bg-skin3 text-font2 hover:bg-gray-300 rounded-[20px] text-m-h2"
             aria-label="취소"
           >
             취소
           </button>
         </DialogClose>
-        <button
-          className="w-[128px] h-[40px] bg-black text-white rounded font-semibold text-xs"
-          onClick={handleSubmit}
-        >
-          {editingAnniversary ? '수정' : '저장'}
-        </button>
       </div>
     </div>
   );

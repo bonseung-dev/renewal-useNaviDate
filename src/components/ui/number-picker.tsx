@@ -22,11 +22,11 @@ const NumberPicker = ({
   };
 
   return (
-    <div className="flex items-center space-x-1">
+    <div className="flex items-center">
       <select
         value={value}
         onChange={handleChange}
-        className="border rounded px-1 py-[2px] text-xs min-w-10"
+        className="appearance-none w-[48px] h-[40px] text-l-title4 text-font4 rounded text-center bg-skin3"
         aria-label={`${label} 선택`}
       >
         {options.map((num) => (
@@ -35,7 +35,7 @@ const NumberPicker = ({
           </option>
         ))}
       </select>
-      <span className="text-[10px] font-medium">{label}</span>
+      <span className="text-m-h3 text-skin1">{label}</span>
     </div>
   );
 };
