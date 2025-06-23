@@ -25,6 +25,7 @@ const FrequentPlaces = () => {
         <p className="text-b-h3 font-bold text-font3">자주 간 장소 TOP 5</p>
       </div>
 
+      {/* 장소별 방문 횟수 데이터 연동 및 그래프 비율 계산 로직 구현 예정 */}
       {/* 장소명 + 바 그래프 */}
       <div className="space-y-[2px] ml-[44px]">
         {frequentPlaces.map((place, idx) => (
@@ -36,18 +37,22 @@ const FrequentPlaces = () => {
             >
               {place.name}
             </span>
-            {/* 간격 */}
             <div className="w-[5px]" />
             {/* 바형 그래프 */}
             <div
-              className="h-[4px] bg-skin1 rounded"
-              style={{ width: `${place.ratio * 125}px` }}
+              className={`h-[4px] bg-skin1 rounded ${
+                place.ratio === 0.8
+                  ? 'w-[100px]'
+                  : place.ratio === 0.7
+                    ? 'w-[87.5px]'
+                    : place.ratio === 0.5
+                      ? 'w-[62.5px]'
+                      : 'w-[50px]'
+              }`}
             />
           </div>
         ))}
       </div>
-
-      {/* TODO: 장소별 방문 횟수 데이터 연동 및 그래프 비율 계산 로직 구현 예정 */}
     </div>
   );
 };
