@@ -40,7 +40,7 @@ const NumberPicker = ({
         </SelectTrigger>
 
         <SelectContent
-          className="w-[120px] h-[96px] overflow-y-auto bg-skin5 rounded shadow-md 
+          className="w-[120px] h-[96px] overflow-y-auto bg-skin5 rounded-[20px] shadow-shadow1 
                      scrollbar-thin scrollbar-thumb-skin1 scrollbar-track-skin3"
         >
           {options.map((num) => (
