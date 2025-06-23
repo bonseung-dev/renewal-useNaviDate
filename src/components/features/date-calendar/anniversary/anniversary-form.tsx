@@ -69,6 +69,7 @@ const AnniversaryForm = ({
           {editingAnniversary ? '기념일 수정' : '기념일 추가'}
         </h2>
 
+        {/* 제목 인풋 */}
         <div className="flex items-center mb-[12px]">
           <label
             htmlFor="title"
@@ -80,14 +81,15 @@ const AnniversaryForm = ({
             id="title"
             type="text"
             placeholder="제목(1~15자)을 입력해주세요"
-            className="bg-skin3 rounded px-2 py-1 text-l-title4 text-font1 h-[32px] w-[200px]  placeholder:text-l-title4 placeholder:text-font4"
+            className="bg-skin3 rounded px-2 py-1 text-l-title4 text-font1 h-[32px] w-[200px] placeholder:text-l-title4 placeholder:text-font4
+                   focus:outline-none focus:ring-2 focus:ring-skin1 focus:border-transparent"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
-            aria-describedby="title-description"
           />
         </div>
 
+        {/* 날짜 선택기 - NumberPicker 사용 (스타일은 NumberPicker 컴포넌트에서 수정) */}
         <div className="flex items-center mb-[12px]">
           <label className="text-b-h3 font-bold w-[56px] text-skin1">
             날짜
@@ -105,11 +107,7 @@ const AnniversaryForm = ({
               min={1}
               max={12}
               value={month}
-              onChange={(v) => {
-                setMonth(v);
-                const maxDay = dayjs(`${year}-${v}`).daysInMonth();
-                if (day > maxDay) setDay(maxDay);
-              }}
+              onChange={setMonth}
             />
             <NumberPicker
               label="일"
@@ -121,6 +119,7 @@ const AnniversaryForm = ({
           </div>
         </div>
 
+        {/* 반복 선택 */}
         <div className="flex items-center mb-[32px]">
           <label
             htmlFor="repeat"
@@ -132,7 +131,8 @@ const AnniversaryForm = ({
             id="repeat"
             value={repeat}
             onChange={(e) => onRepeatChange(e.target.value as RepeatOption)}
-            className="bg-skin3 rounded px-2 py-1 text-l-title4 h-[32px] w-[200px] text-font4 appearance-none"
+            className="bg-skin3 rounded px-2 py-1 text-l-title4 h-[32px] w-[200px] text-font4 appearance-none
+                   focus:outline-none focus:ring-2 focus:ring-skin1 focus:border-transparent"
           >
             {REPEAT_OPTION_LIST.map((option) => (
               <option key={option.value} value={option.value}>
