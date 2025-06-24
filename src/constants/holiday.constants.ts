@@ -20,18 +20,14 @@ export const LEGAL_HOLIDAYS = [
 export const REPEAT_OPTIONS = {
   NONE: '없음',
   YEARLY: '매년',
-  DAILY: '매일',
-  HUNDRED_DAYS: '100일 단위',
 } as const;
 
 export const REPEAT_OPTION_LIST = [
   { value: 'NONE', label: '없음' },
   { value: 'YEARLY', label: '매년' },
-  { value: 'DAILY', label: '매일' },
-  { value: 'HUNDRED_DAYS', label: '100일 단위' },
 ] as const;
 
-// test용 상수 - 백엔드 연동 후 삭제 예정
-export const TEST_COUPLE_ID = 'sample-couple-id';
-export const TEST_START_DATE = '2025-06-01';
+// // test용 상수 - 백엔드 연동 후 삭제 예정
+// export const TEST_COUPLE_ID = 'sample-couple-id';
+// export const TEST_START_DATE = '2025-06-01';
 export const STORAGE_KEY = 'custom_anniversaries';

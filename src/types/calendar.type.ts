@@ -45,13 +45,52 @@ export type Emotion = 'Joy' | 'Fun' | 'Soso' | 'Sad' | 'Mad';
 
 export type Post = {
   id: string;
-  user_id: string;
+  userId: string;
   title: string;
   content: string;
   visibility: 'private' | 'public';
   date: string;
   emotion: Emotion;
-  imageUrl?: string;
+  createdAt: Date;
+  deletedAt: Date | null;
+};
+
+export type ExtendedPost = {
+  id: string;
+  user_id: string;
+  title: string;
+  content: string;
+  visibility: 'private' | 'public';
+  date: string;
+  emotion: 'Joy' | 'Fun' | 'Soso' | 'Sad' | 'Mad';
   created_at: string;
   deleted_at: string | null;
+  imageUrl?: string;
+  likes_count: number;
+  images: PostImage[];
+  tags: PostTag[];
+};
+
+export type PostImage = {
+  id: string;
+  postId: string;
+  imageUrl: string;
+  address: string | null;
+  isRepresentative: boolean;
+};
+
+export type PostTag = {
+  id: string;
+  postId: string;
+  name: string;
+};
+
+export type Anniversary = {
+  id: string;
+  coupleId: string;
+  title: string;
+  date: string;
+  repeat: 'none' | 'yearly';
+  memo: string;
+  createdBy: string;
 };
