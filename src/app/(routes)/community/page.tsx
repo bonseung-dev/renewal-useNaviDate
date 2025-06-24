@@ -3,7 +3,7 @@ import dummyData from '@/lib/utils/dummy.utils';
 import { EnhancedPost } from '@/types/community.type';
 
 const Page = () => {
-  // 포스트 데이터 생성 (서버에서 처리)
+  // 임시 포스트 데이터 생성
   const enhancedPosts: EnhancedPost[] = dummyData.posts.map((post) => {
     const couple = dummyData.couples.find(
       (c) => c.userAId === post.userId || c.userBId === post.userId,
