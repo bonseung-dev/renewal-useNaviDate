@@ -53,7 +53,7 @@ const AnniversaryTab = ({
   useEffect(() => {
     const data = getAnniversaries(coupleId, startDate);
     setAnniversaries(data);
-    console.log('Filtered anniversaries:', data);
+    console.log('필터링된 기념일:', data);
   }, [coupleId, startDate]);
 
   const handleAddAnniversary = (newAnniversary: NewAnniversary) => {

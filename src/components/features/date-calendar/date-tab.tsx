@@ -20,7 +20,9 @@ const DateTab = ({ coupleId }: DateTabProps) => {
 
   const couple = dummyData.couples.find((c) => c.id === coupleId);
   if (!couple) {
-    console.log(`Couple not found in DateTab for coupleId: ${coupleId}`);
+    console.log(
+      `DateTab에서 coupleId에 해당하는 커플을 찾을 수 없음: ${coupleId}`,
+    );
   }
 
   const postsWithImages: ExtendedPost[] = dummyData.posts
@@ -28,7 +30,7 @@ const DateTab = ({ coupleId }: DateTabProps) => {
       const isMatch =
         couple && [couple.userAId, couple.userBId].includes(post.userId);
       if (!isMatch) {
-        console.log(`Post filtered out: ${post.id}, userId: ${post.userId}`);
+        console.log(`포스트 필터링됨: ${post.id}, userId: ${post.userId}`);
       }
       return isMatch;
     })
@@ -56,8 +58,11 @@ const DateTab = ({ coupleId }: DateTabProps) => {
     });
 
   // 디버깅: 필터링된 포스트 및 커플 정보
-  console.log(`Couple for coupleId: ${coupleId}`, couple);
-  console.log(`Filtered posts for coupleId: ${coupleId}`, postsWithImages);
+  console.log(`coupleId에 해당하는 커플 정보: ${coupleId}`, couple);
+  console.log(
+    `coupleId에 해당하는 필터링된 포스트: ${coupleId}`,
+    postsWithImages,
+  );
 
   useEffect(() => {
     const loadHolidays = async () => {
@@ -67,7 +72,7 @@ const DateTab = ({ coupleId }: DateTabProps) => {
         const data = await getHolidaysByMonth(year, month);
         setHolidays(data);
       } catch (err) {
-        console.error('공휴일 로딩 실패', err);
+        console.error('공휴일 정보 로딩 실패', err);
       }
     };
     loadHolidays();

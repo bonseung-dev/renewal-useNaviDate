@@ -39,7 +39,7 @@ const CalendarCard = ({
     const selected = dayjs(
       `${currentDate.year()}-${currentDate.month() + 1}-${day}`,
     ).format('YYYY-MM-DD');
-    console.log('Selected:', selected);
+    console.log('선택된 항목:', selected);
   };
 
   const getPostForDate = (dateStr: string) => {

@@ -11,14 +11,14 @@ const Page = ({ searchParams }: Props) => {
 
   // 비로그인: userId 없음
   if (!userId) {
-    console.log('No userId provided');
+    console.log('userId가 제공되지 않음');
     return <LoginPrompt />;
   }
 
   // userId 유효성 검사
   const user = dummyData.users.find((u) => u.id === userId);
   if (!user) {
-    console.log(`User not found for userId: ${userId}`);
+    console.log(`userId에 해당하는 사용자를 찾을 수 없음: ${userId}`);
     return <LoginPrompt />;
   }
 
@@ -27,13 +27,13 @@ const Page = ({ searchParams }: Props) => {
     (c) => c.userAId === userId || c.userBId === userId,
   );
   if (!couple) {
-    console.log(`No couple found for userId: ${userId}`);
+    console.log(`userId에 해당하는 커플을 찾을 수 없음: ${userId}`);
     return <LoginPrompt />;
   }
 
   // 디버깅: 커플 정보
   console.log(
-    `Found couple: ${couple.id}, userAId: ${couple.userAId}, userBId: ${couple.userBId}`,
+    `찾은 커플: ${couple.id}, userAId: ${couple.userAId}, userBId: ${couple.userBId}`,
   );
 
   // 커플 ID로 리다이렉트
