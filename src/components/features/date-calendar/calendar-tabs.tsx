@@ -33,7 +33,7 @@ const CalendarTabs = ({ coupleId, startDate }: CalendarTabsProps) => {
       {/* 탭 내용 */}
       <div>
         {activeTab === 'date' ? (
-          <DateTab />
+          <DateTab coupleId={coupleId} />
         ) : (
           <AnniversaryTab coupleId={coupleId} startDate={startDate} />
         )}

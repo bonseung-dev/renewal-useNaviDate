@@ -1,42 +1,63 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { getHolidaysByMonth } from '@/lib/services/holiday.services';
-import type { Holiday, Post } from '@/types/calendar.type';
-import CalendarCard from './date/calendar-card';
 import AnalysisButton from './date/analysis-button';
 import DateAnalysis from './date/date-analysis';
+import dummyData from '@/lib/utils/dummy.utils';
+import CalendarCard from './date/calendar-card';
+import { ExtendedPost, Holiday } from '@/types/calendar.type';
 
-const dummyPosts: Post[] = [
-  {
-    id: '1',
-    user_id: 'user1',
-    title: '룰루랄라 데이트~ 제목입니다',
-    content: '내용1',
-    visibility: 'public',
-    date: '2025-06-05',
-    emotion: 'Joy',
-    created_at: '',
-    deleted_at: null,
-  },
-  {
-    id: '2',
-    user_id: 'user1',
-    title: '데이트2',
-    content: '내용2',
-    visibility: 'public',
-    date: '2025-06-15',
-    emotion: 'Sad',
-    created_at: '',
-    deleted_at: null,
-  },
-];
+type DateTabProps = {
+  coupleId: string;
+};
 
-const DateTab = () => {
-  const [currentDate, setCurrentDate] = useState(dayjs());
+const DateTab = ({ coupleId }: DateTabProps) => {
+  const [currentDate, setCurrentDate] = useState<Dayjs>(dayjs());
   const [holidays, setHolidays] = useState<Holiday[]>([]);
   const [isAnalysisView, setIsAnalysisView] = useState(false);
+
+  const couple = dummyData.couples.find((c) => c.id === coupleId);
+  if (!couple) {
+    console.log(`Couple not found in DateTab for coupleId: ${coupleId}`);
+  }
+
+  const postsWithImages: ExtendedPost[] = dummyData.posts
+    .filter((post) => {
+      const isMatch =
+        couple && [couple.userAId, couple.userBId].includes(post.userId);
+      if (!isMatch) {
+        console.log(`Post filtered out: ${post.id}, userId: ${post.userId}`);
+      }
+      return isMatch;
+    })
+    .map((post) => {
+      const representativeImage = dummyData.postImages.find(
+        (img) => img.postId === post.id && img.isRepresentative,
+      );
+      const likes_count = dummyData.likes.filter(
+        (like) => like.postId === post.id,
+      ).length;
+      const images = dummyData.postImages.filter(
+        (img) => img.postId === post.id,
+      );
+      const tags = dummyData.postTags.filter((tag) => tag.postId === post.id);
+      return {
+        ...post,
+        user_id: post.userId,
+        created_at: post.createdAt.toISOString(),
+        deleted_at: post.deletedAt?.toISOString() || null,
+        imageUrl: representativeImage?.imageUrl,
+        likes_count,
+        images,
+        tags,
+      };
+    });
+
+  // 디버깅: 필터링된 포스트 및 커플 정보
+  console.log(`Couple for coupleId: ${coupleId}`, couple);
+  console.log(`Filtered posts for coupleId: ${coupleId}`, postsWithImages);
 
   useEffect(() => {
     const loadHolidays = async () => {
@@ -60,7 +81,7 @@ const DateTab = () => {
             currentDate={currentDate}
             setCurrentDate={setCurrentDate}
             holidays={holidays}
-            posts={dummyPosts}
+            posts={postsWithImages}
           />
           <AnalysisButton onClick={() => setIsAnalysisView(true)} />
         </>

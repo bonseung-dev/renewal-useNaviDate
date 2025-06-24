@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import type { Emotion, Holiday, Post } from '@/types/calendar.type';
+import type { Emotion, ExtendedPost, Holiday } from '@/types/calendar.type';
 
 const emotionImages: Record<Emotion, string> = {
   Joy: '/emotions/emotion_happy.png',
@@ -18,7 +18,7 @@ type Props = {
   currentDate: Dayjs;
   setCurrentDate: Dispatch<SetStateAction<Dayjs>>;
   holidays: Holiday[];
-  posts: Post[];
+  posts: ExtendedPost[];
 };
 
 const CalendarCard = ({
