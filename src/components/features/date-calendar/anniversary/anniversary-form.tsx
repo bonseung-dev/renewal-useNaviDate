@@ -1,9 +1,10 @@
 import NumberPicker from '@/components/ui/number-picker';
-import { REPEAT_OPTION_LIST } from '@/constants/holiday.constants';
+
 import { Anniversary, RepeatOption } from '@/types/anniversary.type';
 import { DialogClose } from '@radix-ui/react-dialog';
 import { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
+import { Switch } from '@/components/ui/switch';
 
 type AnniversaryFormProps = {
   repeat: RepeatOption;
@@ -32,28 +33,26 @@ const AnniversaryForm = ({
   useEffect(() => {
     if (editingAnniversary) {
       setTitle(editingAnniversary.title);
-      const dateParts = editingAnniversary.date.split('-');
-      setYear(parseInt(dateParts[0]));
-      setMonth(parseInt(dateParts[1]));
-      setDay(parseInt(dateParts[2]));
-      onRepeatChange(editingAnniversary.repeat);
+      const [y, m, d] = editingAnniversary.date.split('-').map(Number);
+      setYear(y);
+      setMonth(m);
+      setDay(d);
+      onRepeatChange(editingAnniversary.repeat as RepeatOption);
     }
   }, [editingAnniversary, onRepeatChange]);
+
+  const isYearly = repeat === 'YEARLY';
+  const handleSwitch = (checked: boolean) => {
+    onRepeatChange(checked ? 'YEARLY' : 'NONE');
+  };
 
   const handleSubmit = () => {
     if (!title) {
       alert('제목을 입력해주세요.');
       return;
     }
-
-    const date = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-
-    onSubmit({
-      title,
-      date,
-      repeat,
-    });
-
+    const date = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    onSubmit({ title, date, repeat });
     if (!editingAnniversary) {
       setTitle('');
       setYear(today.year());
@@ -89,7 +88,7 @@ const AnniversaryForm = ({
           />
         </div>
 
-        {/* 날짜 선택기 - NumberPicker 사용 (스타일은 NumberPicker 컴포넌트에서 수정) */}
+        {/* 날짜 선택*/}
         <div className="flex items-center mb-[12px]">
           <label className="text-b-h3 font-bold w-[56px] text-skin1">
             날짜
@@ -119,27 +118,20 @@ const AnniversaryForm = ({
           </div>
         </div>
 
-        {/* 반복 선택 */}
+        {/* 반복 스위치 */}
         <div className="flex items-center mb-[32px]">
           <label
-            htmlFor="repeat"
-            className="text-b-h3 font-bold w-[56px] text-skin1"
+            htmlFor="repeat-switch"
+            className="text-b-h3 font-bold text-skin1"
           >
-            반복
+            매년 반복
           </label>
-          <select
-            id="repeat"
-            value={repeat}
-            onChange={(e) => onRepeatChange(e.target.value as RepeatOption)}
-            className="bg-skin3 rounded px-2 py-1 text-l-title4 h-[32px] w-[200px] text-font4 appearance-none
-                   focus:outline-none focus:ring-2 focus:ring-skin1 focus:border-transparent"
-          >
-            {REPEAT_OPTION_LIST.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
+          <Switch
+            id="repeat-switch"
+            checked={isYearly}
+            onCheckedChange={handleSwitch}
+            className="ml-auto w-[72px] h-[32px]"
+          />
         </div>
       </div>
 
