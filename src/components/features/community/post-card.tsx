@@ -6,7 +6,7 @@ import { EnhancedPost } from '@/types/community.type';
 
 const PostCard = ({ post }: { post: EnhancedPost }) => {
   return (
-    <div className="w-[280px] h-[320px] rounded-[20px] overflow-hidden relative shadow-md">
+    <div className="w-[280px] h-[320px] rounded-[20px] overflow-hidden relative shadow-shadow1">
       {/* 대표 이미지 렌더링 */}
       {post.images.length > 0 ? (
         (() => {
@@ -26,17 +26,15 @@ const PostCard = ({ post }: { post: EnhancedPost }) => {
           );
         })()
       ) : (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-          <span className="text-gray-500">이미지가 없습니다</span>
+        <div className="absolute inset-0 flex items-center justify-center bg-skin4">
+          <span className="text-font4">이미지가 없습니다</span>
         </div>
       )}
 
       {/* 제목 및 태그 */}
       <div className="absolute top-[22px] left-0 w-full text-center px-2">
-        <h3 className="text-white font-bold text-base line-clamp-1">
-          {post.title}
-        </h3>
-        <div className="mt-1 text-white text-xs space-x-1">
+        <h3 className="text-skin5 text-m-h1 line-clamp-1">{post.title}</h3>
+        <div className="mt-1 text-skin5 text-m-h4">
           {post.tags.map((tag) => (
             <span key={tag.id}>#{tag.name}</span>
           ))}
@@ -66,9 +64,9 @@ const PostCard = ({ post }: { post: EnhancedPost }) => {
           </div>
         </div>
 
-        <button className="w-[72px] h-[32px] rounded-[12px] bg-white/50 text-font3 text-b-h2 font-bold flex items-center justify-center gap-1">
+        <button className="w-[72px] h-[32px] rounded-[12px] bg-white/50 text-font3 text-b-h2 font-bold flex items-center justify-center gap-2">
           <Heart className="w-5 h-5 fill-skin7 stroke-none" />
-          <span className="text-white">{post.likes_count}</span>
+          <span className="text-font3">{post.likesCount}</span>
         </button>
       </div>
     </div>

@@ -83,29 +83,30 @@ const AnniversaryTab = ({
   const handleUpdateAnniversary = (updatedAnniversary: NewAnniversary) => {
     if (!editingAnniversary) return;
 
-    const updated: Anniversary = {
-      ...editingAnniversary,
-      title: updatedAnniversary.title,
-      date: updatedAnniversary.date,
-      repeat: updatedAnniversary.repeat,
-      coupleId: coupleId,
-      createdBy: editingAnniversary.createdBy,
-    };
-
-    updateAnniversary(updated);
-
-    setAnniversaries((prev) =>
-      prev.map((a) => (a.id === editingAnniversary.id ? updated : a)),
-    );
-    setEditingAnniversary(null);
-    setOpen(false);
-    console.log('기념일 수정:', updated);
+    try {
+      const updated: Anniversary = {
+        ...editingAnniversary,
+        ...updatedAnniversary,
+        coupleId,
+        createdBy: editingAnniversary.createdBy,
+      };
+      updateAnniversary(updated);
+      setAnniversaries((prev) =>
+        prev.map((a) => (a.id === editingAnniversary.id ? updated : a)),
+      );
+      setOpen(false);
+    } catch (error) {
+      alert(`${error}`);
+    }
   };
 
   const handleDeleteAnniversary = (id: string) => {
-    deleteAnniversary(id);
-    setAnniversaries((prev) => prev.filter((a) => a.id !== id));
-    console.log('기념일 삭제:', id);
+    try {
+      deleteAnniversary(id);
+      setAnniversaries((prev) => prev.filter((a) => a.id !== id));
+    } catch (error) {
+      alert(`${error}`);
+    }
   };
 
   return (

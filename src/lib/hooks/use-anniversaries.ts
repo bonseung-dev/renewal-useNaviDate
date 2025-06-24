@@ -48,6 +48,7 @@ export const getAnniversaries = (
 };
 
 // 백엔드 연결 후 대체
+// 기념일 추가
 export const addAnniversary = (
   coupleId: string,
   data: Omit<Anniversary, 'id'>,
@@ -60,13 +61,7 @@ export const addAnniversary = (
     coupleId: coupleId,
     createdBy: userId,
   };
-  dummyData.anniversaries.push({
-    ...newAnniversary,
-    coupleId: coupleId,
-    createdBy: userId,
-    memo: `새로운 기념일: ${data.title}`,
-    repeat: data.repeat.toLowerCase() as 'NONE' | 'YEARLY',
-  });
+
   const current = JSON.parse(
     localStorage.getItem(STORAGE_KEY) || '[]',
   ) as Anniversary[];
@@ -77,19 +72,12 @@ export const addAnniversary = (
   return newAnniversary;
 };
 
-// 백엔드 연결 후 대체
+// 기념일 수정
 export const updateAnniversary = (
   updatedAnniversary: Anniversary,
 ): Anniversary => {
-  const index = dummyData.anniversaries.findIndex(
-    (a) => a.id === updatedAnniversary.id,
-  );
-
-  if (index !== -1) {
-    dummyData.anniversaries[index] = {
-      ...updatedAnniversary,
-      repeat: updatedAnniversary.repeat.toLowerCase() as 'NONE' | 'YEARLY',
-    };
+  if (updatedAnniversary.id.startsWith('anni-')) {
+    throw new Error('더미 데이터 수정 불가');
   }
 
   const current = JSON.parse(
@@ -101,13 +89,15 @@ export const updateAnniversary = (
   );
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedList));
-
   return updatedAnniversary;
 };
 
-// 백엔드 연결 후 대체
+// 기념일 삭제
 export const deleteAnniversary = (id: string): void => {
-  dummyData.anniversaries = dummyData.anniversaries.filter((a) => a.id !== id);
+  if (id.startsWith('anni-')) {
+    throw new Error('더미 데이터 삭제 불가');
+  }
+
   const current = JSON.parse(
     localStorage.getItem(STORAGE_KEY) || '[]',
   ) as Anniversary[];
