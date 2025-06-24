@@ -1,4 +1,3 @@
-// 제공된 이미지 URL
 const imageUrls = [
   'https://cdn.pixabay.com/photo/2013/03/19/23/07/easter-bunny-95096_1280.jpg',
   'https://cdn.pixabay.com/photo/2024/10/22/07/06/shoes-9138796_1280.jpg',
@@ -19,7 +18,6 @@ const imageUrls = [
   'https://cdn.pixabay.com/photo/2016/11/29/11/31/couple-1869206_1280.jpg',
 ];
 
-// 타입 정의
 type User = {
   id: string;
   email: string;
@@ -63,7 +61,7 @@ type PostImage = {
   postId: string;
   imageUrl: string;
   address: string | null;
-  isRepresentative: boolean; // 대표 이미지 여부
+  isRepresentative: boolean;
 };
 
 type Bookmark = {
@@ -115,30 +113,62 @@ type Setting = {
   createdAt: Date;
 };
 
-// 인덱스 기반으로 고정된 선택을 하는 함수들
 const getImageByIndex = (index: number) => imageUrls[index % imageUrls.length];
 
-// 6월 날짜를 인덱스 기반으로 생성
-const getJuneDateByIndex = (index: number) => {
-  const day = (index % 30) + 1;
-  return `2025-06-${day.toString().padStart(2, '0')}`;
+const getDateByIndex = (index: number, coupleIndex: number) => {
+  // 각 커플당 10개 포스트: 4월(4개), 5월(3개), 6월(3개)
+  const postsPerCouple = 10;
+  const postsPerMonth = [4, 3, 3]; // 4월, 5월, 6월
+  const daysInMonth = [30, 31, 30]; // 4월, 5월, 6월
+  const monthOffsets = [0, 30, 61]; // 4월 1일=0, 5월 1일=30, 6월 1일=61
+
+  // 커플별로 고유한 오프셋 적용
+  const localIndex = index % postsPerCouple;
+  let month = 0;
+  let postsAssigned = 0;
+
+  // 월 결정
+  if (localIndex < postsPerMonth[0]) {
+    month = 0; // 4월
+  } else if (localIndex < postsPerMonth[0] + postsPerMonth[1]) {
+    month = 1; // 5월
+    postsAssigned = postsPerMonth[0];
+  } else {
+    month = 2; // 6월
+    postsAssigned = postsPerMonth[0] + postsPerMonth[1];
+  }
+
+  // 월 내 날짜 계산
+  const postInMonth = localIndex - postsAssigned; // 해당 월의 몇 번째 포스트
+  const dayOffset =
+    Math.floor((postInMonth * daysInMonth[month]) / postsPerMonth[month]) + 1; // 균등 분배
+  const totalOffset = monthOffsets[month] + (dayOffset - 1) + coupleIndex; // 커플별 오프셋 추가
+
+  const startDate = new Date('2025-04-01');
+  const date = new Date(
+    startDate.getTime() + totalOffset * 24 * 60 * 60 * 1000,
+  );
+  return date.toISOString().split('T')[0]; // YYYY-MM-DD
 };
 
-// 기념일 날짜를 인덱스 기반으로 생성
 const getAnniversaryDateByIndex = (index: number) => {
-  const month = index % 2 === 0 ? '05' : '06';
+  const month = index % 3 === 0 ? '04' : index % 3 === 1 ? '05' : '06';
   const day = (index % 30) + 1;
   return `2025-${month}-${day.toString().padStart(2, '0')}`;
 };
 
-// 고정된 UUID 생성을 위한 시드 기반 ID 생성
 let idCounter = 0;
 const generateFixedId = () => {
   idCounter++;
   return `fixed-id-${idCounter.toString().padStart(6, '0')}`;
 };
 
-// 더미 데이터 - 모든 랜덤 요소를 고정값으로 변경
+let tokenCounter = 0;
+const generateTokenId = () => {
+  tokenCounter++;
+  return `token-fixed-id-${tokenCounter.toString().padStart(6, '0')}`;
+};
+
 export const dummyData: {
   users: User[];
   couples: Couple[];
@@ -152,53 +182,7 @@ export const dummyData: {
   chats: Chat[];
   settings: Setting[];
 } = {
-  users: [
-    {
-      id: generateFixedId(),
-      email: 'user1@example.com',
-      password: '$2b$10$hashedpassword1',
-      nickname: 'Sunny',
-      profileImage: getImageByIndex(0),
-      createdAt: new Date('2025-01-01'),
-      tempToken: `token_${generateFixedId()}`,
-    },
-    {
-      id: generateFixedId(),
-      email: 'user2@example.com',
-      password: '$2b$10$hashedpassword2',
-      nickname: 'Moony',
-      profileImage: getImageByIndex(1),
-      createdAt: new Date('2025-01-02'),
-      tempToken: `token_${generateFixedId()}`,
-    },
-    {
-      id: generateFixedId(),
-      email: 'user3@example.com',
-      password: '$2b$10$hashedpassword3',
-      nickname: 'Starry',
-      profileImage: getImageByIndex(2),
-      createdAt: new Date('2025-01-03'),
-      tempToken: `token_${generateFixedId()}`,
-    },
-    {
-      id: generateFixedId(),
-      email: 'user4@example.com',
-      password: '$2b$10$hashedpassword4',
-      nickname: 'Cloudy',
-      profileImage: getImageByIndex(3),
-      createdAt: new Date('2025-01-04'),
-      tempToken: `token_${generateFixedId()}`,
-    },
-    {
-      id: generateFixedId(),
-      email: 'user5@example.com',
-      password: '$2b$10$hashedpassword5',
-      nickname: 'Rainy',
-      profileImage: getImageByIndex(4),
-      createdAt: new Date('2025-01-05'),
-      tempToken: `token_${generateFixedId()}`,
-    },
-  ],
+  users: [],
   couples: [],
   posts: [],
   postTags: [],
@@ -211,7 +195,56 @@ export const dummyData: {
   settings: [],
 };
 
-// 커플 데이터 생성
+// 사용자 생성
+dummyData.users = [
+  {
+    id: generateFixedId(),
+    email: 'user1@example.com',
+    password: '$2b$10$hashedpassword1',
+    nickname: 'Sunny',
+    profileImage: getImageByIndex(0),
+    createdAt: new Date('2025-01-01'),
+    tempToken: generateTokenId(),
+  },
+  {
+    id: generateFixedId(),
+    email: 'user2@example.com',
+    password: '$2b$10$hashedpassword2',
+    nickname: 'Moony',
+    profileImage: getImageByIndex(1),
+    createdAt: new Date('2025-01-02'),
+    tempToken: generateTokenId(),
+  },
+  {
+    id: generateFixedId(),
+    email: 'user3@example.com',
+    password: '$2b$10$hashedpassword3',
+    nickname: 'Starry',
+    profileImage: getImageByIndex(2),
+    createdAt: new Date('2025-01-03'),
+    tempToken: generateTokenId(),
+  },
+  {
+    id: generateFixedId(),
+    email: 'user4@example.com',
+    password: '$2b$10$hashedpassword4',
+    nickname: 'Cloudy',
+    profileImage: getImageByIndex(3),
+    createdAt: new Date('2025-01-04'),
+    tempToken: generateTokenId(),
+  },
+  {
+    id: generateFixedId(),
+    email: 'user5@example.com',
+    password: '$2b$10$hashedpassword5',
+    nickname: 'Rainy',
+    profileImage: getImageByIndex(4),
+    createdAt: new Date('2025-01-05'),
+    tempToken: generateTokenId(),
+  },
+];
+
+// 커플 생성
 const coupleNames = [
   'SunMoon',
   'MoonStar',
@@ -223,13 +256,13 @@ dummyData.couples = coupleNames.map((name, index) => ({
   id: generateFixedId(),
   userAId: dummyData.users[index].id,
   userBId: dummyData.users[(index + 1) % 5].id,
-  anniversary: new Date(`2024-${(index % 12) + 1}-${(index % 28) + 1}`),
+  anniversary: new Date('2024-04-01'),
   name,
   status: 'confirm',
   createdAt: new Date('2025-01-10'),
 }));
 
-// 포스트 데이터 생성
+// 포스트 생성
 const postTitles = [
   '카페 데이트',
   '영화관 나들이',
@@ -241,16 +274,6 @@ const postTitles = [
   '집콕 데이트',
   '자전거 타기',
   '피크닉',
-  '전시회 관람',
-  '드라이브',
-  '캠핑',
-  '책방 방문',
-  '요리 데이트',
-  '쇼핑 데이트',
-  '운동 같이',
-  '게임 데이트',
-  '공기놀이',
-  '산책로 탐험',
 ];
 const emotions: ('Joy' | 'Fun' | 'Soso' | 'Sad' | 'Mad')[] = [
   'Joy',
@@ -260,52 +283,46 @@ const emotions: ('Joy' | 'Fun' | 'Soso' | 'Sad' | 'Mad')[] = [
   'Mad',
 ];
 
-dummyData.posts = postTitles.map((title, index) => {
-  const user = dummyData.users[index % 5]; // 고정된 유저 선택
-  return {
-    id: generateFixedId(),
-    userId: user.id,
-    title: title.slice(0, 15),
-    content:
-      `오늘 ${title} 하면서 너무 즐거웠어요! ${index % 2 === 0 ? '다시 가고 싶어요!' : '좀 아쉬웠지만 그래도 좋았어요.'}`.slice(
-        0,
-        1000,
-      ),
-    visibility: index % 2 === 0 ? 'public' : 'private', // 고정된 패턴
-    date: getJuneDateByIndex(index),
-    emotion: emotions[index % emotions.length], // 고정된 감정 선택
-    createdAt: new Date(`2025-06-${(index % 30) + 1}`),
-    deletedAt: null,
-  };
+dummyData.posts = [];
+dummyData.couples.forEach((couple, coupleIndex) => {
+  postTitles.forEach((title, titleIndex) => {
+    const userId = titleIndex % 2 === 0 ? couple.userAId : couple.userBId;
+    dummyData.posts.push({
+      id: generateFixedId(),
+      userId,
+      title: title.slice(0, 15),
+      content: `오늘 ${title} 하면서 너무 즐거웠어요! ${
+        titleIndex % 2 === 0
+          ? '다시 가고 싶어요!'
+          : '좀 아쉬웠지만 그래도 좋았어요.'
+      }`.slice(0, 1000),
+      visibility: titleIndex % 2 === 0 ? 'public' : 'private',
+      date: getDateByIndex(titleIndex, coupleIndex),
+      emotion: emotions[titleIndex % emotions.length],
+      createdAt: new Date(getDateByIndex(titleIndex, coupleIndex)),
+      deletedAt: null,
+    });
+  });
 });
 
-// 포스트 태그 데이터 생성 (고정된 패턴)
-const tagNames = [
-  '데이트',
-  '맛집',
-  '여행',
-  '추억',
-  '즐거움',
-  '휴식',
-  '모험',
-  '로맨스',
-];
+// 포스트 태그 생성
+const tagNames = ['데이트', '여행', '맛집', '기념일', '일상'];
 dummyData.postTags = [];
 dummyData.posts.forEach((post, postIndex) => {
-  const tagCount = postIndex % 4; // 0~3개 태그
+  const tagCount = (postIndex % 3) + 1; // 1~3개 태그
   for (let i = 0; i < tagCount; i++) {
     dummyData.postTags.push({
       id: generateFixedId(),
       postId: post.id,
-      name: tagNames[(postIndex + i) % tagNames.length].slice(0, 8),
+      name: tagNames[(postIndex + i) % tagNames.length],
     });
   }
 });
 
-// 포스트 이미지 데이터 생성 (고정된 패턴, 최소 1개 이미지 보장)
+// 포스트 이미지 생성
 dummyData.postImages = [];
 dummyData.posts.forEach((post, postIndex) => {
-  const imageCount = 1 + (postIndex % 2); // 1~2개 이미지 (최소 1개)
+  const imageCount = 1 + (postIndex % 2);
   for (let i = 0; i < imageCount; i++) {
     dummyData.postImages.push({
       id: generateFixedId(),
@@ -315,42 +332,40 @@ dummyData.posts.forEach((post, postIndex) => {
         postIndex % 2 === 0
           ? `서울시 강남구 ${(postIndex % 100) + 1}번길`
           : null,
-      isRepresentative: imageCount > 1 && i === 0, // 여러 이미지일 경우 첫 번째를 대표 이미지로 설정
+      isRepresentative: imageCount > 1 && i === 0,
     });
   }
 });
 
-// 북마크 데이터 생성 (고정된 패턴)
-dummyData.bookmarks = [];
-dummyData.users.forEach((user, userIndex) => {
-  const bookmarkCount = userIndex % 6; // 0~5개 북마크
-  for (let i = 0; i < bookmarkCount; i++) {
-    const postIndex = (userIndex * 3 + i) % dummyData.posts.length;
-    dummyData.bookmarks.push({
-      id: generateFixedId(),
-      postId: dummyData.posts[postIndex].id,
-      userId: user.id,
-      createdAt: new Date('2025-06-15'),
-    });
-  }
-});
-
-// 좋아요 데이터 생성 (고정된 패턴)
+// 좋아요 생성
 dummyData.likes = [];
-dummyData.users.forEach((user, userIndex) => {
-  const likeCount = userIndex % 11; // 0~10개 좋아요
+dummyData.posts.forEach((post, postIndex) => {
+  const likeCount = postIndex % 5; // 0~4개 좋아요
   for (let i = 0; i < likeCount; i++) {
-    const postIndex = (userIndex * 2 + i) % dummyData.posts.length;
     dummyData.likes.push({
       id: generateFixedId(),
-      postId: dummyData.posts[postIndex].id,
-      userId: user.id,
+      postId: post.id,
+      userId: dummyData.users[(postIndex + i) % 5].id,
       createdAt: new Date('2025-06-15'),
     });
   }
 });
 
-// 기념일 데이터 생성 (고정된 패턴)
+// 북마크 생성
+dummyData.bookmarks = [];
+dummyData.posts.forEach((post, postIndex) => {
+  const bookmarkCount = postIndex % 3; // 0~2개 북마크
+  for (let i = 0; i < bookmarkCount; i++) {
+    dummyData.bookmarks.push({
+      id: generateFixedId(),
+      postId: post.id,
+      userId: dummyData.users[(postIndex + i) % 5].id,
+      createdAt: new Date('2025-06-15'),
+    });
+  }
+});
+
+// 기념일 생성
 const anniversaryTitles = [
   '1주년',
   '첫 데이트',
@@ -372,10 +387,10 @@ dummyData.anniversaries = anniversaryTitles.map((title, index) => {
   };
 });
 
-// 알림 데이터 생성 (고정된 패턴)
+// 알림 생성
 dummyData.notifications = [];
 dummyData.users.forEach((user, userIndex) => {
-  const notificationCount = userIndex % 6; // 0~5개 알림
+  const notificationCount = userIndex % 6;
   for (let i = 0; i < notificationCount; i++) {
     const type = i % 2 === 0 ? 'like' : 'anniversary';
     dummyData.notifications.push({
@@ -392,10 +407,10 @@ dummyData.users.forEach((user, userIndex) => {
   }
 });
 
-// 채팅 데이터 생성 (고정된 패턴)
+// 채팅 생성
 dummyData.chats = [];
 dummyData.couples.forEach((couple, coupleIndex) => {
-  const chatCount = coupleIndex % 6; // 0~5개 메시지
+  const chatCount = coupleIndex % 6;
   for (let i = 0; i < chatCount; i++) {
     dummyData.chats.push({
       id: generateFixedId(),
@@ -407,7 +422,7 @@ dummyData.couples.forEach((couple, coupleIndex) => {
   }
 });
 
-// 설정 데이터 생성 (고정된 패턴)
+// 설정 생성
 dummyData.settings = dummyData.users.map((user, userIndex) => ({
   id: generateFixedId(),
   userId: user.id,
@@ -415,5 +430,9 @@ dummyData.settings = dummyData.users.map((user, userIndex) => ({
   allowPush: userIndex % 2 === 1,
   createdAt: new Date('2025-01-10'),
 }));
+
+console.log('Generated couples:', dummyData.couples);
+console.log('Generated posts:', dummyData.posts);
+console.log('Generated postTags:', dummyData.postTags);
 
 export default dummyData;
