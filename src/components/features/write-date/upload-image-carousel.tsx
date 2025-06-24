@@ -25,22 +25,20 @@ const UploadImageCarousel = ({
   };
 
   return (
-    <section className="flex justify-center items-center">
+    <section className="flex justify-center items-center w-80 h-[179px] rounded-[10px] border border-skin3">
       <Carousel
         opts={{
           align: 'start',
           loop: true,
         }}
+        className=""
       >
-        <CarouselContent className="w-40 h-24">
+        <CarouselContent>
           <ImageItems imageUrls={imageUrls} />
-          <CarouselItem className="w-full h-full">
-            <Card className="w-full h-full flex justify-center items-center">
-              <CardContent className="w-full h-full flex justify-center items-center">
-                <label
-                  htmlFor="image-upload"
-                  className="flex justify-center items-center font-bold text-4xl w-full h-full cursor-pointer"
-                >
+          <CarouselItem>
+            <Card className="w-44 h-44 bg-font5 rounded-none">
+              <CardContent className="w-full h-full flex justify-center items-center p-0">
+                <label htmlFor="image-upload" className="text-3xl text-skin5">
                   +
                   <input
                     type="file"
