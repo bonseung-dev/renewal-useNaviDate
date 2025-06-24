@@ -57,16 +57,16 @@ export type Post = {
 
 export type ExtendedPost = {
   id: string;
-  user_id: string;
+  userId: string;
   title: string;
   content: string;
   visibility: 'private' | 'public';
   date: string;
   emotion: 'Joy' | 'Fun' | 'Soso' | 'Sad' | 'Mad';
-  created_at: string;
-  deleted_at: string | null;
+  createdAt: string;
+  deletedAt: string | null;
   imageUrl?: string;
-  likes_count: number;
+  likesCount: number;
   images: PostImage[];
   tags: PostTag[];
 };
@@ -90,7 +90,7 @@ export type Anniversary = {
   coupleId: string;
   title: string;
   date: string;
-  repeat: 'none' | 'yearly';
+  repeat: 'NONE' | 'YEARLY';
   memo: string;
   createdBy: string;
 };

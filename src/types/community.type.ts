@@ -51,5 +51,5 @@ export type EnhancedPost = {
     address: string | null;
     isRepresentative: boolean; // 대표 이미지 여부
   }[]; // 최소 한 개의 이미지가 존재
-  likes_count: number;
+  likesCount: number;
 };

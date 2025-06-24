@@ -20,7 +20,7 @@ const Page = () => {
     const images = dummyData.postImages.filter(
       (image) => image.postId === post.id,
     );
-    const likes_count = dummyData.likes.filter(
+    const likesCount = dummyData.likes.filter(
       (like) => like.postId === post.id,
     ).length;
 
@@ -31,7 +31,7 @@ const Page = () => {
       partner,
       tags,
       images,
-      likes_count,
+      likesCount,
     };
   });
 

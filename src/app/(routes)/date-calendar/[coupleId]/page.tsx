@@ -28,9 +28,15 @@ const Page = ({ params, searchParams }: Props) => {
     `Rendering calendar for coupleId: ${params.coupleId}, userId: ${userId}`,
   );
 
-  const startDate = '2025-04-01';
+  const startDate = '2024-04-01';
 
-  return <CalendarTabs coupleId={params.coupleId} startDate={startDate} />;
+  return (
+    <CalendarTabs
+      coupleId={params.coupleId}
+      startDate={startDate}
+      userId={userId}
+    />
+  );
 };
 
 export default Page;
