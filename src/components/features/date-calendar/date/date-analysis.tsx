@@ -31,8 +31,8 @@ const DateAnalysis = ({ onBack }: Props) => {
                 <Image
                   src="/Group 269.png"
                   alt="내 취향 아이콘"
-                  width={14}
-                  height={17}
+                  width={20}
+                  height={20}
                 />
               </div>
               <span className="ml-[8px] text-m-h4 font-semibold text-font1">
@@ -52,8 +52,8 @@ const DateAnalysis = ({ onBack }: Props) => {
                 <Image
                   src="/emotions/emotion_usual.png"
                   alt="내 기분 아이콘"
-                  width={14}
-                  height={17}
+                  width={20}
+                  height={20}
                 />
               </div>
               <span className="ml-[8px] text-m-h4 font-semibold text-font1">
@@ -72,10 +72,10 @@ const DateAnalysis = ({ onBack }: Props) => {
           <div className="flex items-center mb-2">
             <div className="w-[36px] h-[36px] rounded-full bg-skin5 flex items-center justify-center mr-2">
               <Image
-                src="/Group 269.png"
+                src="/Group 268.png"
                 alt="달력 아이콘"
-                width={14}
-                height={17}
+                width={20}
+                height={20}
               />
             </div>
             <p className="text-b-h4 font-bold text-font1">월별 데이트 횟수</p>
