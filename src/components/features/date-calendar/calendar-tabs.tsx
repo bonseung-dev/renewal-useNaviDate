@@ -7,9 +7,10 @@ import AnniversaryTab from './anniversary/anniversary-tab';
 type CalendarTabsProps = {
   coupleId: string;
   startDate: string;
+  userId: string;
 };
 
-const CalendarTabs = ({ coupleId, startDate }: CalendarTabsProps) => {
+const CalendarTabs = ({ coupleId, startDate, userId }: CalendarTabsProps) => {
   const [activeTab, setActiveTab] = useState<'date' | 'anniversary'>('date');
 
   return (
@@ -35,7 +36,11 @@ const CalendarTabs = ({ coupleId, startDate }: CalendarTabsProps) => {
         {activeTab === 'date' ? (
           <DateTab coupleId={coupleId} />
         ) : (
-          <AnniversaryTab coupleId={coupleId} startDate={startDate} />
+          <AnniversaryTab
+            coupleId={coupleId}
+            startDate={startDate}
+            userId={userId}
+          />
         )}
       </div>
     </>

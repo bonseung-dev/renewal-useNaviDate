@@ -36,7 +36,7 @@ const DateTab = ({ coupleId }: DateTabProps) => {
       const representativeImage = dummyData.postImages.find(
         (img) => img.postId === post.id && img.isRepresentative,
       );
-      const likes_count = dummyData.likes.filter(
+      const likesCount = dummyData.likes.filter(
         (like) => like.postId === post.id,
       ).length;
       const images = dummyData.postImages.filter(
@@ -46,10 +46,10 @@ const DateTab = ({ coupleId }: DateTabProps) => {
       return {
         ...post,
         user_id: post.userId,
-        created_at: post.createdAt.toISOString(),
-        deleted_at: post.deletedAt?.toISOString() || null,
+        createdAt: post.createdAt.toISOString(),
+        deletedAt: post.deletedAt?.toISOString() || null,
         imageUrl: representativeImage?.imageUrl,
-        likes_count,
+        likesCount,
         images,
         tags,
       };

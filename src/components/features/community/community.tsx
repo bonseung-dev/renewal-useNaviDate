@@ -20,7 +20,7 @@ const Community = ({ initialPosts }: { initialPosts: EnhancedPost[] }) => {
     if (sortOption === 'latest') {
       return b.createdAt.getTime() - a.createdAt.getTime();
     } else if (sortOption === 'likes') {
-      return b.likes_count - a.likes_count;
+      return b.likesCount - a.likesCount;
     } else if (sortOption === 'bookmarks') {
       const aBookmarks = dummyData.bookmarks.filter(
         (bookmark) => bookmark.postId === a.id,

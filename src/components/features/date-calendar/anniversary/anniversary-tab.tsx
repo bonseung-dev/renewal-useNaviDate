@@ -18,6 +18,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import dummyData from '@/lib/utils/dummy.utils';
 
 type NewAnniversary = {
   title: string;
@@ -28,29 +29,46 @@ type NewAnniversary = {
 type AnniversaryTabProps = {
   coupleId: string;
   startDate: string;
+  userId: string;
 };
 
-const AnniversaryTab = ({ coupleId, startDate }: AnniversaryTabProps) => {
+const AnniversaryTab = ({
+  coupleId,
+  startDate,
+  userId,
+}: AnniversaryTabProps) => {
   const [anniversaries, setAnniversaries] = useState<Anniversary[]>([]);
   const [repeat, setRepeat] = useState<RepeatOption>('YEARLY');
   const [open, setOpen] = useState(false);
   const [editingAnniversary, setEditingAnniversary] =
     useState<Anniversary | null>(null);
 
+  // 커플 정보 가져오기
+  const couple = dummyData.couples.find((c) => c.id === coupleId);
+  const userA = couple
+    ? dummyData.users.find((u) => u.id === couple.userAId)
+    : null;
+
+  // 기념일 데이터 가져오기
   useEffect(() => {
     const data = getAnniversaries(coupleId, startDate);
     setAnniversaries(data);
+    console.log('Filtered anniversaries:', data);
   }, [coupleId, startDate]);
 
   const handleAddAnniversary = (newAnniversary: NewAnniversary) => {
-    const added = addAnniversary(coupleId, {
-      ...newAnniversary,
-      created_by: 'user',
-      couple_id: coupleId,
-    });
+    const added = addAnniversary(
+      coupleId,
+      {
+        ...newAnniversary,
+        createdBy: userId,
+        coupleId: coupleId,
+      },
+      userId,
+    );
     setAnniversaries((prev) => [...prev, added]);
     setOpen(false);
-    console.log('기념일 추가:', added); // 디버깅 로그
+    console.log('기념일 추가:', added);
   };
 
   const handleEditAnniversary = (id: string) => {
@@ -64,25 +82,30 @@ const AnniversaryTab = ({ coupleId, startDate }: AnniversaryTabProps) => {
 
   const handleUpdateAnniversary = (updatedAnniversary: NewAnniversary) => {
     if (!editingAnniversary) return;
-    const updated = {
+
+    const updated: Anniversary = {
       ...editingAnniversary,
-      ...updatedAnniversary,
-      created_by: 'user',
-      couple_id: coupleId,
+      title: updatedAnniversary.title,
+      date: updatedAnniversary.date,
+      repeat: updatedAnniversary.repeat,
+      coupleId: coupleId,
+      createdBy: editingAnniversary.createdBy,
     };
+
     updateAnniversary(updated);
+
     setAnniversaries((prev) =>
       prev.map((a) => (a.id === editingAnniversary.id ? updated : a)),
     );
     setEditingAnniversary(null);
     setOpen(false);
-    console.log('기념일 수정:', updated); // 디버깅 로그
+    console.log('기념일 수정:', updated);
   };
 
   const handleDeleteAnniversary = (id: string) => {
     deleteAnniversary(id);
     setAnniversaries((prev) => prev.filter((a) => a.id !== id));
-    console.log('기념일 삭제:', id); // 디버깅 로그
+    console.log('기념일 삭제:', id);
   };
 
   return (
@@ -99,14 +122,18 @@ const AnniversaryTab = ({ coupleId, startDate }: AnniversaryTabProps) => {
       <div className="flex items-center justify-center flex-col">
         <div className="w-[320px] h-[52px] flex items-center justify-between bg-skin1 rounded-[40px] px-4">
           <div className="flex items-center gap-2">
-            <Image
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-Og0eTxPdFSH4GjaCkkbiqyeAjlLkafGbqA&s"
-              alt="커플 이미지"
-              width={36}
-              height={36}
-              className="h-auto w-9 rounded-full object-cover"
-            />
-            <span className="text-l-title4 text-skin5">짱구 ❤️ 수지</span>
+            <div className="relative h-9 w-9 rounded-full overflow-hidden">
+              <Image
+                src={userA?.profileImage || '/placeholder-image.jpg'}
+                alt="커플 이미지"
+                fill
+                sizes="36px"
+                className="object-cover"
+              />
+            </div>
+            <span className="text-l-title4 text-skin5">
+              {couple?.name || '커플 이름'}
+            </span>
           </div>
 
           <DialogTrigger asChild>
