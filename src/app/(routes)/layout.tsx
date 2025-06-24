@@ -1,20 +1,22 @@
+import Footer from '@/components/features/nav/footer';
+import Header from '@/components/features/nav/header';
+
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="w-full h-screen flex flex-col items-center">
       {/* Header */}
-      <header className="w-full max-w-[360px] h-[52px] bg-white border-b border-gray-200 flex items-center justify-center z-10">
-        <span className="text-base font-semibold">임시헤더</span>
-      </header>
+      <Header />
 
       {/* 메인영역 */}
-      <main className="flex-1 w-full max-w-[360px] overflow-y-auto px-4 py-3 bg-white">
+      <main className="flex-1 w-full max-w-[360px] overflow-y-auto px-4 py-3 bg-skin5">
         {children}
       </main>
 
+      {/* Gradient */}
+      <div className="absolute bottom-[52px] w-full max-w-[360px] h-[62px] bg-gradient-to-t from-skin5/100 to-skin5/0 pointer-events-none z-10" />
+
       {/* Footer */}
-      <footer className="w-full max-w-[320px] h-[52px] bg-white border border-gray-200 rounded-[20px] shadow-md mb-5 flex items-center justify-center z-10">
-        <span className="text-sm font-medium">임시푸터</span>
-      </footer>
+      <Footer />
     </div>
   );
 };

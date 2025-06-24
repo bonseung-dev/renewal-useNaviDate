@@ -97,23 +97,21 @@ const AnniversaryTab = ({ coupleId, startDate }: AnniversaryTabProps) => {
       }}
     >
       <div className="flex items-center justify-center flex-col">
-        <div className="w-[320px] h-[52px] flex items-center justify-between bg-[#7BB4DD] rounded-[40px] px-4">
+        <div className="w-[320px] h-[52px] flex items-center justify-between bg-skin1 rounded-[40px] px-4">
           <div className="flex items-center gap-2">
             <Image
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-Og0eTxPdFSH4GjaCkkbiqyeAjlLkafGbqA&s"
               alt="커플 이미지"
-              width={32}
-              height={32}
-              className="h-auto w-8 rounded-full object-cover"
+              width={36}
+              height={36}
+              className="h-auto w-9 rounded-full object-cover"
             />
-            <span className="font-semibold text-sm text-white">
-              짱구 ❤️ 수지
-            </span>
+            <span className="text-l-title4 text-skin5">짱구 ❤️ 수지</span>
           </div>
 
           <DialogTrigger asChild>
             <button
-              className="text-xs bg-[#7BB4DD] border border-white hover:bg-white hover:text-[#7BB4DD] px-3 py-1 rounded-full text-white font-medium"
+              className="text-m-h4 bg-skin1 border border-skin5 hover:bg-skin5 hover:text-skin1 px-2 py-1 rounded-full text-skin5"
               aria-label="기념일 추가"
             >
               추가하기
@@ -128,7 +126,7 @@ const AnniversaryTab = ({ coupleId, startDate }: AnniversaryTabProps) => {
         />
       </div>
 
-      <DialogContent className="bg-white p-1 shadow-lg rounded-xl w-[320px] h-[330px]">
+      <DialogContent className="bg-skin5 p-1 shadow-shadow1 rounded-xl w-[320px] h-[330px]">
         <DialogTitle className="sr-only">
           {editingAnniversary ? '기념일 수정' : '기념일 추가'}
         </DialogTitle>

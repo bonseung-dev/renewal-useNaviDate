@@ -8,4 +8,4 @@ export type Anniversary = {
   created_by: string;
 };
 
-export type RepeatOption = 'NONE' | 'YEARLY' | 'DAILY' | 'HUNDRED_DAYS';
+export type RepeatOption = 'NONE' | 'YEARLY';
