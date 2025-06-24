@@ -83,8 +83,8 @@ type Anniversary = {
   coupleId: string;
   title: string;
   date: string;
-  repeat: 'none' | 'yearly';
-  memo: string;
+  repeat: 'NONE' | 'YEARLY';
+  memo?: string;
   createdBy: string;
 };
 
@@ -262,6 +262,14 @@ dummyData.couples = coupleNames.map((name, index) => ({
   createdAt: new Date('2025-01-10'),
 }));
 
+function generateId(type: string): string {
+  const timestamp = Date.now().toString(36).slice(-6); // 6자리 시간값
+  const random = Math.floor(Math.random() * 1679616) // 36^4
+    .toString(36)
+    .padStart(4, '0');
+  return `${type}-${timestamp}-${random}`; // 예: post-a1b2c3-defg
+}
+
 // 포스트 생성
 const postTitles = [
   '카페 데이트',
@@ -288,7 +296,7 @@ dummyData.couples.forEach((couple, coupleIndex) => {
   postTitles.forEach((title, titleIndex) => {
     const userId = titleIndex % 2 === 0 ? couple.userAId : couple.userBId;
     dummyData.posts.push({
-      id: generateFixedId(),
+      id: generateId('post'),
       userId,
       title: title.slice(0, 15),
       content: `오늘 ${title} 하면서 너무 즐거웠어요! ${
@@ -312,7 +320,7 @@ dummyData.posts.forEach((post, postIndex) => {
   const tagCount = (postIndex % 3) + 1; // 1~3개 태그
   for (let i = 0; i < tagCount; i++) {
     dummyData.postTags.push({
-      id: generateFixedId(),
+      id: generateId('tag'),
       postId: post.id,
       name: tagNames[(postIndex + i) % tagNames.length],
     });
@@ -325,7 +333,7 @@ dummyData.posts.forEach((post, postIndex) => {
   const imageCount = 1 + (postIndex % 2);
   for (let i = 0; i < imageCount; i++) {
     dummyData.postImages.push({
-      id: generateFixedId(),
+      id: generateId('img'),
       postId: post.id,
       imageUrl: getImageByIndex(postIndex + i),
       address:
@@ -343,7 +351,7 @@ dummyData.posts.forEach((post, postIndex) => {
   const likeCount = postIndex % 5; // 0~4개 좋아요
   for (let i = 0; i < likeCount; i++) {
     dummyData.likes.push({
-      id: generateFixedId(),
+      id: generateId('like'),
       postId: post.id,
       userId: dummyData.users[(postIndex + i) % 5].id,
       createdAt: new Date('2025-06-15'),
@@ -357,7 +365,7 @@ dummyData.posts.forEach((post, postIndex) => {
   const bookmarkCount = postIndex % 3; // 0~2개 북마크
   for (let i = 0; i < bookmarkCount; i++) {
     dummyData.bookmarks.push({
-      id: generateFixedId(),
+      id: generateId('book'),
       postId: post.id,
       userId: dummyData.users[(postIndex + i) % 5].id,
       createdAt: new Date('2025-06-15'),
@@ -367,21 +375,20 @@ dummyData.posts.forEach((post, postIndex) => {
 
 // 기념일 생성
 const anniversaryTitles = [
-  '1주년',
   '첫 데이트',
-  '100일',
-  '생일',
-  '2주년',
+  '여친생일',
   '첫 키스',
+  '남친생일',
+  '첫 해외여행',
 ];
 dummyData.anniversaries = anniversaryTitles.map((title, index) => {
   const couple = dummyData.couples[index % 5];
   return {
-    id: generateFixedId(),
+    id: generateId('anni'),
     coupleId: couple.id,
     title,
     date: getAnniversaryDateByIndex(index),
-    repeat: index % 2 === 0 ? 'yearly' : 'none',
+    repeat: index % 2 === 0 ? 'YEARLY' : 'NONE',
     memo: `우리의 ${title}! 잊지 못할 순간이에요.`,
     createdBy: index % 2 === 0 ? couple.userAId : couple.userBId,
   };
@@ -394,7 +401,7 @@ dummyData.users.forEach((user, userIndex) => {
   for (let i = 0; i < notificationCount; i++) {
     const type = i % 2 === 0 ? 'like' : 'anniversary';
     dummyData.notifications.push({
-      id: generateFixedId(),
+      id: generateId('noti'),
       userId: user.id,
       type,
       message:
@@ -413,7 +420,7 @@ dummyData.couples.forEach((couple, coupleIndex) => {
   const chatCount = coupleIndex % 6;
   for (let i = 0; i < chatCount; i++) {
     dummyData.chats.push({
-      id: generateFixedId(),
+      id: generateId('chat'),
       userAId: couple.userAId,
       userBId: couple.userBId,
       message: `오늘 어땠어? ${i % 2 === 0 ? '너무 좋았지!' : '다음엔 더 재밌게 놀자!'}`,
@@ -424,7 +431,7 @@ dummyData.couples.forEach((couple, coupleIndex) => {
 
 // 설정 생성
 dummyData.settings = dummyData.users.map((user, userIndex) => ({
-  id: generateFixedId(),
+  id: generateId('set'),
   userId: user.id,
   theme: userIndex % 2 === 0 ? 'light' : 'dark',
   allowPush: userIndex % 2 === 1,
