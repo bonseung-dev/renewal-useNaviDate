@@ -4,7 +4,7 @@ import PostVisibilityTooltip from './post-visibility-tooltip';
 
 const PostVisibility = () => {
   return (
-    <div className="flex justify-end items-center gap-[2px] mr-10 mt-1">
+    <div className="flex justify-end items-center gap-[2px] mt-1 ml-auto mr-5">
       <PostVisibilitySwitch />
       <PostVisibilityTooltip />
     </div>
