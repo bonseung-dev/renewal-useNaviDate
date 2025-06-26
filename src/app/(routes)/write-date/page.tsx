@@ -23,6 +23,9 @@ const WriteDate = () => {
       {/* 기분 선택 */}
       <SelectEmotion />
 
+      {/* 구분선 */}
+      <div className="w-full h-px bg-skin3" />
+
       <section>
         {/* 제목 입력 */}
         <input type="text" placeholder="제목을 입력해주세요." />
