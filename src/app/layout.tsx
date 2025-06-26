@@ -1,13 +1,8 @@
 import type { Metadata } from 'next';
-import { Inter, Noto_Sans_KR } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import './globals.css';
 import TanstackQueryProviders from '@/lib/providers/tanstack-query-provider';
-
-const scoreDream = Noto_Sans_KR({
-  subsets: ['latin'],
-  weight: ['100', '400', '700', '900'],
-  variable: '--font-score-dream',
-});
+import { scoreDream } from '@/styles/fonts';
 
 const cal = Inter({
   subsets: ['latin'],

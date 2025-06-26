@@ -3,7 +3,7 @@ import Header from '@/components/features/nav/header';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="w-full h-screen flex flex-col items-center">
+    <div className="w-full h-screen flex flex-col items-center font-title">
       {/* Header */}
       <Header />
 
