@@ -8,7 +8,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <Header />
 
       {/* 메인영역 */}
-      <main className="flex-1 w-full max-w-[360px] overflow-y-auto px-4 py-3 bg-skin5">
+      <main className="flex-1 w-full max-w-[360px] overflow-y-auto px-4 py-3 bg-skin5 scrollbar-hide">
+        {/* <main className="flex-1 w-full max-w-[360px] overflow-y-auto px-4 py-3 bg-skin5 custom-scrollbar"> */}
         {children}
       </main>
 
