@@ -16,7 +16,7 @@ const WriteContent = () => {
       <div className="w-full px-5">
         <textarea
           placeholder="내용을 입력해주세요."
-          className="w-full placeholder:text-center placeholder:text-skin2 text-sm font-extralight"
+          className="w-full placeholder:text-center placeholder:text-skin2 text-sm font-extralight resize-none"
         />
       </div>
     </div>
