@@ -5,6 +5,7 @@ import PostVisibility from '@/components/features/write-date/post-visibility';
 import SearchAddress from '@/components/features/write-date/search-address';
 import SelectEmotion from '@/components/features/write-date/select_emotion';
 import SubmitPost from '@/components/features/write-date/submit-post';
+import Tag from '@/components/features/write-date/tag';
 import UploadImageCarousel from '@/components/features/write-date/upload-image-carousel';
 import WriteContent from '@/components/features/write-date/write-content';
 import React, { useState } from 'react';
@@ -36,13 +37,7 @@ const WriteDate = () => {
       <Divider />
 
       {/* 태그 입력 */}
-      <section className="my-3">
-        <input
-          type="text"
-          placeholder="#태그입력"
-          className="w-14 h-6 bg-skin2 rounded-[50px] text-[10px] text-center text-skin5 font-extralight placeholder:text-center placeholder:text-skin5"
-        />
-      </section>
+      <Tag />
 
       {/* 게시글 등록 */}
       <SubmitPost />
