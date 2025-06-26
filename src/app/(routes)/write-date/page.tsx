@@ -2,8 +2,8 @@
 
 import PostVisibility from '@/components/features/write-date/post-visibility';
 import SearchAddress from '@/components/features/write-date/search-address';
+import SelectEmotion from '@/components/features/write-date/select_emotion';
 import UploadImageCarousel from '@/components/features/write-date/upload-image-carousel';
-import Image from 'next/image';
 import React, { useState } from 'react';
 
 const WriteDate = () => {
@@ -21,58 +21,7 @@ const WriteDate = () => {
       <SearchAddress />
 
       {/* 기분 선택 */}
-      <div className="flex gap-5 items-center justify-center my-2">
-        <button>
-          <Image
-            src="/emotions/emotion_happy_100x100.png"
-            alt="happy emotion"
-            unoptimized
-            width={40}
-            height={40}
-            className="rounded border border-skin2"
-          />
-        </button>
-        <button>
-          <Image
-            src="/emotions/emotion_excited_100x100.png"
-            alt="excited emotion"
-            unoptimized
-            width={40}
-            height={40}
-            className="rounded border border-skin2"
-          />
-        </button>
-        <button>
-          <Image
-            src="/emotions/emotion_usual_100x100.png"
-            alt="usual emotion"
-            unoptimized
-            width={40}
-            height={40}
-            className="rounded border border-skin2"
-          />
-        </button>
-        <button>
-          <Image
-            src="/emotions/emotion_sad_100x100.png"
-            alt="sad emotion"
-            unoptimized
-            width={40}
-            height={40}
-            className="rounded border border-skin2"
-          />
-        </button>
-        <button>
-          <Image
-            src="/emotions/emotion_angry_100x100.png"
-            alt="angry emotion"
-            unoptimized
-            width={40}
-            height={40}
-            className="rounded border border-skin2"
-          />
-        </button>
-      </div>
+      <SelectEmotion />
 
       <section>
         {/* 제목 입력 */}
