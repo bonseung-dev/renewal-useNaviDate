@@ -67,6 +67,7 @@ export type ExtendedPost = {
   deletedAt: string | null;
   imageUrl?: string;
   likesCount: number;
+  bookmarksCount: number;
   images: PostImage[];
   tags: PostTag[];
 };

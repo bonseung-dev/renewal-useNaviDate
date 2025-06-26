@@ -71,12 +71,13 @@ const CalendarCard = ({
       </button>
 
       {/* 헤더 */}
-      <div className="text-left mb-3">
+      <div className="text-left mb-3 flex items-baseline">
         <span className="text-calendar font-bold text-font3">
           {currentDate.format('MM')}
         </span>
-        <span className="text-b-h2 text-font4 ml-1">
-          | {currentDate.format('YYYY')}
+        <div className="mx-3 h-[26px] w-[1px] bg-font3"></div>
+        <span className="text-b-h2 font-bold text-font4">
+          {currentDate.format('YYYY')}
         </span>
       </div>
 
@@ -131,13 +132,15 @@ const CalendarCard = ({
                         height={32}
                         className="rounded-full w-full h-full object-cover hover:opacity-90"
                       />
-                      <div className="absolute top-[calc(100%+4px)] left-1/2 -translate-x-1/2 px-2 py-1 text-l-title5 bg-skin2 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity z-20 whitespace-nowrap shadow-md pointer-events-none before:absolute before:-top-1 before:left-1/2 before:-translate-x-1/2 before:w-2 before:h-2 before:bg-skin2 before:rotate-45">
+                      <div className="absolute top-[calc(100%+4px)] left-1/2 -translate-x-1/2 px-2 py-1 text-l-title5 font-light bg-skin2 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity z-20 whitespace-nowrap shadow-md pointer-events-none before:absolute before:-top-1 before:left-1/2 before:-translate-x-1/2 before:w-2 before:h-2 before:bg-skin2 before:rotate-45">
                         {post.title}
                       </div>
                     </div>
                   </div>
                 ) : (
-                  <span className={`${textColor} text-l-title4`}>{day}</span>
+                  <span className={`${textColor} text-l-title4 font-light`}>
+                    {day}
+                  </span>
                 )}
               </div>
             </div>

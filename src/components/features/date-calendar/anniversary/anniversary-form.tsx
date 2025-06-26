@@ -80,7 +80,7 @@ const AnniversaryForm = ({
             id="title"
             type="text"
             placeholder="제목(1~15자)을 입력해주세요"
-            className="bg-skin3 rounded px-2 py-1 text-l-title4 text-font1 h-[32px] w-[200px] placeholder:text-l-title4 placeholder:text-font4
+            className="bg-skin3 rounded px-2 py-1 text-l-title4 font-light text-font1 h-[32px] w-[200px] placeholder:text-l-title4 placeholder:text-font4
                    focus:outline-none focus:ring-2 focus:ring-skin1 focus:border-transparent"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -131,6 +131,7 @@ const AnniversaryForm = ({
             checked={isYearly}
             onCheckedChange={handleSwitch}
             className="ml-auto w-[72px] h-[32px]"
+            thumbClassName="h-[28px] w-[28px] data-[state=checked]:translate-x-[41px]"
           />
         </div>
       </div>

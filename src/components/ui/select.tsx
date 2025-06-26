@@ -80,7 +80,7 @@ const SelectContent = React.forwardRef<
     >
       <SelectPrimitive.Viewport
         className={cn(
-          'p-0', // 패딩 제거
+          'p-0',
           position === 'popper' &&
             'h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]',
         )}
@@ -99,7 +99,7 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      'relative flex w-full cursor-pointer select-none items-center py-2 text-l-title5 outline-none justify-center ',
+      'relative flex w-full cursor-pointer select-none items-center py-2 text-l-title5 font-light outline-none justify-center ',
       'hover:bg-skin3 data-[state=checked]:bg-skin3 data-[highlighted]:bg-skin3',
       'h-[32px] px-4 w-[calc(100%+0.5rem)] -mx-1',
       className,

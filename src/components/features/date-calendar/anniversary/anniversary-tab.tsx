@@ -45,7 +45,7 @@ const AnniversaryTab = ({
 
   // 커플 정보와 사용자 및 파트너 정보 가져오기
   const couple = dummyData.couples.find((c) => c.id === coupleId);
-  const currentUser = dummyData.users.find((u) => u.id === userId);
+
   const partner = couple
     ? dummyData.users.find((u) =>
         u.id === couple.userAId ? u.id !== userId : u.id === couple.userBId,
@@ -138,26 +138,9 @@ const AnniversaryTab = ({
                 />
               </div>
               <div className="flex flex-col">
-                <span className="text-l-title4 text-skin5">
-                  애인: {partner?.nickname || '애인 이름'}
+                <span className="text-l-title4 font-light text-skin5">
+                  {partner?.nickname || '애인 이름'}
                 </span>
-                {/* 현재 사용자 정보 */}
-                <div className="flex items-center gap-1 mt-1">
-                  <div className="relative h-6 w-6 rounded-full overflow-hidden">
-                    <Image
-                      src={
-                        currentUser?.profileImage || '/placeholder-image.jpg'
-                      }
-                      alt={currentUser?.id || '내 프로필'}
-                      fill
-                      sizes="24px"
-                      className="object-cover"
-                    />
-                  </div>
-                  <span className="text-sm text-skin5">
-                    나: {currentUser?.nickname || '내 이름'}
-                  </span>
-                </div>
               </div>
             </div>
           </div>

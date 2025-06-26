@@ -9,7 +9,7 @@ import {
   SelectTrigger,
 } from '@/components/ui/select';
 import { EnhancedPost, SortOption } from '@/types/community.type';
-import dummyData from '@/lib/utils/dummy.utils';
+
 import PostCard from './post-card';
 import { debounce } from 'lodash';
 
@@ -66,13 +66,7 @@ const Community = ({ initialPosts }: { initialPosts: EnhancedPost[] }) => {
       } else if (sortOption === 'likes') {
         return b.likesCount - a.likesCount;
       } else if (sortOption === 'bookmarks') {
-        const aBookmarks = dummyData.bookmarks.filter(
-          (bookmark) => bookmark.postId === a.id,
-        ).length;
-        const bBookmarks = dummyData.bookmarks.filter(
-          (bookmark) => bookmark.postId === b.id,
-        ).length;
-        return bBookmarks - aBookmarks;
+        return b.bookmarksCount - a.bookmarksCount;
       }
       return 0;
     });
@@ -93,7 +87,7 @@ const Community = ({ initialPosts }: { initialPosts: EnhancedPost[] }) => {
           <input
             type="text"
             placeholder="검색어(제목/태그)를 입력해주세요"
-            className="w-full h-full rounded-full bg-font5 pl-3 pr-8 text-l-title4 text-skin5 placeholder:text-skin5 focus:outline-none focus:bg-skin2"
+            className="w-full h-full rounded-full bg-font5 pl-3 pr-8 text-l-title4 font-light text-skin5 placeholder:text-skin5 focus:outline-none focus:bg-skin2"
             value={searchQuery}
             onChange={handleSearchChange}
             onKeyDown={handleKeyDown}

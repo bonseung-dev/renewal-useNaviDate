@@ -26,6 +26,10 @@ const Page = () => {
         (like) => like.postId === post.id,
       ).length;
 
+      const bookmarksCount = dummyData.bookmarks.filter(
+        (bookmark) => bookmark.postId === post.id,
+      ).length;
+
       return {
         ...post,
         couple,
@@ -34,6 +38,7 @@ const Page = () => {
         tags,
         images,
         likesCount,
+        bookmarksCount,
       };
     });
 

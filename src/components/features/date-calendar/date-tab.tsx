@@ -45,6 +45,10 @@ const DateTab = ({ coupleId }: DateTabProps) => {
         (img) => img.postId === post.id,
       );
       const tags = dummyData.postTags.filter((tag) => tag.postId === post.id);
+      const bookmarksCount = dummyData.bookmarks.filter(
+        (bookmark) => bookmark.postId === post.id,
+      ).length;
+
       return {
         ...post,
         user_id: post.userId,
@@ -52,6 +56,7 @@ const DateTab = ({ coupleId }: DateTabProps) => {
         deletedAt: post.deletedAt?.toISOString() || null,
         imageUrl: representativeImage?.imageUrl,
         likesCount,
+        bookmarksCount,
         images,
         tags,
       };
