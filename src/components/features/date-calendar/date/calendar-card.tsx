@@ -83,10 +83,7 @@ const CalendarCard = ({
       {/* 요일 */}
       <div className="grid grid-cols-7 text-center text-b-h3 text-font2 font-bold mb-1.5">
         {['일', '월', '화', '수', '목', '금', '토'].map((d, i) => (
-          <div
-            key={i}
-            className={i === 0 ? 'text-skin7' : i === 6 ? 'text-skin1' : ''}
-          >
+          <div key={i} className={i === 0 ? 'text-skin7' : ''}>
             {d}
           </div>
         ))}
@@ -103,19 +100,14 @@ const CalendarCard = ({
           const isToday = day && dayjs().isSame(dateStr, 'day');
 
           const isLegalHoliday = holiday?.isLegalHoliday;
-          const isCustomHoliday = holiday && !isLegalHoliday;
 
           const textColor = isToday
             ? 'text-skin5'
             : isLegalHoliday
               ? 'text-skin7'
-              : isCustomHoliday
-                ? 'text-skin6'
-                : idx % 7 === 0
-                  ? 'text-skin7'
-                  : idx % 7 === 6
-                    ? 'text-skin1'
-                    : 'text-font2';
+              : idx % 7 === 0
+                ? 'text-skin7'
+                : 'text-font2';
 
           const bgColor = isToday ? 'bg-skin1' : '';
 
@@ -123,27 +115,29 @@ const CalendarCard = ({
             <div
               key={idx}
               onClick={() => day && handleDateClick(day)}
-              className={`relative mx-auto w-8 h-8 group ${post || holiday ? 'cursor-pointer' : ''}`}
+              className={`relative my-1 mx-auto w-[30px] h-[30px] ${post ? 'cursor-pointer' : ''}`}
             >
-              {(post || holiday) && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 px-2 py-1 text-l-title5 bg-skin2 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity z-20 whitespace-nowrap shadow-md before:content-[''] before:absolute before:-top-1 before:left-1/2 before:-translate-x-1/2 before:w-2 before:h-2 before:bg-skin2 before:rotate-45 before:z-10">
-                  {holiday?.summary || post?.title}
-                </div>
-              )}
               <div
-                className={`absolute inset-0 rounded-full transition ${bgColor} hover:bg-font5`}
+                className={`absolute inset-0 rounded-full transition ${bgColor}`}
               />
               <div className="relative w-full h-full flex items-center justify-center">
                 {post ? (
-                  <Image
-                    src={post.imageUrl || emotionImages[post.emotion]}
-                    alt="대표 이미지"
-                    width={32}
-                    height={32}
-                    className="rounded-full w-full h-full object-cover"
-                  />
+                  <div className="relative w-full h-full">
+                    <div className="group relative w-full h-full">
+                      <Image
+                        src={post.imageUrl || emotionImages[post.emotion]}
+                        alt="대표 이미지"
+                        width={32}
+                        height={32}
+                        className="rounded-full w-full h-full object-cover hover:opacity-90"
+                      />
+                      <div className="absolute top-[calc(100%+4px)] left-1/2 -translate-x-1/2 px-2 py-1 text-l-title5 bg-skin2 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity z-20 whitespace-nowrap shadow-md pointer-events-none before:absolute before:-top-1 before:left-1/2 before:-translate-x-1/2 before:w-2 before:h-2 before:bg-skin2 before:rotate-45">
+                        {post.title}
+                      </div>
+                    </div>
+                  </div>
                 ) : (
-                  <span className={`${textColor} font-medium`}>{day}</span>
+                  <span className={`${textColor} text-l-title4`}>{day}</span>
                 )}
               </div>
             </div>

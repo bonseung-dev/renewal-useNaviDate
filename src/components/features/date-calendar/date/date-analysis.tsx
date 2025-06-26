@@ -2,7 +2,7 @@
 
 import dayjs from 'dayjs';
 import FrequentPlaces from './frequent-places';
-import Image from 'next/image';
+import { CalendarHeart, Smile, ThumbsUp } from 'lucide-react';
 
 type Props = {
   onBack: () => void;
@@ -28,12 +28,7 @@ const DateAnalysis = ({ onBack }: Props) => {
           <div className="w-[134px] h-[124px] bg-font5 rounded relative p-[8px]">
             <div className="flex items-center mb-[6px]">
               <div className="w-[36px] h-[36px] rounded-full bg-skin5 flex items-center justify-center">
-                <Image
-                  src="/Group 269.png"
-                  alt="내 취향 아이콘"
-                  width={20}
-                  height={20}
-                />
+                <ThumbsUp className="w-5 h-5 text-font4" />
               </div>
               <span className="ml-[8px] text-m-h4 font-semibold text-font1">
                 내 취향
@@ -49,12 +44,7 @@ const DateAnalysis = ({ onBack }: Props) => {
           <div className="w-[134px] h-[124px] bg-font5 rounded relative p-[8px]">
             <div className="flex items-center mb-[6px]">
               <div className="w-[36px] h-[36px] rounded-full bg-skin5 flex items-center justify-center">
-                <Image
-                  src="/emotions/emotion_usual.png"
-                  alt="내 기분 아이콘"
-                  width={20}
-                  height={20}
-                />
+                <Smile className="w-5 h-5 text-font4" />
               </div>
               <span className="ml-[8px] text-m-h4 font-semibold text-font1">
                 내 기분
@@ -71,12 +61,7 @@ const DateAnalysis = ({ onBack }: Props) => {
         <div className="w-[280px] h-[124px] bg-skin6 rounded p-4 mt-[12px]">
           <div className="flex items-center mb-2">
             <div className="w-[36px] h-[36px] rounded-full bg-skin5 flex items-center justify-center mr-2">
-              <Image
-                src="/Group 268.png"
-                alt="달력 아이콘"
-                width={20}
-                height={20}
-              />
+              <CalendarHeart className="w-[20px] h-[20px] text-skin6" />
             </div>
             <p className="text-b-h4 font-bold text-font1">월별 데이트 횟수</p>
           </div>

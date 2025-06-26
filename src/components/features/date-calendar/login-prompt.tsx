@@ -18,7 +18,7 @@ const LoginPrompt = () => {
         캘린더를 보려면 로그인이 필요합니다.
       </p>
       <Link
-        href="/login"
+        href="/sign-in"
         className="py-2 px-8 text-skin1 text-L-title3 border-2 border-skin1 rounded hover:bg-skin1 hover:text-white transition"
       >
         로그인하기
