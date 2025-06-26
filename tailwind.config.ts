@@ -78,8 +78,8 @@ const config: Config = {
         calendar: ['32px', 'auto'],
       },
       boxShadow: {
-        shadow1: '3px 3px 4px rgba(0, 0, 0, 0.23)',
-        shadow2: '5px 5px 13px rgba(0, 0, 0, 0.23)',
+        shadow1: '3px 3px 8px rgba(0, 0, 0, 0.16)', // 더 부드러운 그림자
+        shadow2: '5px 5px 15px rgba(0, 0, 0, 0.12)', // 더 흐릿하고 부드러운 그림자
       },
       borderRadius: {
         DEFAULT: 'var(--radius)',
