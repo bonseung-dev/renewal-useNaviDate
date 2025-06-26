@@ -9,7 +9,7 @@ type FormData = {
   confirm: string;
 };
 
-const SignUpPage = () => {
+const Page = () => {
   const {
     register,
     handleSubmit,
@@ -36,7 +36,7 @@ const SignUpPage = () => {
           width={55}
           height={55}
         />
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-start">
           <h1 className="text-b-h0 font-bold text-skin1">SIGN UP</h1>
           <span className="text-skin1 text-b-h4 font-bold -mt-1">
             useNavidate()
@@ -95,7 +95,7 @@ const SignUpPage = () => {
       {/* 회원가입 버튼 */}
       <button
         type="submit"
-        className="w-[260px] h-[40px] mt-[24px] bg-skin1 text-white rounded-[8px] font-semibold hover:bg-skin1/80"
+        className="w-[260px] h-[40px] mt-[24px] bg-skin1 text-b-h3 text-skin5 rounded-[8px] font-bold hover:bg-skin1/80"
       >
         회원가입
       </button>
@@ -108,7 +108,7 @@ const SignUpPage = () => {
       </div>
 
       {/* 소셜 로그인 */}
-      <div className="flex gap-[22px] mt-2">
+      <div className="flex gap-[22px] mt-[16px]">
         <button className="rounded-full p-2 bg-skin2">
           <Image src="/icons/google.png" alt="google" width={24} height={24} />
         </button>
@@ -125,4 +125,4 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage;
+export default Page;
