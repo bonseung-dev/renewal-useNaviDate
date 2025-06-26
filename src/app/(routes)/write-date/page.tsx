@@ -31,6 +31,9 @@ const WriteDate = () => {
       {/* 내용 입력 */}
       <WriteContent />
 
+      {/* 구분선 */}
+      <Divider />
+
       {/* 태그 입력 */}
       <section>
         <input type="text" placeholder="#태그" />
@@ -39,10 +42,12 @@ const WriteDate = () => {
         <input type="text" placeholder="#태그" />
       </section>
 
-      <section>
-        {/* 게시글 등록 */}
-        <button>게시글 등록</button>
-      </section>
+      {/* 게시글 등록 */}
+      <div className="w-full px-5">
+        <button className="w-full h-9 bg-skin1 rounded-lg text-xs font-extralight text-skin5 ">
+          게시글 등록하기
+        </button>
+      </div>
     </form>
   );
 };
