@@ -5,6 +5,7 @@ import PostVisibility from '@/components/features/write-date/post-visibility';
 import SearchAddress from '@/components/features/write-date/search-address';
 import SelectEmotion from '@/components/features/write-date/select_emotion';
 import UploadImageCarousel from '@/components/features/write-date/upload-image-carousel';
+import WriteContent from '@/components/features/write-date/write-content';
 import React, { useState } from 'react';
 
 const WriteDate = () => {
@@ -28,24 +29,7 @@ const WriteDate = () => {
       <Divider />
 
       {/* 내용 입력 */}
-      <section className="w-full flex flex-col justify-center items-center gap-2 mt-2">
-        <div className="flex items-center justify-between w-full px-5 gap-1">
-          <button className="w-11 h-5 rounded-[50px] border border-skin7 text-xs font-extralight text-skin7">
-            달력
-          </button>
-          <input
-            type="text"
-            placeholder="제목을 입력해주세요."
-            className="w-full text-left placeholder:text-center placeholder:text-skin2 text-sm font-extralight"
-          />
-        </div>
-        <div className="w-full px-5">
-          <textarea
-            placeholder="내용을 입력해주세요."
-            className="w-full placeholder:text-center placeholder:text-skin2 text-sm font-extralight"
-          />
-        </div>
-      </section>
+      <WriteContent />
 
       {/* 태그 입력 */}
       <section>
