@@ -149,6 +149,10 @@ const AnniversaryTab = ({
             <button
               className="text-m-h4 bg-skin1 border border-skin5 hover:bg-skin5 hover:text-skin1 px-2 py-1 rounded-full text-skin5"
               aria-label="기념일 추가"
+              onClick={() => {
+                setEditingAnniversary(null);
+                setRepeat('YEARLY');
+              }}
             >
               추가하기
             </button>
