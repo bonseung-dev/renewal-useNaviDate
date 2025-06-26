@@ -4,6 +4,7 @@ import Divider from '@/components/features/write-date/divider';
 import PostVisibility from '@/components/features/write-date/post-visibility';
 import SearchAddress from '@/components/features/write-date/search-address';
 import SelectEmotion from '@/components/features/write-date/select_emotion';
+import SubmitPost from '@/components/features/write-date/submit-post';
 import UploadImageCarousel from '@/components/features/write-date/upload-image-carousel';
 import WriteContent from '@/components/features/write-date/write-content';
 import React, { useState } from 'react';
@@ -43,11 +44,7 @@ const WriteDate = () => {
       </section>
 
       {/* 게시글 등록 */}
-      <div className="w-full px-5">
-        <button className="w-full h-9 bg-skin1 rounded-lg text-xs font-extralight text-skin5 ">
-          게시글 등록하기
-        </button>
-      </div>
+      <SubmitPost />
     </form>
   );
 };
