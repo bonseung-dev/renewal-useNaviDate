@@ -1,5 +1,6 @@
 'use client';
 
+import Divider from '@/components/features/write-date/divider';
 import PostVisibility from '@/components/features/write-date/post-visibility';
 import SearchAddress from '@/components/features/write-date/search-address';
 import SelectEmotion from '@/components/features/write-date/select_emotion';
@@ -24,7 +25,7 @@ const WriteDate = () => {
       <SelectEmotion />
 
       {/* 구분선 */}
-      <div className="w-full h-px bg-skin3" />
+      <Divider />
 
       <section>
         {/* 제목 입력 */}
