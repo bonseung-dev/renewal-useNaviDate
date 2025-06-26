@@ -47,7 +47,7 @@ const PostCard = ({ post }: { post: EnhancedPost }) => {
           <div className="w-9 h-9 rounded-full overflow-hidden relative">
             <Image
               src={post.author?.profileImage || '/default-profile.jpg'}
-              alt={post.couple?.name || '커플 프로필'}
+              alt={post.author?.id || '작성자 프로필'}
               width={36}
               height={36}
               className="object-cover w-full h-full"
@@ -56,7 +56,7 @@ const PostCard = ({ post }: { post: EnhancedPost }) => {
           </div>
           <div className="ml-2">
             <div className="text-b-h4 font-bold text-skin5">
-              {post.couple?.name || 'Unknown Couple'}
+              {post.author?.nickname || 'Unknown User'}
             </div>
             <div className="text-l-title4 text-skin5">
               {new Date(post.date).toLocaleDateString('ko-KR')}

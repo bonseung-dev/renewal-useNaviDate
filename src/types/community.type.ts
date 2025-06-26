@@ -12,15 +12,6 @@ export type EnhancedPost = {
   emotion: 'Joy' | 'Fun' | 'Soso' | 'Sad' | 'Mad';
   createdAt: Date;
   deletedAt: Date | null;
-  couple?: {
-    id: string;
-    userAId: string;
-    userBId: string;
-    anniversary: Date;
-    name: string;
-    status: 'pending' | 'confirm' | 'delete';
-    createdAt: Date;
-  };
   author?: {
     id: string;
     email: string;

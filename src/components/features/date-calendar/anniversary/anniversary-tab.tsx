@@ -43,10 +43,13 @@ const AnniversaryTab = ({
   const [editingAnniversary, setEditingAnniversary] =
     useState<Anniversary | null>(null);
 
-  // 커플 정보 가져오기
+  // 커플 정보와 사용자 및 파트너 정보 가져오기
   const couple = dummyData.couples.find((c) => c.id === coupleId);
-  const userA = couple
-    ? dummyData.users.find((u) => u.id === couple.userAId)
+  const currentUser = dummyData.users.find((u) => u.id === userId);
+  const partner = couple
+    ? dummyData.users.find((u) =>
+        u.id === couple.userAId ? u.id !== userId : u.id === couple.userBId,
+      )
     : null;
 
   // 기념일 데이터 가져오기
@@ -121,20 +124,42 @@ const AnniversaryTab = ({
       }}
     >
       <div className="flex items-center justify-center flex-col">
-        <div className="w-[320px] h-[52px] flex items-center justify-between bg-skin1 rounded-[40px] px-4">
+        <div className="w-[320px] h-[60px] flex items-center justify-between bg-skin1 rounded-[40px] px-4">
           <div className="flex items-center gap-2">
-            <div className="relative h-9 w-9 rounded-full overflow-hidden">
-              <Image
-                src={userA?.profileImage || '/placeholder-image.jpg'}
-                alt="커플 이미지"
-                fill
-                sizes="36px"
-                className="object-cover"
-              />
+            {/* 애인 정보 */}
+            <div className="flex items-center gap-2">
+              <div className="relative h-9 w-9 rounded-full overflow-hidden">
+                <Image
+                  src={partner?.profileImage || '/placeholder-image.jpg'}
+                  alt={partner?.id || '애인 프로필'}
+                  fill
+                  sizes="36px"
+                  className="object-cover"
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-l-title4 text-skin5">
+                  애인: {partner?.nickname || '애인 이름'}
+                </span>
+                {/* 현재 사용자 정보 */}
+                <div className="flex items-center gap-1 mt-1">
+                  <div className="relative h-6 w-6 rounded-full overflow-hidden">
+                    <Image
+                      src={
+                        currentUser?.profileImage || '/placeholder-image.jpg'
+                      }
+                      alt={currentUser?.id || '내 프로필'}
+                      fill
+                      sizes="24px"
+                      className="object-cover"
+                    />
+                  </div>
+                  <span className="text-sm text-skin5">
+                    나: {currentUser?.nickname || '내 이름'}
+                  </span>
+                </div>
+              </div>
             </div>
-            <span className="text-l-title4 text-skin5">
-              {couple?.name || '커플 이름'}
-            </span>
           </div>
 
           <DialogTrigger asChild>
