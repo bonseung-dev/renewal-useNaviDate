@@ -9,3 +9,9 @@ export type Anniversary = {
 };
 
 export type RepeatOption = 'NONE' | 'YEARLY';
+
+export type PartnerInfo = {
+  id: string;
+  profileImage: string;
+  nickname: string;
+};

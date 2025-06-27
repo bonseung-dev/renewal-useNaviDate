@@ -1,30 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { Anniversary, RepeatOption } from '@/types/anniversary.type';
-import {
-  addAnniversary,
-  getAnniversaries,
-  updateAnniversary,
-  deleteAnniversary,
-} from '@/lib/hooks/use-anniversaries';
-import AnniversaryForm from './anniversary-form';
+import { useState } from 'react';
+import { useAnniversaries } from '@/lib/hooks/use-anniversaries';
+import AnniversaryHeader from './anniversary-header';
 import AnniversaryList from './anniversary-list';
-import Image from 'next/image';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
 import dummyData from '@/lib/utils/dummy.utils';
-
-type NewAnniversary = {
-  title: string;
-  date: string;
-  repeat: RepeatOption;
-};
+import AnniversaryEditor from './anniversary-editor';
+import { Anniversary, PartnerInfo } from '@/types/anniversary.type';
+import { Dialog } from '@/components/ui/dialog';
 
 type AnniversaryTabProps = {
   coupleId: string;
@@ -37,152 +20,93 @@ const AnniversaryTab = ({
   startDate,
   userId,
 }: AnniversaryTabProps) => {
-  const [anniversaries, setAnniversaries] = useState<Anniversary[]>([]);
-  const [repeat, setRepeat] = useState<RepeatOption>('YEARLY');
-  const [open, setOpen] = useState(false);
+  const {
+    anniversaries,
+    addAnniversary: add,
+    updateAnniversary: update,
+    deleteAnniversary: remove,
+  } = useAnniversaries(coupleId, startDate);
+
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [editingAnniversary, setEditingAnniversary] =
     useState<Anniversary | null>(null);
 
-  // 커플 정보와 사용자 및 파트너 정보 가져오기
   const couple = dummyData.couples.find((c) => c.id === coupleId);
-
-  const partner = couple
-    ? dummyData.users.find((u) =>
-        u.id === couple.userAId ? u.id !== userId : u.id === couple.userBId,
-      )
+  const partner: PartnerInfo | null = couple
+    ? {
+        id: couple.userAId === userId ? couple.userBId : couple.userAId,
+        profileImage:
+          dummyData.users.find(
+            (u) =>
+              u.id ===
+              (couple.userAId === userId ? couple.userBId : couple.userAId),
+          )?.profileImage || '/placeholder-image.png',
+        nickname:
+          dummyData.users.find(
+            (u) =>
+              u.id ===
+              (couple.userAId === userId ? couple.userBId : couple.userAId),
+          )?.nickname || '애인 이름',
+      }
     : null;
 
-  // 기념일 데이터 가져오기
-  useEffect(() => {
-    const data = getAnniversaries(coupleId, startDate);
-    setAnniversaries(data);
-    console.log('필터링된 기념일:', data);
-  }, [coupleId, startDate]);
-
-  const handleAddAnniversary = (newAnniversary: NewAnniversary) => {
-    const added = addAnniversary(
-      coupleId,
-      {
-        ...newAnniversary,
-        createdBy: userId,
-        coupleId: coupleId,
-      },
-      userId,
-    );
-    setAnniversaries((prev) => [...prev, added]);
-    setOpen(false);
-    console.log('기념일 추가:', added);
+  const handleAddClick = () => {
+    setEditingAnniversary(null);
+    setIsEditorOpen(true);
   };
 
-  const handleEditAnniversary = (id: string) => {
+  const handleEdit = (id: string) => {
     const anniversaryToEdit = anniversaries.find((a) => a.id === id);
-    if (anniversaryToEdit) {
-      setEditingAnniversary(anniversaryToEdit);
-      setRepeat(anniversaryToEdit.repeat);
-      setOpen(true);
+    setEditingAnniversary(anniversaryToEdit || null);
+    setIsEditorOpen(true);
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      await remove(id);
+    } catch (error) {
+      if (error instanceof Error && error.message === 'DUMMY_DATA_DELETE') {
+        alert('더미 데이터는 삭제할 수 없습니다.');
+      }
     }
   };
 
-  const handleUpdateAnniversary = (updatedAnniversary: NewAnniversary) => {
-    if (!editingAnniversary) return;
-
+  const handleUpdate = async (data: Anniversary) => {
     try {
-      const updated: Anniversary = {
-        ...editingAnniversary,
-        ...updatedAnniversary,
-        coupleId,
-        createdBy: editingAnniversary.createdBy,
-      };
-      updateAnniversary(updated);
-      setAnniversaries((prev) =>
-        prev.map((a) => (a.id === editingAnniversary.id ? updated : a)),
-      );
-      setOpen(false);
+      await update(data);
+      handleSubmitSuccess();
     } catch (error) {
-      alert(`${error}`);
+      if (error instanceof Error && error.message === 'DUMMY_DATA_EDIT') {
+        alert('더미 데이터는 수정할 수 없습니다.');
+      }
     }
   };
 
-  const handleDeleteAnniversary = (id: string) => {
-    try {
-      deleteAnniversary(id);
-      setAnniversaries((prev) => prev.filter((a) => a.id !== id));
-    } catch (error) {
-      alert(`${error}`);
-    }
+  const handleSubmitSuccess = () => {
+    setIsEditorOpen(false);
+    setEditingAnniversary(null);
   };
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(isOpen) => {
-        setOpen(isOpen);
-        if (!isOpen) {
-          setEditingAnniversary(null);
-          setRepeat('YEARLY');
-        }
-      }}
-    >
+    <Dialog open={isEditorOpen} onOpenChange={setIsEditorOpen}>
       <div className="flex items-center justify-center flex-col">
-        <div className="w-[320px] h-[60px] flex items-center justify-between bg-skin1 rounded-[40px] px-4">
-          <div className="flex items-center gap-2">
-            {/* 애인 정보 */}
-            <div className="flex items-center gap-2">
-              <div className="relative h-9 w-9 rounded-full overflow-hidden">
-                <Image
-                  src={partner?.profileImage || '/placeholder-image.jpg'}
-                  alt={partner?.id || '애인 프로필'}
-                  fill
-                  sizes="36px"
-                  className="object-cover"
-                />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-l-title4 font-light text-skin5">
-                  {partner?.nickname || '애인 이름'}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <DialogTrigger asChild>
-            <button
-              className="text-m-h4 bg-skin1 border border-skin5 hover:bg-skin5 hover:text-skin1 px-2 py-1 rounded-full text-skin5"
-              aria-label="기념일 추가"
-              onClick={() => {
-                setEditingAnniversary(null);
-                setRepeat('YEARLY');
-              }}
-            >
-              추가하기
-            </button>
-          </DialogTrigger>
-        </div>
+        <AnniversaryHeader partner={partner} onAddClick={handleAddClick} />
 
         <AnniversaryList
           anniversaries={anniversaries}
-          onDelete={handleDeleteAnniversary}
-          onEdit={handleEditAnniversary}
+          onDelete={handleDelete}
+          onEdit={handleEdit}
+        />
+
+        <AnniversaryEditor
+          coupleId={coupleId}
+          userId={userId}
+          onAdd={add}
+          onUpdate={handleUpdate}
+          initialData={editingAnniversary}
+          onSubmitSuccess={handleSubmitSuccess}
         />
       </div>
-
-      <DialogContent className="bg-skin5 p-1 shadow-shadow1 rounded-xl w-[320px] h-[330px]">
-        <DialogTitle className="sr-only">
-          {editingAnniversary ? '기념일 수정' : '기념일 추가'}
-        </DialogTitle>
-        <DialogDescription className="sr-only">
-          기념일 정보를 입력해 주세요.
-        </DialogDescription>
-
-        <AnniversaryForm
-          repeat={repeat}
-          onRepeatChange={setRepeat}
-          onSubmit={
-            editingAnniversary ? handleUpdateAnniversary : handleAddAnniversary
-          }
-          editingAnniversary={editingAnniversary}
-        />
-      </DialogContent>
     </Dialog>
   );
 };
