@@ -2,11 +2,11 @@ import Image from 'next/image';
 import React from 'react';
 
 const emotions = [
-  { key: 'happy', src: '/emotions/emotion_happy_100x100.png' },
-  { key: 'excited', src: '/emotions/emotion_excited_100x100.png' },
-  { key: 'usual', src: '/emotions/emotion_usual_100x100.png' },
-  { key: 'sad', src: '/emotions/emotion_sad_100x100.png' },
-  { key: 'angry', src: '/emotions/emotion_angry_100x100.png' },
+  { key: 'happy', src: '/emotions/emotion_happy.png' },
+  { key: 'excited', src: '/emotions/emotion_excited.png' },
+  { key: 'usual', src: '/emotions/emotion_usual.png' },
+  { key: 'sad', src: '/emotions/emotion_sad.png' },
+  { key: 'angry', src: '/emotions/emotion_angry.png' },
 ];
 
 const SelectEmotion = () => {
