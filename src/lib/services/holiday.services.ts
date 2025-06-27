@@ -1,4 +1,5 @@
-import { CALENDAR_ID, LEGAL_HOLIDAYS } from '@/constants/holiday.constants';
+import { CALENDAR_ID } from '@/constants/calendar.constants';
+import { LEGAL_HOLIDAYS } from '@/constants/holiday.constants';
 import type { Holiday, HolidayEvent } from '@/types/calendar.type'; // HolidayEvent는 타입 단언에 사용됨 (TS6385는 무시해도 됨)
 import dayjs from 'dayjs';
 

@@ -1,6 +1,3 @@
-// 백엔드 연동 시 수정 - 백엔드 API에서 공휴일 데이터를 정제하여 제공하면 이 상수 삭제 가능
-export const CALENDAR_ID = 'ko.south_korea#holiday@group.v.calendar.google.com';
-
 // 백엔드 연동 시 수정 - 법정 공휴일 목록은 백엔드에서 처리하므로 이 상수 삭제 가능
 export const LEGAL_HOLIDAYS = [
   '새해첫날',
@@ -16,18 +13,3 @@ export const LEGAL_HOLIDAYS = [
   '대체공휴일',
   '대통령 선거',
 ];
-
-export const REPEAT_OPTIONS = {
-  NONE: '없음',
-  YEARLY: '매년',
-} as const;
-
-export const REPEAT_OPTION_LIST = [
-  { value: 'NONE', label: '없음' },
-  { value: 'YEARLY', label: '매년' },
-] as const;
-
-// // test용 상수 - 백엔드 연동 후 삭제 예정
-// export const TEST_COUPLE_ID = 'sample-couple-id';
-// export const TEST_START_DATE = '2025-06-01';
-export const STORAGE_KEY = 'custom_anniversaries';

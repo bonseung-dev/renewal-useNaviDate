@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { Anniversary } from '@/types/anniversary.type';
-import { STORAGE_KEY } from '@/constants/holiday.constants';
 import dummyData from '../utils/dummy.utils';
+import { STORAGE_KEY } from '@/constants/anniversary.constants';
 
 const generateAutoAnniversaries = (
   startDate: string,

@@ -5,14 +5,8 @@ import dayjs, { Dayjs } from 'dayjs';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { Emotion, ExtendedPost, Holiday } from '@/types/calendar.type';
-
-const emotionImages: Record<Emotion, string> = {
-  Joy: '/emotions/emotion_happy.png',
-  Fun: '/emotions/emotion_excited.png',
-  Soso: '/emotions/emotion_usual.png',
-  Sad: '/emotions/emotion_sad.png',
-  Mad: '/emotions/emotion_angry.png',
-};
+import { WEEKDAYS } from '@/constants/calendar.constants';
+import { EMOTION_IMAGES } from '@/constants/emotions.constants';
 
 type Props = {
   currentDate: Dayjs;
@@ -83,7 +77,7 @@ const CalendarCard = ({
 
       {/* 요일 */}
       <div className="grid grid-cols-7 text-center text-b-h3 text-font2 font-bold mb-1.5">
-        {['일', '월', '화', '수', '목', '금', '토'].map((d, i) => (
+        {WEEKDAYS.map((d, i) => (
           <div key={i} className={i === 0 ? 'text-skin7' : ''}>
             {d}
           </div>
@@ -126,7 +120,10 @@ const CalendarCard = ({
                   <div className="relative w-full h-full">
                     <div className="group relative w-full h-full">
                       <Image
-                        src={post.imageUrl || emotionImages[post.emotion]}
+                        src={
+                          post.imageUrl ||
+                          EMOTION_IMAGES[post.emotion as Emotion]
+                        }
                         alt="대표 이미지"
                         width={32}
                         height={32}
