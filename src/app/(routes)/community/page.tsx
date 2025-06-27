@@ -1,6 +1,20 @@
 import Community from '@/components/features/community/community';
 import dummyData from '@/lib/utils/dummy.utils';
 import { EnhancedPost } from '@/types/community.type';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Community || useNavidate()',
+  description: '다른 커플들의 특별한 순간을 공유하고 소통해보세요',
+  robots: {
+    index: false,
+  },
+  openGraph: {
+    title: '  useNavidate() - Community',
+    description: '사랑의 순간을 함께 나누는 공간',
+    images: '/navidate-logo_blue.png',
+  },
+};
 
 const Page = () => {
   // public인 포스트만 필터링 후 임시 데이터 생성
