@@ -1,9 +1,10 @@
-import React from 'react';
+import UploadedImagesCarousel from '@/components/features/date-detail/uploaded-images/uploaded-images-carousel';
 
 const DateDetail = () => {
   return (
-    <form>
-      <section>{/* 캐러셀 이미지 출력 */}</section>
+    <form className="flex flex-col justify-center items-center px-1">
+      {/* 캐러셀 이미지 출력 */}
+      <UploadedImagesCarousel />
 
       <section>
         <p>{/* 주소 출력 */}</p>
