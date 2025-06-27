@@ -4,13 +4,13 @@ import dummyData from '@/lib/utils/dummy.utils';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: '커플 캘린더 시작하기 || useNavidate()',
+  title: '커플 캘린더 시작하기 || useNavidate( )',
   description: '커플 캘린더를 이용해보세요',
   robots: {
     index: false,
   },
   openGraph: {
-    title: '  useNavidate() - 커플 캘린더',
+    title: '  useNavidate( ) - 커플 캘린더',
     description: '특별한 날짜를 함께 기록하세요',
     images: '/navidate-logo_blue.png',
   },

@@ -38,7 +38,7 @@ const Page = () => {
         <div className="flex flex-col items-start">
           <h1 className="text-b-h0 font-bold text-skin1">LOGIN</h1>
           <span className="text-skin1 text-b-h4 font-bold -mt-1">
-            useNavidate()
+            useNavidate( )
           </span>
         </div>
       </div>

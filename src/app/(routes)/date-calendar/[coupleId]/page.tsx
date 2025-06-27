@@ -12,7 +12,7 @@ export async function generateMetadata({
   const couple = dummyData.couples.find((c) => c.id === params.coupleId);
 
   return {
-    title: `${couple?.name || '커플'}의 캘린더 |   useNavidate()`,
+    title: `${couple?.name || '커플'}의 캘린더 |   useNavidate( )`,
     description: `${couple?.name || '우리'}만의 특별한 날짜를 기록하는 공간`,
     openGraph: {
       images: ['/navidate-logo_blue.png'], //나중에 커플 이미지 || 디폴트 이미지로 해도 좋을 듯

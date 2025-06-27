@@ -13,7 +13,7 @@ const Header = () => {
           height={30}
           className="h-[30px] w-[30px] object-contain"
         />
-        useNavidate()
+        useNavidate( )
       </div>
 
       <div className="flex items-center gap-1">
