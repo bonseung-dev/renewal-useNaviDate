@@ -1,4 +1,3 @@
-import React from 'react';
 import SearchAddressButton from './search-address-button';
 
 const SearchAddress = () => {

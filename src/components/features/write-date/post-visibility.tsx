@@ -1,4 +1,3 @@
-import React from 'react';
 import PostVisibilitySwitch from './post-visibility-switch';
 import PostVisibilityTooltip from './post-visibility-tooltip';
 

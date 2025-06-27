@@ -1,5 +1,4 @@
 import { Switch } from '@/components/ui/switch';
-import React from 'react';
 
 const PostVisibilitySwitch = () => {
   return (

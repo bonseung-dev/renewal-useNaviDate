@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import React from 'react';
 
 const emotions = [
   { key: 'happy', src: '/emotions/emotion_happy.png' },

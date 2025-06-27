@@ -8,7 +8,7 @@ import SubmitPost from '@/components/features/write-date/submit-post';
 import Tag from '@/components/features/write-date/tag';
 import UploadImageCarousel from '@/components/features/write-date/upload-image-carousel';
 import WriteContent from '@/components/features/write-date/write-content';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const WriteDate = () => {
   const [imageUrls, setImageUrls] = useState<string[]>([]);

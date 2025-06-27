@@ -1,4 +1,3 @@
-import React from 'react';
 import SubmitPostButton from './submit-post-button';
 
 const SubmitPost = () => {

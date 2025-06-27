@@ -1,5 +1,3 @@
-import React from 'react';
-
 const WriteContent = () => {
   return (
     <div className="w-full flex flex-col justify-center items-center gap-2 mt-2">
