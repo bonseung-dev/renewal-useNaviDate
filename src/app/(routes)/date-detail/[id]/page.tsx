@@ -1,6 +1,7 @@
 'use client';
 
 import UploadedImagesCarousel from '@/components/features/date-detail/uploaded-images/uploaded-images-carousel';
+import SearchedAddress from '@/components/features/write-date/searched-address';
 import { useQuery } from '@tanstack/react-query';
 
 export type Date = {
@@ -43,10 +44,7 @@ const DateDetail = ({ params }: PageProps) => {
       <UploadedImagesCarousel date={date} />
 
       {/* 주소 출력 */}
-      <section className="flex flex-col justify-center items-start w-full h-full py-3 px-5">
-        <h3 className="text-skin1 text-[10px] font-semibold">주소</h3>
-        <p className="text-font2 text-xs font-extralight">{date.address}</p>
-      </section>
+      <SearchedAddress date={date} />
 
       <section>
         <p>{/* 제목 출력 */}</p>
