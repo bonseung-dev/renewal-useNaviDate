@@ -4,6 +4,7 @@ import UploadedImagesCarousel from '@/components/features/date-detail/uploaded-i
 import Divider from '@/components/features/write-date/divider';
 import PlaceName from '@/components/features/write-date/place-name';
 import SearchedAddress from '@/components/features/write-date/searched-address';
+import WrittenContent from '@/components/features/write-date/written-content';
 import { useQuery } from '@tanstack/react-query';
 
 export type Date = {
@@ -58,10 +59,7 @@ const DateDetail = ({ params }: PageProps) => {
       <Divider />
 
       {/* 게시글 제목 및 내용 출력 */}
-      <section className="flex flex-col justify-center items-start w-full h-full pt-3 pb-6 px-5 gap-3">
-        <h3 className="text-font2 text-sm font-extralight">{date.title}</h3>
-        <p className="text-font2 text-xs font-extralight">{date.content}</p>
-      </section>
+      <WrittenContent date={date} />
 
       {/* 구분선 */}
       <Divider />
