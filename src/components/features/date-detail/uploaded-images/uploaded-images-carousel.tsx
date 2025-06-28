@@ -5,8 +5,13 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import UploadedImageItems from './uploaded-image-items';
+import { Date } from '@/app/(routes)/date-detail/[id]/page';
 
-const UploadedImagesCarousel = () => {
+export type UploadedImagesCarouselProps = {
+  date: Date;
+};
+
+const UploadedImagesCarousel = ({ date }: UploadedImagesCarouselProps) => {
   return (
     <section className="flex justify-center items-center w-80 h-44 rounded-[10px] border border-skin3">
       <Carousel
@@ -16,7 +21,7 @@ const UploadedImagesCarousel = () => {
         }}
       >
         <CarouselContent className="w-44 h-44">
-          <UploadedImageItems />
+          <UploadedImageItems date={date} />
         </CarouselContent>
         <CarouselPrevious />
         <CarouselNext />
