@@ -1,13 +1,13 @@
 'use client';
 
 import UploadedImagesCarousel from '@/components/features/date-detail/uploaded-images/uploaded-images-carousel';
-import Buttons from '@/components/features/write-date/buttons';
 import Divider from '@/components/features/write-date/divider';
-import PlaceName from '@/components/features/write-date/place-name';
-import SearchedAddress from '@/components/features/write-date/searched-address';
-import WrittenContent from '@/components/features/write-date/written-content';
-import WrittenTags from '@/components/features/write-date/written-tags';
+import PlaceName from '@/components/features/date-detail/place-name';
+import SearchedAddress from '@/components/features/date-detail/searched-address';
+import WrittenContent from '@/components/features/date-detail/written-content';
+import WrittenTags from '@/components/features/date-detail/written-tags';
 import { useQuery } from '@tanstack/react-query';
+import Buttons from '@/components/features/date-detail/buttons/buttons';
 
 export type Date = {
   id: number;

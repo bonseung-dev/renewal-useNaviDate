@@ -1,4 +1,4 @@
-const Tag = () => {
+const WriteTag = () => {
   return (
     <section className="my-3">
       <input
@@ -10,4 +10,4 @@ const Tag = () => {
   );
 };
 
-export default Tag;
+export default WriteTag;

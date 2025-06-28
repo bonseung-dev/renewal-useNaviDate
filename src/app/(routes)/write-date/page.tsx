@@ -1,11 +1,11 @@
 'use client';
 
 import Divider from '@/components/features/write-date/divider';
-import PostVisibility from '@/components/features/write-date/post-visibility';
-import SearchAddress from '@/components/features/write-date/search-address';
+import PostVisibility from '@/components/features/write-date/post-visibility/post-visibility';
+import SearchAddress from '@/components/features/write-date/search-address/search-address';
 import SelectEmotion from '@/components/features/write-date/select_emotion';
-import SubmitPost from '@/components/features/write-date/submit-post';
-import Tag from '@/components/features/write-date/tag';
+import SubmitPost from '@/components/features/write-date/submit-post/submit-post';
+import WriteTag from '@/components/features/write-date/write-tag';
 import UploadImageCarousel from '@/components/features/write-date/upload-image-carousel';
 import WriteContent from '@/components/features/write-date/write-content';
 import { useState } from 'react';
@@ -37,7 +37,7 @@ const WriteDate = () => {
       <Divider />
 
       {/* 태그 입력 */}
-      <Tag />
+      <WriteTag />
 
       {/* 게시글 등록 */}
       <SubmitPost />
