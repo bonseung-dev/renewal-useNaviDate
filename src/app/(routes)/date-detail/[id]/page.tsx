@@ -5,6 +5,7 @@ import Divider from '@/components/features/write-date/divider';
 import PlaceName from '@/components/features/write-date/place-name';
 import SearchedAddress from '@/components/features/write-date/searched-address';
 import WrittenContent from '@/components/features/write-date/written-content';
+import WrittenTags from '@/components/features/write-date/written-tags';
 import { useQuery } from '@tanstack/react-query';
 
 export type Date = {
@@ -65,16 +66,7 @@ const DateDetail = ({ params }: PageProps) => {
       <Divider />
 
       {/* 태그 출력 */}
-      <section className="flex flex-wrap justify-start items-center w-full py-3 px-5 gap-3">
-        {date.tags.map((tag, index) => (
-          <p
-            key={tag + index}
-            className="flex justify-center items-center w-fit h-6 p-1 rounded-[50px] border border-skin1 text-skin1 text-[10px] font-extralight whitespace-nowrap"
-          >
-            #{tag}
-          </p>
-        ))}
-      </section>
+      <WrittenTags date={date} />
 
       <section>
         {/* 좋아요 버튼 */}
