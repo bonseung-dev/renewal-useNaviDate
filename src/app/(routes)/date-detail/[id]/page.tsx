@@ -2,6 +2,7 @@
 
 import UploadedImagesCarousel from '@/components/features/date-detail/uploaded-images/uploaded-images-carousel';
 import Divider from '@/components/features/write-date/divider';
+import PlaceName from '@/components/features/write-date/place-name';
 import SearchedAddress from '@/components/features/write-date/searched-address';
 import { useQuery } from '@tanstack/react-query';
 
@@ -51,10 +52,7 @@ const DateDetail = ({ params }: PageProps) => {
       <Divider />
 
       {/* 장소 이름 출력 */}
-      <section className="flex flex-col justify-center items-start w-full h-full py-3 px-5 gap-1">
-        <h3 className="text-skin1 text-[10px] font-semibold">장소</h3>
-        <p className="text-font2 text-xs font-extralight">{date.place}</p>
-      </section>
+      <PlaceName date={date} />
 
       {/* 구분선 */}
       <Divider />
