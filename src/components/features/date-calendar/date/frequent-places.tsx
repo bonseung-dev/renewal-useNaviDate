@@ -24,7 +24,7 @@ const FrequentPlaces = () => {
       </div>
 
       {/* 리스트 */}
-      <div className=" ml-[44px]">
+      <div className="ml-[44px]">
         {frequentPlaces.map((place, idx) => (
           <div key={idx} className="flex items-center">
             {/* 장소명 */}
@@ -38,7 +38,7 @@ const FrequentPlaces = () => {
             <div className="ml-[4px] w-[132px] h-[4px] bg-skin5 rounded-[2px] overflow-hidden">
               <div
                 className="h-full bg-skin1"
-                style={{ width: `${place.ratio * 100}%` }}
+                style={{ width: `${place.ratio * 100}%` }} //실제 구현할 때 바꿀 예정(임시)
               />
             </div>
           </div>
