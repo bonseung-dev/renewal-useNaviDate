@@ -10,7 +10,7 @@ const emotions = [
 
 const SelectEmotion = () => {
   return (
-    <div className="flex gap-5 items-center justify-center my-2">
+    <section className="flex gap-5 items-center justify-center my-2">
       {emotions.map((emotion) => {
         return (
           <button key={emotion.key}>
@@ -25,7 +25,7 @@ const SelectEmotion = () => {
           </button>
         );
       })}
-    </div>
+    </section>
   );
 };
 
