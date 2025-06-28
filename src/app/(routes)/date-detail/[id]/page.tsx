@@ -57,10 +57,14 @@ const DateDetail = ({ params }: PageProps) => {
       {/* 구분선 */}
       <Divider />
 
-      <section>
-        <p>{/* 데이트 기록 일자 출력 */}</p>
-        <p>{/* 내용 출력 */}</p>
+      {/* 게시글 제목 및 내용 출력 */}
+      <section className="flex flex-col justify-center items-start w-full h-full pt-3 pb-6 px-5 gap-3">
+        <h3 className="text-font2 text-sm font-extralight">{date.title}</h3>
+        <p className="text-font2 text-xs font-extralight">{date.content}</p>
       </section>
+
+      {/* 구분선 */}
+      <Divider />
 
       {/* 태그 출력 */}
       <section>
