@@ -30,7 +30,7 @@ const NumberPicker = ({
         onValueChange={(v) => onChange(Number(v))}
       >
         <SelectTrigger
-          className="w-[48px] h-[40px] px-0 text-l-title4 font-light text-font4 bg-skin3 border-2 border-transparent 
+          className="w-[48px] h-[40px] px-0 text-l-title5 font-light text-font4 bg-skin3 border-2 border-transparent 
              focus:border-skin1 focus:outline-none rounded text-center justify-center
              ring-0 ring-offset-0 focus:ring-0 focus:ring-offset-0 focus-visible:ring-0 focus-visible:ring-offset-0
              [&>svg]:hidden"

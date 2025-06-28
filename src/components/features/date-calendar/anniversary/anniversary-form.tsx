@@ -1,5 +1,6 @@
-import NumberPicker from '@/components/ui/number-picker';
+'use client';
 
+import NumberPicker from '@/components/ui/number-picker';
 import { Anniversary, RepeatOption } from '@/types/anniversary.type';
 import { DialogClose } from '@radix-ui/react-dialog';
 import { useState, useEffect } from 'react';
@@ -32,7 +33,7 @@ const AnniversaryForm = ({
 
   useEffect(() => {
     if (editingAnniversary) {
-      setTitle(editingAnniversary.title);
+      setTitle(editingAnniversary.title.slice(0, 20));
       const [y, m, d] = editingAnniversary.date.split('-').map(Number);
       setYear(y);
       setMonth(m);
@@ -47,12 +48,21 @@ const AnniversaryForm = ({
   };
 
   const handleSubmit = () => {
-    if (!title) {
+    const trimmedTitle = title.trim();
+
+    if (!trimmedTitle) {
       alert('제목을 입력해주세요.');
       return;
     }
+
+    if (trimmedTitle.length > 15) {
+      alert('제목은 15자 이하로 입력해주세요.');
+      return;
+    }
+
     const date = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-    onSubmit({ title, date, repeat });
+    onSubmit({ title: trimmedTitle, date, repeat });
+
     if (!editingAnniversary) {
       setTitle('');
       setYear(today.year());
@@ -69,26 +79,36 @@ const AnniversaryForm = ({
         </h2>
 
         {/* 제목 인풋 */}
-        <div className="flex items-center mb-[12px]">
-          <label
-            htmlFor="title"
-            className="text-b-h3 font-bold w-[56px] text-skin1"
-          >
-            제목
-          </label>
-          <input
-            id="title"
-            type="text"
-            placeholder="제목(1~15자)을 입력해주세요"
-            className="bg-skin3 rounded px-2 py-1 text-l-title4 text-font1 h-[32px] w-[200px] placeholder:text-l-title4 placeholder:text-font4
-                   focus:outline-none focus:ring-2 focus:ring-skin1 focus:border-transparent"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
+        <div className="flex flex-col mb-[12px] relative">
+          <div className="flex items-center">
+            <label
+              htmlFor="title"
+              className="text-b-h3 font-bold w-[56px] text-skin1"
+            >
+              제목
+            </label>
+            <input
+              id="title"
+              type="text"
+              placeholder="제목(1~15자)을 입력해주세요"
+              maxLength={20} // 사용자가 많이 입력해도 안내는 하되 저장은 안되게
+              className="bg-skin3 rounded px-2 py-1 text-l-title4 font-light text-font1 h-[32px] w-[200px] placeholder:text-l-title4 placeholder:text-font4
+             focus:outline-none focus:ring-2 focus:ring-skin1 focus:border-transparent"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* 15자 초과 시 안내 텍스트 */}
+          {title.trim().length > 15 && (
+            <div className="absolute -top-5 left-[90px] z-10 bg-skin7/50 text-skin5 text-l-title5 px-1 rounded-full shadow transition-opacity duration-200">
+              15자까지 입력할 수 있어요.
+            </div>
+          )}
         </div>
 
-        {/* 날짜 선택*/}
+        {/* 날짜 선택 */}
         <div className="flex items-center mb-[12px]">
           <label className="text-b-h3 font-bold w-[56px] text-skin1">
             날짜
@@ -131,6 +151,7 @@ const AnniversaryForm = ({
             checked={isYearly}
             onCheckedChange={handleSwitch}
             className="ml-auto w-[72px] h-[32px]"
+            thumbClassName="h-[28px] w-[28px] data-[state=checked]:translate-x-[41px]"
           />
         </div>
       </div>

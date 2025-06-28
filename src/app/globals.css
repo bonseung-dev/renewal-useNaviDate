@@ -72,3 +72,23 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* 스크롤바 숨기지만 스크롤 가능 */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 32px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #7bb4dd;
+  border-radius: 12px;
+}
