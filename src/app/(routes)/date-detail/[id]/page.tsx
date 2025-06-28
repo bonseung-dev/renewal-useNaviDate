@@ -1,6 +1,7 @@
 'use client';
 
 import UploadedImagesCarousel from '@/components/features/date-detail/uploaded-images/uploaded-images-carousel';
+import Buttons from '@/components/features/write-date/buttons';
 import Divider from '@/components/features/write-date/divider';
 import PlaceName from '@/components/features/write-date/place-name';
 import SearchedAddress from '@/components/features/write-date/searched-address';
@@ -68,14 +69,8 @@ const DateDetail = ({ params }: PageProps) => {
       {/* 태그 출력 */}
       <WrittenTags date={date} />
 
-      <section>
-        {/* 좋아요 버튼 */}
-        <button>좋아요</button>
-        {/* 북마크 버튼 */}
-        <button>북마크</button>
-        {/* 공유 버튼 */}
-        <button>공유</button>
-      </section>
+      {/* 좋아요, 북마크, 공유 버튼 */}
+      <Buttons />
     </form>
   );
 };
