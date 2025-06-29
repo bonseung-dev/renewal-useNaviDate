@@ -10,12 +10,13 @@ import { useQuery } from '@tanstack/react-query';
 import Buttons from '@/components/features/date-detail/buttons/buttons';
 
 export type Date = {
-  id: number;
+  images: string[];
+  visibility: boolean;
   address: string;
+  emotion: string;
+  date: string;
   title: string;
   content: string;
-  images: string[];
-  place: string;
   tags: string[];
 };
 
