@@ -2,14 +2,17 @@
 
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';
+import { useMutation } from '@tanstack/react-query';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 type FormData = {
-  username: string;
+  email: string;
   password: string;
-  confirm: string;
 };
 
 const Page = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -18,8 +21,47 @@ const Page = () => {
     mode: 'onChange',
   });
 
+  const [loginError, setLoginError] = useState<string | null>(null);
+
+  // 로그인 요청 Mutation
+  const loginMutation = useMutation({
+    mutationFn: async (data: FormData) => {
+      const response = await fetch(
+        `http://localhost:4000/users?email=${encodeURIComponent(data.email)}`,
+      );
+      if (!response.ok) {
+        throw new Error('서버 오류가 발생했습니다.');
+      }
+      const users = await response.json();
+
+      if (users.length === 0) {
+        throw new Error('등록된 이메일이 없습니다.');
+      }
+
+      const user = users[0];
+      // JSON Server에서는 평문 비밀번호 비교 (프로덕션에서는 bcrypt 사용 권장)
+      if (user.password !== data.password) {
+        throw new Error('비밀번호가 일치하지 않습니다.');
+      }
+
+      return user;
+    },
+    onSuccess: (user) => {
+      setLoginError(null);
+      console.log('로그인 성공:', user);
+      // 사용자 정보 저장
+      localStorage.setItem('token', user.tempToken);
+      localStorage.setItem('userId', user.id);
+      // /community로 리다이렉트
+      router.push('/community');
+    },
+    onError: (error: Error) => {
+      setLoginError(error.message);
+    },
+  });
+
   const onSubmit = (data: FormData) => {
-    console.log('로그인 요청:', data);
+    loginMutation.mutate(data);
   };
 
   return (
@@ -43,19 +85,21 @@ const Page = () => {
         </div>
       </div>
 
-      {/* 아이디 */}
+      {/* 이메일 */}
       <div className="w-[260px] mt-[30px]">
         <input
-          placeholder="아이디를 입력해주세요"
+          placeholder="이메일을 입력해주세요"
           className="w-full h-[40px] px-3 py-2 bg-skin3 rounded-[8px] outline-none text-l-title4 font-light text-font4"
-          {...register('username', {
-            required: '아이디를 입력해주세요',
-            validate: (val) =>
-              !val.includes('admin') || '사용할 수 없는 아이디입니다',
+          {...register('email', {
+            required: '이메일을 입력해주세요',
+            pattern: {
+              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+              message: '유효한 이메일 형식이 아닙니다',
+            },
           })}
         />
         <p className="text-m-h4 text-skin7 mt-2 h-[14px]">
-          {errors.username?.message}
+          {errors.email?.message}
         </p>
       </div>
 
@@ -75,12 +119,18 @@ const Page = () => {
         </p>
       </div>
 
+      {/* 서버 에러 메시지 */}
+      {loginError && (
+        <p className="text-m-h4 text-red-500 mt-2 h-[14px]">{loginError}</p>
+      )}
+
       {/* 로그인 버튼 */}
       <button
         type="submit"
-        className="w-[260px] h-[40px] mt-[24px] bg-skin1 text-b-h3 text-skin5 rounded-[8px] font-bold hover:bg-skin1/80"
+        className="w-[260px] h-[40px] mt-[24px] bg-skin1 text-b-h3 text-skin5 rounded-[8px] font-bold hover:bg-skin1/80 disabled:bg-skin1/50"
+        disabled={loginMutation.isPending}
       >
-        로그인
+        {loginMutation.isPending ? '로그인 중...' : '로그인'}
       </button>
 
       {/* -- or -- */}
