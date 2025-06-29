@@ -9,12 +9,53 @@ import WriteTag from '@/components/features/write-date/write-tag';
 import UploadImageCarousel from '@/components/features/write-date/upload-image-carousel';
 import WriteContent from '@/components/features/write-date/write-content';
 import { useState } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { Date } from '../date-detail/[id]/page';
 
 const WriteDate = () => {
   const [imageUrls, setImageUrls] = useState<string[]>([]);
 
+  const queryClient = useQueryClient();
+
+  const addDate = async (newDate: Date) => {
+    await fetch('http://localhost:4000/date', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newDate),
+    });
+  };
+
+  const { mutate } = useMutation({
+    mutationFn: addDate,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['date'] });
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const newDate = {
+      images: imageUrls,
+      visibility: true,
+      address: '서울특별시 송파구 잠실 어쩌구 56-1',
+      emotion: 'happy',
+      date: '2025-01-01',
+      title: '첫 데이트',
+      content: '첫 데이트 내용입니다.',
+      tags: ['첫 데이트', '첫 데이트 내용', '첫 데이트 이미지'],
+    };
+
+    mutate(newDate);
+  };
+
   return (
-    <form className="flex flex-col justify-center items-center px-1">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col justify-center items-center px-1"
+    >
       {/* 캐러셀 이미지 업로드 */}
       <UploadImageCarousel imageUrls={imageUrls} setImageUrls={setImageUrls} />
 
