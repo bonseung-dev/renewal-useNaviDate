@@ -58,37 +58,10 @@
     },
     {
       "id": "fixed-id-000007",
-      "userAId": "fixed-id-000002",
-      "userBId": "fixed-id-000003",
-      "anniversary": "2024-04-01T00:00:00.000Z",
-      "name": "MoonStar",
-      "status": "confirm",
-      "createdAt": "2025-01-10T00:00:00.000Z"
-    },
-    {
-      "id": "fixed-id-000008",
       "userAId": "fixed-id-000003",
       "userBId": "fixed-id-000004",
       "anniversary": "2024-04-01T00:00:00.000Z",
-      "name": "StarCloud",
-      "status": "confirm",
-      "createdAt": "2025-01-10T00:00:00.000Z"
-    },
-    {
-      "id": "fixed-id-000009",
-      "userAId": "fixed-id-000004",
-      "userBId": "fixed-id-000005",
-      "anniversary": "2024-04-01T00:00:00.000Z",
-      "name": "CloudRain",
-      "status": "confirm",
-      "createdAt": "2025-01-10T00:00:00.000Z"
-    },
-    {
-      "id": "fixed-id-000010",
-      "userAId": "fixed-id-000005",
-      "userBId": "fixed-id-000001",
-      "anniversary": "2024-04-01T00:00:00.000Z",
-      "name": "RainSun",
+      "name": "MoonStar",
       "status": "confirm",
       "createdAt": "2025-01-10T00:00:00.000Z"
     }
@@ -738,14 +711,6 @@
       "repeat": "YEARLY",
       "memo": "우리의 첫 해외여행! 잊지 못할 순간이에요.",
       "createdBy": "fixed-id-000001"
-    },
-    {
-      "id": "3a02",
-      "title": "될까?",
-      "date": "2025-06-29",
-      "repeat": "YEARLY",
-      "createdBy": "fixed-id-000001",
-      "coupleId": "fixed-id-000006"
     }
   ]
 }

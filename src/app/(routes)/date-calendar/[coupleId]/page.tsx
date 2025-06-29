@@ -9,7 +9,6 @@ export async function generateMetadata({
 }: {
   params: { coupleId: string };
 }): Promise<Metadata> {
-  // 비동기로 쿠키 가져오기
   const coupleName = await getServerCookie('coupleName');
 
   return {
@@ -39,17 +38,8 @@ const Page = async ({ params, searchParams }: Props) => {
   const finalUserId = userId || searchParams.userId;
   const finalCoupleId = coupleId;
 
-  // 디버깅 로그 강화
-  console.log('Auth Debug:', {
-    storedUserId: userId,
-    paramUserId: searchParams.userId,
-    storedCoupleId: coupleId,
-    paramCoupleId: params.coupleId,
-    anniversaryExists: !!anniversary,
-  });
-
   if (!finalUserId || !finalCoupleId || finalCoupleId !== params.coupleId) {
-    console.error('Auth Failed:', {
+    console.error('데이터 로딩 실패:', {
       condition: !finalUserId
         ? 'No UserID'
         : !finalCoupleId

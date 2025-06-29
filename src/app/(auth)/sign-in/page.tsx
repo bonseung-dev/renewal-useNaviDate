@@ -2,16 +2,10 @@
 
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';
-import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { LoginFormData, loginSchema } from '@/lib/zod/auth.schema';
-import {
-  fetchCouple,
-  loginUser,
-  setServerCookies,
-} from '@/lib/services/auth.services';
-import { AUTH_ERRORS } from '@/constants/auth.constants';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useLoginMutation } from '@/lib/mutations/auth.mutations';
 
 const Page = () => {
   const {
@@ -24,43 +18,15 @@ const Page = () => {
   });
 
   const [loginError, setLoginError] = useState<string | null>(null);
-
-  const loginMutation = useMutation({
-    mutationFn: ({ email, password }: LoginFormData) =>
-      loginUser(email, password),
-    onSuccess: async (user) => {
-      try {
-        const couple = await fetchCouple(user.id);
-
-        // 로컬 스토리지 저장
-        localStorage.setItem('userId', user.id);
-        if (couple) {
-          localStorage.setItem('coupleId', couple.id);
-          localStorage.setItem('anniversary', couple.anniversary);
-        }
-
-        // 서버 쿠키 설정
-        await setServerCookies({
-          userId: user.id,
-          coupleId: couple?.id,
-          anniversary: couple?.anniversary,
-        });
-
-        // 페이지 리다이렉트
-        window.location.href = `/date-calendar/${couple?.id}?userId=${user.id}`;
-      } catch (error) {
-        console.error('Login Error:', error);
-        setLoginError(AUTH_ERRORS.LOGIN_FAILED);
-      }
-    },
-    onError: (error: Error) => {
-      setLoginError(error.message);
-    },
-  });
+  const loginMutation = useLoginMutation();
 
   const onSubmit = (data: LoginFormData) => {
     setLoginError(null);
-    loginMutation.mutate(data);
+    loginMutation.mutate(data, {
+      onError: (error: Error) => {
+        setLoginError(error.message);
+      },
+    });
   };
 
   return (

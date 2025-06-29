@@ -25,7 +25,7 @@ const Page = async ({ searchParams }: Props) => {
   const coupleId = await getServerCookie('coupleId');
 
   if (!userId || !coupleId) {
-    console.error('Missing auth data:', { userId, coupleId });
+    console.error('데이터 로딩 실패:', { userId, coupleId });
     return <LoginPrompt />;
   }
 
