@@ -14,6 +14,7 @@ import { Date } from '../date-detail/[id]/page';
 
 const WriteDate = () => {
   const [imageUrls, setImageUrls] = useState<string[]>([]);
+  const [visibility, setVisibility] = useState<boolean>(false);
 
   const queryClient = useQueryClient();
 
@@ -39,7 +40,7 @@ const WriteDate = () => {
 
     const newDate = {
       images: imageUrls,
-      visibility: true,
+      visibility,
       address: '서울특별시 송파구 잠실 어쩌구 56-1',
       emotion: 'happy',
       date: '2025-01-01',
@@ -60,7 +61,7 @@ const WriteDate = () => {
       <UploadImageCarousel imageUrls={imageUrls} setImageUrls={setImageUrls} />
 
       {/* 게시글 공개 여부 */}
-      <PostVisibility />
+      <PostVisibility visibility={visibility} setVisibility={setVisibility} />
 
       {/* 주소 검색 */}
       <SearchAddress />
