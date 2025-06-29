@@ -1,10 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAnniversaries } from '@/lib/hooks/use-anniversaries';
 import AnniversaryHeader from './anniversary-header';
 import AnniversaryList from './anniversary-list';
-import dummyData from '@/lib/utils/dummy.utils';
 import AnniversaryEditor from './anniversary-editor';
 import { Anniversary, PartnerInfo } from '@/types/anniversary.type';
 import { Dialog } from '@/components/ui/dialog';
@@ -22,6 +21,7 @@ const AnniversaryTab = ({
 }: AnniversaryTabProps) => {
   const {
     anniversaries,
+    loadAnniversaries,
     addAnniversary: add,
     updateAnniversary: update,
     deleteAnniversary: remove,
@@ -30,25 +30,52 @@ const AnniversaryTab = ({
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [editingAnniversary, setEditingAnniversary] =
     useState<Anniversary | null>(null);
+  const [partner, setPartner] = useState<PartnerInfo | null>(null);
 
-  const couple = dummyData.couples.find((c) => c.id === coupleId);
-  const partner: PartnerInfo | null = couple
-    ? {
-        id: couple.userAId === userId ? couple.userBId : couple.userAId,
-        profileImage:
-          dummyData.users.find(
-            (u) =>
-              u.id ===
-              (couple.userAId === userId ? couple.userBId : couple.userAId),
-          )?.profileImage || '/placeholder-image.png',
-        nickname:
-          dummyData.users.find(
-            (u) =>
-              u.id ===
-              (couple.userAId === userId ? couple.userBId : couple.userAId),
-          )?.nickname || '애인 이름',
+  // 파트너 정보 가져오기 함수 (useCallback으로 메모이제이션)
+  const fetchPartnerInfo = useCallback(async () => {
+    try {
+      // 커플 정보 가져오기
+      const coupleResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/couples/${coupleId}`,
+      );
+      if (!coupleResponse.ok) throw new Error('Failed to fetch couple data');
+      const couple = await coupleResponse.json();
+
+      // 파트너 ID 결정
+      const partnerId =
+        couple.userAId === userId ? couple.userBId : couple.userAId;
+
+      // 파트너 정보 가져오기
+      const userResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/${partnerId}`,
+      );
+      if (!userResponse.ok) throw new Error('Failed to fetch partner data');
+      const partnerData = await userResponse.json();
+
+      setPartner({
+        id: partnerId,
+        profileImage: partnerData.profileImage || '/placeholder-image.png',
+        nickname: partnerData.nickname || '애인 이름',
+      });
+    } catch (error) {
+      console.error('Error fetching partner info:', error);
+      setPartner(null);
+    }
+  }, [coupleId, userId]);
+
+  // 초기 데이터 로드
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        await Promise.all([loadAnniversaries(), fetchPartnerInfo()]);
+      } catch (error) {
+        console.error('Error loading initial data:', error);
       }
-    : null;
+    };
+
+    loadData();
+  }, [loadAnniversaries, fetchPartnerInfo]);
 
   const handleAddClick = () => {
     setEditingAnniversary(null);
@@ -65,9 +92,8 @@ const AnniversaryTab = ({
     try {
       await remove(id);
     } catch (error) {
-      if (error instanceof Error && error.message === 'DUMMY_DATA_DELETE') {
-        alert('더미 데이터는 삭제할 수 없습니다.');
-      }
+      console.error('Error deleting anniversary:', error);
+      alert('기념일 삭제에 실패했습니다.');
     }
   };
 
@@ -76,9 +102,8 @@ const AnniversaryTab = ({
       await update(data);
       handleSubmitSuccess();
     } catch (error) {
-      if (error instanceof Error && error.message === 'DUMMY_DATA_EDIT') {
-        alert('더미 데이터는 수정할 수 없습니다.');
-      }
+      console.error('Error updating anniversary:', error);
+      alert('기념일 수정에 실패했습니다.');
     }
   };
 

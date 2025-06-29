@@ -155,7 +155,7 @@
       "title": "별 보러 갔어요",
       "content": "밤하늘의 별이 너무 예뻤어요. 낭만적인 밤!",
       "visibility": "public",
-      "date": "2025-04-18",
+      "date": "2025-06-18",
       "emotion": "Joy",
       "createdAt": "2025-04-18T00:00:00.000Z",
       "deletedAt": null
@@ -166,7 +166,7 @@
       "title": "놀이공원 데이트",
       "content": "놀이공원에서 하루 종일 놀았어요. 너무 신났어요!",
       "visibility": "public",
-      "date": "2025-04-20",
+      "date": "2025-06-20",
       "emotion": "Fun",
       "createdAt": "2025-04-20T00:00:00.000Z",
       "deletedAt": null
@@ -697,7 +697,7 @@
     {
       "id": "anni-a1b2c3-vwxy",
       "coupleId": "fixed-id-000006",
-      "title": "첫 데이트",
+      "title": "첫 데이트-수정이 잘될까?",
       "date": "2025-04-01",
       "repeat": "YEARLY",
       "memo": "우리의 첫 데이트! 잊지 못할 순간이에요.",
@@ -738,6 +738,14 @@
       "repeat": "YEARLY",
       "memo": "우리의 첫 해외여행! 잊지 못할 순간이에요.",
       "createdBy": "fixed-id-000001"
+    },
+    {
+      "id": "3a02",
+      "title": "될까?",
+      "date": "2025-06-29",
+      "repeat": "YEARLY",
+      "createdBy": "fixed-id-000001",
+      "coupleId": "fixed-id-000006"
     }
   ]
 }
