@@ -1,8 +1,26 @@
-// 정렬 옵션 타입
 export type SortOption = 'latest' | 'likes' | 'bookmarks';
 
-// 확장된 포스트 타입
-export type EnhancedPost = {
+export type User = {
+  id: string;
+  email: string;
+  password: string;
+  nickname: string;
+  profileImage: string;
+  createdAt: string;
+  tempToken?: string;
+};
+
+export type Couple = {
+  id: string;
+  userAId: string;
+  userBId: string;
+  anniversary: string;
+  name: string;
+  status: 'pending' | 'confirm' | 'delete';
+  createdAt: string;
+};
+
+export type Post = {
   id: string;
   userId: string;
   title: string;
@@ -10,38 +28,46 @@ export type EnhancedPost = {
   visibility: 'private' | 'public';
   date: string;
   emotion: 'Joy' | 'Fun' | 'Soso' | 'Sad' | 'Mad';
+  createdAt: string;
+  deletedAt: string | null;
+};
+
+export type PostTag = {
+  id: string;
+  postId: string;
+  name: string;
+};
+
+export type PostImage = {
+  id: string;
+  postId: string;
+  imageUrl: string;
+  address: string | null;
+  isRepresentative: boolean;
+};
+
+export type Like = {
+  id: string;
+  postId: string;
+  userId: string;
+  createdAt: string;
+};
+
+export type Bookmark = {
+  id: string;
+  postId: string;
+  userId: string;
+  createdAt: string;
+};
+
+export type EnhancedPost = Omit<Post, 'createdAt' | 'deletedAt'> & {
   createdAt: Date;
   deletedAt: Date | null;
-  author?: {
-    id: string;
-    email: string;
-    password: string;
-    nickname: string;
-    profileImage: string;
-    createdAt: Date;
-    tempToken?: string;
-  };
-  partner?: {
-    id: string;
-    email: string;
-    password: string;
-    nickname: string;
-    profileImage: string;
-    createdAt: Date;
-    tempToken?: string;
-  };
-  tags: {
-    id: string;
-    postId: string;
-    name: string;
-  }[];
-  images: {
-    id: string;
-    postId: string;
-    imageUrl: string;
-    address: string | null;
-    isRepresentative: boolean; // 대표 이미지 여부
-  }[]; // 최소 한 개의 이미지가 존재
+  author?: User;
+  partner?: User;
+  couple?: Couple;
+  tags: PostTag[];
+  images: PostImage[];
   likesCount: number;
   bookmarksCount: number;
 };

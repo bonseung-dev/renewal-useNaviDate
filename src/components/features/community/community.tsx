@@ -8,16 +8,101 @@ import {
   SelectItem,
   SelectTrigger,
 } from '@/components/ui/select';
-import { EnhancedPost, SortOption } from '@/types/community.type';
-
+import { useQuery } from '@tanstack/react-query';
+import {
+  EnhancedPost,
+  SortOption,
+  User,
+  Couple,
+  PostTag,
+  PostImage,
+  Like,
+  Bookmark,
+  Post,
+} from '@/types/community.type';
 import PostCard from './post-card';
 import { debounce } from 'lodash';
 
-const Community = ({ initialPosts }: { initialPosts: EnhancedPost[] }) => {
+const Community = () => {
   const [sortOption, setSortOption] = useState<SortOption>('latest');
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
-  const [, setTriggerSearch] = useState(false); // 명시적 검색
+  const [, setTriggerSearch] = useState(false);
+
+  // 로그인한 사용자 ID 가져오기
+  const [userId, setUserId] = useState<string | null>(null);
+  useEffect(() => {
+    const storedUserId = localStorage.getItem('userId');
+    setUserId(storedUserId);
+  }, []);
+
+  // 데이터 가져오기
+  const { data: postsData, isLoading: postsLoading } = useQuery<Post[]>({
+    queryKey: ['posts', debouncedQuery],
+    queryFn: async () => {
+      const response = await fetch(
+        `http://localhost:4000/posts?visibility=public${
+          debouncedQuery ? `&q=${encodeURIComponent(debouncedQuery)}` : ''
+        }`,
+      );
+      if (!response.ok) throw new Error('포스트를 가져오는데 실패했습니다.');
+      return response.json();
+    },
+  });
+
+  const { data: usersData } = useQuery<User[]>({
+    queryKey: ['users'],
+    queryFn: async () => {
+      const response = await fetch('http://localhost:4000/users');
+      if (!response.ok) throw new Error('사용자를 가져오는데 실패했습니다.');
+      return response.json();
+    },
+  });
+
+  const { data: couplesData } = useQuery<Couple[]>({
+    queryKey: ['couples'],
+    queryFn: async () => {
+      const response = await fetch('http://localhost:4000/couples');
+      if (!response.ok) throw new Error('커플을 가져오는데 실패했습니다.');
+      return response.json();
+    },
+  });
+
+  const { data: postTagsData } = useQuery<PostTag[]>({
+    queryKey: ['postTags'],
+    queryFn: async () => {
+      const response = await fetch('http://localhost:4000/postTags');
+      if (!response.ok) throw new Error('태그를 가져오는데 실패했습니다.');
+      return response.json();
+    },
+  });
+
+  const { data: postImagesData } = useQuery<PostImage[]>({
+    queryKey: ['postImages'],
+    queryFn: async () => {
+      const response = await fetch('http://localhost:4000/postImages');
+      if (!response.ok) throw new Error('이미지를 가져오는데 실패했습니다.');
+      return response.json(); // 오타 수정: response.json -> response.json()
+    },
+  });
+
+  const { data: likesData } = useQuery<Like[]>({
+    queryKey: ['likes'],
+    queryFn: async () => {
+      const response = await fetch('http://localhost:4000/likes');
+      if (!response.ok) throw new Error('좋아요를 가져오는데 실패했습니다.');
+      return response.json();
+    },
+  });
+
+  const { data: bookmarksData } = useQuery<Bookmark[]>({
+    queryKey: ['bookmarks'],
+    queryFn: async () => {
+      const response = await fetch('http://localhost:4000/bookmarks');
+      if (!response.ok) throw new Error('북마크를 가져오는데 실패했습니다.');
+      return response.json();
+    },
+  });
 
   // 디바운싱 설정 (400ms 지연)
   const debouncedSearch = useMemo(
@@ -41,26 +126,75 @@ const Community = ({ initialPosts }: { initialPosts: EnhancedPost[] }) => {
 
   // 엔터 키 또는 검색 아이콘 클릭 핸들러
   const handleExplicitSearch = () => {
-    setTriggerSearch((prev) => !prev); // 상태 토글로 강제 리렌더링
+    setTriggerSearch((prev) => !prev);
   };
 
-  // 검색 로직
-  const filteredPosts = useMemo(() => {
-    const query = debouncedQuery.toLowerCase();
-    if (!query) return initialPosts;
+  // 엔터 키 감지
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleExplicitSearch();
+    }
+  };
 
-    return initialPosts.filter((post) => {
-      const titleMatch = post.title.toLowerCase().includes(query);
-      const tagMatch =
-        post.tags?.some((tag) => tag.name.toLowerCase().includes(query)) ||
-        false;
-      return titleMatch || tagMatch;
-    });
-  }, [initialPosts, debouncedQuery]);
+  // EnhancedPost 생성
+  const enhancedPosts: EnhancedPost[] = useMemo(() => {
+    if (
+      !postsData ||
+      !usersData ||
+      !couplesData ||
+      !postTagsData ||
+      !postImagesData ||
+      !likesData ||
+      !bookmarksData
+    ) {
+      return [];
+    }
+
+    return postsData.map((post) => ({
+      ...post,
+      createdAt: new Date(post.createdAt),
+      deletedAt: post.deletedAt ? new Date(post.deletedAt) : null,
+      couple: couplesData.find(
+        (c) => c.userAId === post.userId || c.userBId === post.userId,
+      ),
+      author: usersData.find((u) => u.id === post.userId),
+      partner: couplesData.find(
+        (c) => c.userAId === post.userId || c.userBId === post.userId,
+      )
+        ? usersData.find((u) => {
+            const couple = couplesData.find(
+              (c) => c.userAId === post.userId || c.userBId === post.userId,
+            );
+            return (
+              u.id ===
+              (couple?.userAId === post.userId
+                ? couple?.userBId
+                : couple?.userAId)
+            );
+          })
+        : undefined,
+      tags: postTagsData.filter((tag) => tag.postId === post.id),
+      images: postImagesData.filter(
+        (image: PostImage) => image.postId === post.id,
+      ), // 타입 명시
+      likesCount: likesData.filter((like) => like.postId === post.id).length,
+      bookmarksCount: bookmarksData.filter(
+        (bookmark) => bookmark.postId === post.id,
+      ).length,
+    }));
+  }, [
+    postsData,
+    usersData,
+    couplesData,
+    postTagsData,
+    postImagesData,
+    likesData,
+    bookmarksData,
+  ]);
 
   // 정렬 로직
   const sortedPosts = useMemo(() => {
-    return [...filteredPosts].sort((a, b) => {
+    return [...enhancedPosts].sort((a, b) => {
       if (sortOption === 'latest') {
         return b.createdAt.getTime() - a.createdAt.getTime();
       } else if (sortOption === 'likes') {
@@ -70,14 +204,11 @@ const Community = ({ initialPosts }: { initialPosts: EnhancedPost[] }) => {
       }
       return 0;
     });
-  }, [filteredPosts, sortOption]);
+  }, [enhancedPosts, sortOption]);
 
-  // 엔터 키 감지
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleExplicitSearch();
-    }
-  };
+  if (postsLoading) {
+    return <div className="text-center py-10 text-skin4">로딩 중...</div>;
+  }
 
   return (
     <div className="w-full max-w-[360px] px-4 pt-3 pb-[114px] mx-auto relative">
@@ -116,14 +247,20 @@ const Community = ({ initialPosts }: { initialPosts: EnhancedPost[] }) => {
       {/* 검색 결과 표시 */}
       {debouncedQuery && (
         <div className="mb-1 text-b-h3 font-bold text-skin1">
-          &quot;{debouncedQuery}&quot; 검색 결과 {sortedPosts.length}개
+          {'}{debouncedQuery}{'} 검색 결과 {sortedPosts.length}개
         </div>
       )}
 
       {/* 포스트 카드 목록 */}
       <div className="flex flex-col gap-[20px] mt-5">
         {sortedPosts.length > 0 ? (
-          sortedPosts.map((post) => <PostCard key={post.id} post={post} />)
+          sortedPosts.map((post) => (
+            <PostCard
+              key={post.id}
+              post={post}
+              isMyPost={userId === post.userId}
+            />
+          ))
         ) : (
           <div className="text-center py-10 text-skin4">
             {debouncedQuery ? '검색 결과가 없습니다' : '포스트가 없습니다'}
