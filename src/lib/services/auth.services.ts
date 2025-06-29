@@ -1,6 +1,5 @@
+import { BASE_URL } from '@/constants/url.constants';
 import { User, Couple } from '@/types/community.type';
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 // 사용자 로그인 함수
 export const loginUser = async (
@@ -8,7 +7,7 @@ export const loginUser = async (
   password: string,
 ): Promise<User> => {
   const response = await fetch(
-    `${API_BASE_URL}/users?email=${encodeURIComponent(email)}`,
+    `${BASE_URL}/users?email=${encodeURIComponent(email)}`,
   );
   if (!response.ok) throw new Error('서버 오류가 발생했습니다.');
 
@@ -27,7 +26,7 @@ export const loginUser = async (
 export const fetchCouple = async (
   userId: string,
 ): Promise<Couple | undefined> => {
-  const response = await fetch(`${API_BASE_URL}/couples`);
+  const response = await fetch(`${BASE_URL}/couples`);
   const couples: Couple[] = await response.json();
   return couples.find((c) => c.userAId === userId || c.userBId === userId);
 };
