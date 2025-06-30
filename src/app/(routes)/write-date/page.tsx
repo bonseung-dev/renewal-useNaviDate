@@ -10,11 +10,12 @@ import UploadImageCarousel from '@/components/features/write-date/upload-image-c
 import WriteContent from '@/components/features/write-date/write-content';
 import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Date } from '../date-detail/[id]/page';
+import { Date } from '../date-detail/[dateId]/page';
 
 const WriteDate = () => {
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [visibility, setVisibility] = useState<boolean>(false);
+  const [emotion, setEmotion] = useState<string>('');
 
   const queryClient = useQueryClient();
 
@@ -42,7 +43,7 @@ const WriteDate = () => {
       images: imageUrls,
       visibility,
       address: '서울특별시 송파구 잠실 어쩌구 56-1',
-      emotion: 'happy',
+      emotion,
       date: '2025-01-01',
       title: '첫 데이트',
       content: '첫 데이트 내용입니다.',
@@ -67,7 +68,7 @@ const WriteDate = () => {
       <SearchAddress />
 
       {/* 기분 선택 */}
-      <SelectEmotion />
+      <SelectEmotion emotion={emotion} setEmotion={setEmotion} />
 
       {/* 구분선 */}
       <Divider />

@@ -8,19 +8,33 @@ const emotions = [
   { key: 'angry', src: '/emotions/emotion_angry.png' },
 ];
 
-const SelectEmotion = () => {
+const SelectEmotion = ({
+  emotion,
+  setEmotion,
+}: {
+  emotion: string;
+  setEmotion: (emotion: string) => void;
+}) => {
+  const handleEmotionClick = (emotion: string) => {
+    setEmotion(emotion);
+  };
+
   return (
     <section className="flex gap-5 items-center justify-center my-2">
-      {emotions.map((emotion) => {
+      {emotions.map((emotionItem) => {
         return (
-          <button key={emotion.key}>
+          <button
+            type="button"
+            key={emotionItem.key}
+            onClick={() => handleEmotionClick(emotionItem.key)}
+          >
             <Image
-              src={emotion.src}
-              alt={emotion.key}
+              src={emotionItem.src}
+              alt={emotionItem.key}
               unoptimized
               width={40}
               height={40}
-              className="rounded border border-skin2"
+              className={`rounded  ${emotionItem.key === emotion ? 'border-4 border-skin3' : 'border border-skin2'}`}
             />
           </button>
         );
