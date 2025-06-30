@@ -5,14 +5,23 @@ import { Bookmark, Heart } from 'lucide-react';
 import { EnhancedPost } from '@/types/community.type';
 import { useState } from 'react';
 
-const PostCard = ({ post }: { post: EnhancedPost }) => {
+interface PostCardProps {
+  post: EnhancedPost;
+  isMyPost: boolean;
+}
+
+const PostCard = ({ post, isMyPost }: PostCardProps) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [showLikesCount, setShowLikesCount] = useState(false);
   const [showBookmarksCount, setShowBookmarksCount] = useState(false);
 
   return (
-    <div className="w-[280px] h-[320px] rounded-[20px] overflow-hidden relative shadow-shadow1">
+    <div
+      className={`w-[280px] h-[320px] rounded-[20px] overflow-hidden relative shadow-shadow1 ${
+        isMyPost ? 'border-2 border-skin1' : ''
+      }`}
+    >
       <div className="absolute inset-0">
         {/* 대표 이미지 렌더링 */}
         {post.images.length > 0 ? (
@@ -45,9 +54,12 @@ const PostCard = ({ post }: { post: EnhancedPost }) => {
           <h3 className="text-skin5 text-m-h1 line-clamp-1">{post.title}</h3>
           <div className="mt-1 text-skin5 text-m-h4">
             {post.tags.map((tag) => (
-              <span key={tag.id}>#{tag.name}</span>
+              <span key={tag.id}>#{tag.name} </span>
             ))}
           </div>
+          {isMyPost && (
+            <div className="mt-1 text-skin5 text-m-h4 font-bold">내 포스트</div>
+          )}
         </div>
         {/* 하단 정보 */}
         <div className="absolute bottom-[20px] left-[20px] right-[20px] h-[36px] flex items-center justify-between">
@@ -55,7 +67,7 @@ const PostCard = ({ post }: { post: EnhancedPost }) => {
             <div className="w-9 h-9 rounded-full overflow-hidden relative">
               <Image
                 src={post.author?.profileImage || '/default-profile.jpg'}
-                alt={post.author?.id || '작성자 프로필'}
+                alt={post.author?.nickname || '작성자 프로필'}
                 width={36}
                 height={36}
                 className="object-cover w-full h-full"
@@ -67,10 +79,7 @@ const PostCard = ({ post }: { post: EnhancedPost }) => {
                 {post.author?.nickname || 'Unknown User'}
               </div>
               <div className="text-l-title4 font-light text-skin5">
-                {new Date(post.date)
-                  .toISOString()
-                  .split('T')[0]
-                  .replace(/-/g, '-')}
+                {post.date}
               </div>
             </div>
           </div>
@@ -117,7 +126,7 @@ const PostCard = ({ post }: { post: EnhancedPost }) => {
               </button>
               {showBookmarksCount && (
                 <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-skin1/60 text-skin5 text-l-title5 font-light px-2 py-1 rounded whitespace-nowrap">
-                  {post.bookmarksCount || 0}
+                  {post.bookmarksCount} bookmarks
                 </div>
               )}
             </div>
