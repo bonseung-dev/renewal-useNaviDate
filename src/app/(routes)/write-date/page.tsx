@@ -16,11 +16,13 @@ const WriteDate = () => {
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [visibility, setVisibility] = useState<boolean>(false);
   const [emotion, setEmotion] = useState<string>('');
+  const [title, setTitle] = useState<string>('');
+  const [content, setContent] = useState<string>('');
 
   const queryClient = useQueryClient();
 
   const addDate = async (newDate: Date) => {
-    await fetch('http://localhost:4000/date', {
+    await fetch('http://localhost:4000/dates', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -45,8 +47,8 @@ const WriteDate = () => {
       address: '서울특별시 송파구 잠실 어쩌구 56-1',
       emotion,
       date: '2025-01-01',
-      title: '첫 데이트',
-      content: '첫 데이트 내용입니다.',
+      title,
+      content,
       tags: ['첫 데이트', '첫 데이트 내용', '첫 데이트 이미지'],
     };
 
@@ -74,7 +76,12 @@ const WriteDate = () => {
       <Divider />
 
       {/* 내용 입력 */}
-      <WriteContent />
+      <WriteContent
+        content={content}
+        setContent={setContent}
+        title={title}
+        setTitle={setTitle}
+      />
 
       {/* 구분선 */}
       <Divider />
