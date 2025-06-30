@@ -18,6 +18,8 @@ const WriteDate = () => {
   const [emotion, setEmotion] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
+  const [tags, setTags] = useState<string[]>([]);
+  const [inputValue, setInputValue] = useState<string>('');
 
   const queryClient = useQueryClient();
 
@@ -49,7 +51,7 @@ const WriteDate = () => {
       date: '2025-01-01',
       title,
       content,
-      tags: ['첫 데이트', '첫 데이트 내용', '첫 데이트 이미지'],
+      tags,
     };
 
     mutate(newDate);
@@ -87,7 +89,12 @@ const WriteDate = () => {
       <Divider />
 
       {/* 태그 입력 */}
-      <WriteTag />
+      <WriteTag
+        tags={tags}
+        setTags={setTags}
+        inputValue={inputValue}
+        setInputValue={setInputValue}
+      />
 
       {/* 게시글 등록 */}
       <SubmitPost />
