@@ -1,4 +1,4 @@
-import { Date } from '@/app/(routes)/date-detail/[id]/page';
+import { Date } from '@/app/(routes)/date-detail/[dateId]/page';
 
 const WrittenTags = ({ date }: { date: Date }) => {
   return (
