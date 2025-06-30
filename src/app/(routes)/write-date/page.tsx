@@ -11,6 +11,7 @@ import WriteContent from '@/components/features/write-date/write-content';
 import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Date } from '../date-detail/[dateId]/page';
+import { useRouter } from 'next/navigation';
 
 const WriteDate = () => {
   const [imageUrls, setImageUrls] = useState<string[]>([]);
@@ -22,6 +23,7 @@ const WriteDate = () => {
   const [inputValue, setInputValue] = useState<string>('');
 
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   const addDate = async (newDate: Date) => {
     await fetch('http://localhost:4000/dates', {
@@ -33,10 +35,27 @@ const WriteDate = () => {
     });
   };
 
+  const resetForm = () => {
+    setImageUrls([]);
+    setVisibility(false);
+    setEmotion('');
+    setTitle('');
+    setContent('');
+    setTags([]);
+    setInputValue('');
+  };
+
   const { mutate } = useMutation({
     mutationFn: addDate,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['date'] });
+      resetForm();
+      alert('게시글이 성공적으로 등록되었습니다!');
+      router.push('/community');
+    },
+    onError: (error) => {
+      console.error('게시글 등록 실패:', error);
+      alert('게시글 등록에 실패했습니다. 다시 시도해주세요.');
     },
   });
 
