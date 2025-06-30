@@ -15,3 +15,13 @@ export type PartnerInfo = {
   profileImage: string;
   nickname: string;
 };
+
+export type CoupleResponse = {
+  userAId: string;
+  userBId: string;
+};
+
+export type UserResponse = {
+  profileImage?: string;
+  nickname?: string;
+};
