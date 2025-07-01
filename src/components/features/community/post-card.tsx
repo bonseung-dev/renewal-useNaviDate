@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { Bookmark, Heart } from 'lucide-react';
 import { EnhancedPost } from '@/types/community.type';
 import { useState } from 'react';
+import { formatDate } from '@/lib/utils/coomunity.utils';
 
 interface PostCardProps {
   post: EnhancedPost;
@@ -94,9 +95,9 @@ const PostCard = ({ post, isMyPost }: PostCardProps) => {
               </p>
               <time
                 className="text-l-title4 font-light text-skin5"
-                dateTime={new Date(post.date).toISOString()}
+                dateTime={post.createdAt.toISOString()}
               >
-                {post.date}
+                {formatDate(post.createdAt)}
               </time>
             </div>
           </div>

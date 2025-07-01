@@ -78,9 +78,7 @@ const Community = () => {
         <nav aria-label="정렬 옵션">
           <Select
             value={sortOption}
-            onValueChange={(value: string) =>
-              setSortOption(value as SortOption)
-            }
+            onValueChange={(value: SortOption) => setSortOption(value)}
           >
             <SelectTrigger className="w-[20px] h-[20px]">
               <Menu className="w-5 h-5 text-skin1" aria-hidden="true" />

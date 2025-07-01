@@ -7,7 +7,6 @@ import {
   PostImage,
   Like,
   Bookmark,
-  EnhancedPost,
 } from '@/types/community.type';
 
 // 포스트 조회
@@ -59,45 +58,4 @@ export const fetchBookmarks = async (): Promise<Bookmark[]> => {
   const response = await fetch(`${BASE_URL}/bookmarks`);
   if (!response.ok) throw new Error('북마크를 가져오는데 실패했습니다.');
   return response.json();
-};
-
-// EnhancedPost 생성 함수
-export const createEnhancedPosts = (
-  posts: Post[],
-  users: User[],
-  couples: Couple[],
-  postTags: PostTag[],
-  postImages: PostImage[],
-  likes: Like[],
-  bookmarks: Bookmark[],
-): EnhancedPost[] => {
-  return posts.map((post) => ({
-    ...post,
-    createdAt: new Date(post.createdAt),
-    deletedAt: post.deletedAt ? new Date(post.deletedAt) : null,
-    couple: couples.find(
-      (c) => c.userAId === post.userId || c.userBId === post.userId,
-    ),
-    author: users.find((u) => u.id === post.userId),
-    partner: couples.find(
-      (c) => c.userAId === post.userId || c.userBId === post.userId,
-    )
-      ? users.find((u) => {
-          const couple = couples.find(
-            (c) => c.userAId === post.userId || c.userBId === post.userId,
-          );
-          return (
-            u.id ===
-            (couple?.userAId === post.userId
-              ? couple?.userBId
-              : couple?.userAId)
-          );
-        })
-      : undefined,
-    tags: postTags.filter((tag) => tag.postId === post.id),
-    images: postImages.filter((image) => image.postId === post.id),
-    likesCount: likes.filter((like) => like.postId === post.id).length,
-    bookmarksCount: bookmarks.filter((bookmark) => bookmark.postId === post.id)
-      .length,
-  }));
 };
