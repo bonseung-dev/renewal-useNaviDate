@@ -26,7 +26,7 @@ const WriteDate = () => {
   const router = useRouter();
 
   const addDate = async (newDate: Date) => {
-    await fetch('http://localhost:4000/dates', {
+    await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/dates`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
