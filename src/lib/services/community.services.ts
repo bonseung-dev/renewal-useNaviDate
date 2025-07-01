@@ -101,3 +101,73 @@ export const fetchBookmarks = async (): Promise<Bookmark[]> => {
   if (!response.ok) throw new Error('북마크를 가져오는데 실패했습니다.');
   return response.json();
 };
+
+// 좋아요 추가/삭제 함수
+export const toggleLike = async (
+  postId: string,
+  userId: string,
+): Promise<Like | { message: string }> => {
+  // 먼저 기존 좋아요 여부 확인
+  const checkResponse = await fetch(
+    `${BASE_URL}/likes?postId=${postId}&userId=${userId}`,
+  );
+  const existingLikes = await checkResponse.json();
+
+  // 이미 좋아요가 있으면 삭제
+  if (existingLikes.length > 0) {
+    const deleteResponse = await fetch(
+      `${BASE_URL}/likes/${existingLikes[0].id}`,
+      {
+        method: 'DELETE',
+      },
+    );
+    if (!deleteResponse.ok) throw new Error('좋아요 취소 실패');
+    return { message: '좋아요 취소 성공' };
+  }
+
+  // 없으면 추가
+  const createResponse = await fetch(`${BASE_URL}/likes`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ postId, userId }),
+  });
+  if (!createResponse.ok) throw new Error('좋아요 추가 실패');
+  return createResponse.json();
+};
+
+// 북마크 추가/삭제 함수
+export const toggleBookmark = async (
+  postId: string,
+  userId: string,
+): Promise<Bookmark | { message: string }> => {
+  // 먼저 기존 북마크 여부 확인
+  const checkResponse = await fetch(
+    `${BASE_URL}/bookmarks?postId=${postId}&userId=${userId}`,
+  );
+  const existingBookmarks = await checkResponse.json();
+
+  // 이미 북마크가 있으면 삭제
+  if (existingBookmarks.length > 0) {
+    const deleteResponse = await fetch(
+      `${BASE_URL}/bookmarks/${existingBookmarks[0].id}`,
+      {
+        method: 'DELETE',
+      },
+    );
+    if (!deleteResponse.ok) throw new Error('좋아요 취소 실패');
+    return { message: '좋아요 취소 성공' };
+  }
+
+  // 없으면 추가
+  const createResponse = await fetch(`${BASE_URL}/bookmarks`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ postId, userId }),
+  });
+  if (!createResponse.ok) throw new Error('좋아요 추가 실패');
+  return createResponse.json();
+};

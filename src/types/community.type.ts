@@ -70,4 +70,6 @@ export type EnhancedPost = Omit<Post, 'createdAt' | 'deletedAt'> & {
   images: PostImage[];
   likesCount: number;
   bookmarksCount: number;
+  likes: Like[]; // 현재 사용자의 좋아요 상태 확인을 위해 추가
+  bookmarks: Bookmark[]; // 현재 사용자의 북마크 상태 확인을 위해 추가
 };
