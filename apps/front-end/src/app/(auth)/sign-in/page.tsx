@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { LoginDto, AuthResponse } from '@use-navi-date/shared';
 import { setAuthToken, getTokenFromCookie } from '@/lib/utils/api';
 import { AuthService } from '@/lib/api/services';
+import GoogleLoginButton from '@/components/ui/google-login-button';
 
 const SignInPage = () => {
   const router = useRouter();
@@ -44,8 +45,20 @@ const SignInPage = () => {
   };
 
   const handleGoogleLogin = () => {
-    // 새로운 API 라우트 사용
-    window.location.href = '/api/auth/google';
+    // Google 로그인 시작 시 로딩 상태 설정
+    setIsLoading(true);
+  };
+
+  const handleGoogleSuccess = (user: any) => {
+    // Google 로그인 성공 처리
+    localStorage.setItem('user', JSON.stringify(user));
+    router.push('/');
+  };
+
+  const handleGoogleError = (error: string) => {
+    // Google 로그인 실패 처리
+    setError(error);
+    setIsLoading(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -147,18 +160,14 @@ const SignInPage = () => {
           </div>
 
           {/* Google 로그인 버튼 */}
-          <button
-            onClick={handleGoogleLogin}
-            className="w-full bg-white border border-skin5 text-skin2 py-3 px-4 rounded-lg hover:bg-skin4 transition-colors flex items-center justify-center space-x-2"
+          <GoogleLoginButton
+            onLogin={handleGoogleLogin}
+            onSuccess={handleGoogleSuccess}
+            onError={handleGoogleError}
+            disabled={isLoading}
           >
-            <Image
-              src="/icons/google.png"
-              alt="Google"
-              width={20}
-              height={20}
-            />
-            <span>Google로 로그인</span>
-          </button>
+            Google로 로그인
+          </GoogleLoginButton>
 
           {/* 회원가입 링크 */}
           <div className="text-center mt-6">

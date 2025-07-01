@@ -21,6 +21,7 @@ export class PostsService {
       date: entity.date.toISOString(),
       emotion: entity.emotion,
       createdAt: entity.createdAt.toISOString(),
+      updatedAt: entity.updatedAt.toISOString(),
       deletedAt: entity.deletedAt ? entity.deletedAt.toISOString() : null,
     };
   }

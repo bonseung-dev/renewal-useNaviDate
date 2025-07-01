@@ -16,10 +16,10 @@ export class UsersService {
     return {
       id: entity.id,
       email: entity.email,
-      password: entity.password,
       nickname: entity.nickname,
       profileImage: entity.profileImage,
       createdAt: entity.createdAt.toISOString(),
+      updatedAt: entity.updatedAt.toISOString(),
     };
   }
 

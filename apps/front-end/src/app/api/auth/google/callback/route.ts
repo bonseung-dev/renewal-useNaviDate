@@ -1,37 +1,45 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(request: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const token = searchParams.get('token');
-    const success = searchParams.get('success');
-    const error = searchParams.get('error');
+    const { code } = await request.json();
 
-    if (success === 'true' && token) {
-      // 성공 시 토큰을 쿠키에 저장하고 메인 페이지로 리다이렉트
-      const response = NextResponse.redirect(new URL('/', request.url));
-      
-      // HttpOnly 쿠키로 토큰 저장 (보안 강화)
-      response.cookies.set('authToken', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 7 * 24 * 60 * 60, // 7일
-        path: '/',
+    if (!code) {
+      return NextResponse.json(
+        { success: false, message: '인증 코드가 필요합니다.' },
+        { status: 400 }
+      );
+    }
+
+    // 백엔드로 인증 코드 전송
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+    const response = await fetch(`${backendUrl}/auth/google/callback?code=${code}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      return NextResponse.json({
+        success: true,
+        access_token: data.access_token,
+        user: data.user,
+        message: data.message,
       });
-
-      return response;
     } else {
-      // 실패 시 로그인 페이지로 리다이렉트
-      const errorMessage = error || '로그인에 실패했습니다.';
-      return NextResponse.redirect(
-        new URL(`/sign-in?error=${encodeURIComponent(errorMessage)}`, request.url)
+      return NextResponse.json(
+        { success: false, message: data.message || '인증에 실패했습니다.' },
+        { status: 400 }
       );
     }
   } catch (error) {
     console.error('Google OAuth 콜백 처리 오류:', error);
-    return NextResponse.redirect(
-      new URL('/sign-in?error=인증 처리 중 오류가 발생했습니다.', request.url)
+    return NextResponse.json(
+      { success: false, message: '서버 오류가 발생했습니다.' },
+      { status: 500 }
     );
   }
 } 

@@ -7,6 +7,14 @@ import { DateToISOStringInterceptor } from './modules/common/interceptors/date-t
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
+  // CORS 설정
+  app.enableCors({
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+  });
+  
   app.use(
     session({
       secret: process.env.SESSION_SECRET || 'my-secret',

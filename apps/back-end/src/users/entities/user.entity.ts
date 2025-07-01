@@ -12,23 +12,23 @@ export class User {
   password?: string;
 
   @Column({ nullable: true })
-  name?: string;
+  nickname?: string;
 
   @Column({ nullable: true })
-  profile_image?: string;
+  profileImage?: string;
 
   @Column({ default: false })
-  is_verified: boolean;
+  isVerified: boolean;
 
   @Column({ nullable: true })
-  google_id?: string;
+  googleId?: string;
 
   @CreateDateColumn()
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updatedAt: Date;
 
   @DeleteDateColumn()
-  deleted_at: Date;
+  deletedAt: Date;
 } 

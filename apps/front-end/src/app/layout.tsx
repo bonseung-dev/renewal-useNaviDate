@@ -2,6 +2,12 @@ import type { Metadata } from 'next';
 import { Inter, Noto_Sans_KR } from 'next/font/google';
 import './globals.css';
 import TanstackQueryProviders from '@/lib/providers/tanstack-query-provider';
+import { logEnvironmentInfo } from '@/lib/utils/env';
+
+// 환경 정보 로그 (개발 환경에서만)
+if (typeof window === 'undefined') {
+  logEnvironmentInfo();
+}
 
 const scoreDream = Noto_Sans_KR({
   subsets: ['latin'],

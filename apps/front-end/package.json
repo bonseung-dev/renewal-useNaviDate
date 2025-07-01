@@ -5,7 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:dev": "NODE_ENV=development next build",
+    "build:prod": "NODE_ENV=production next build",
     "start": "next start",
+    "start:dev": "NODE_ENV=development next start",
+    "start:prod": "NODE_ENV=production next start",
     "lint": "next lint",
     "json-server": "json-server --watch db.json --port 4000"
   },

@@ -1,51 +1,99 @@
-# Frontend Application
+# NaviDate Frontend
 
-This is the frontend application for useNaviDate built with Next.js.
+This is the frontend application for NaviDate, built with Next.js.
 
 ## Environment Variables
 
-Create a `.env.local` file in the `apps/front-end` directory with the following variables:
+### Development Environment (.env.development)
+Create a `.env.development` file in the root directory:
 
-```bash
-# Frontend Environment Variables
-NEXT_PUBLIC_FRONTEND_URL=http://localhost:3000
+```env
+# Development Environment Variables
 NEXT_PUBLIC_BACKEND_URL=http://localhost:3001
-NEXT_PUBLIC_GOOGLE_CALENDAR_API_KEY=your_google_calendar_api_key_here
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-google-client-id-here
+NEXT_PUBLIC_GOOGLE_REDIRECT_URI=http://localhost:3000/auth/callback
 
-# Google OAuth
-GOOGLE_CLIENT_ID=your_google_client_id_here
-GOOGLE_CLIENT_SECRET=your_google_client_secret_here
+# API Configuration
+NEXT_PUBLIC_API_TIMEOUT=10000
+NEXT_PUBLIC_ENABLE_DEBUG=true
 ```
+
+### Production Environment (.env.production)
+Create a `.env.production` file in the root directory:
+
+```env
+# Production Environment Variables
+NEXT_PUBLIC_BACKEND_URL=https://api.navidate.com
+NEXT_PUBLIC_BASE_URL=https://navidate.com
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-production-google-client-id
+NEXT_PUBLIC_GOOGLE_REDIRECT_URI=https://navidate.com/auth/callback
+
+# API Configuration
+NEXT_PUBLIC_API_TIMEOUT=15000
+NEXT_PUBLIC_ENABLE_DEBUG=false
+```
+
+### Environment Variable Loading
+Next.js automatically loads the appropriate environment file based on the `NODE_ENV`:
+- `NODE_ENV=development` → `.env.development`
+- `NODE_ENV=production` → `.env.production`
 
 ## Getting Started
 
-First, install dependencies:
+First, install the dependencies:
 
 ```bash
 npm install
+# or
+yarn install
+# or
+pnpm install
 ```
 
 Then, run the development server:
 
 ```bash
 npm run dev
+# or
+yarn dev
+# or
+pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Build
+## Build and Deploy
 
+### Development Build
 ```bash
 npm run build
-```
-
-## Start Production Server
-
-```bash
 npm run start
 ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Production Build
+```bash
+NODE_ENV=production npm run build
+NODE_ENV=production npm run start
+```
+
+## Environment-Specific Scripts
+
+You can also add environment-specific scripts to `package.json`:
+
+```json
+{
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "build:dev": "NODE_ENV=development next build",
+    "build:prod": "NODE_ENV=production next build",
+    "start": "next start",
+    "start:dev": "NODE_ENV=development next start",
+    "start:prod": "NODE_ENV=production next start"
+  }
+}
+```
 
 ## Learn More
 
@@ -54,10 +102,10 @@ To learn more about Next.js, take a look at the following resources:
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.

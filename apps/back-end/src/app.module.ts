@@ -37,6 +37,7 @@ import { validate } from './config/env.validation';
         database: configService.get('DB_NAME'),
         autoLoadEntities: true,
         synchronize: true,
+        dropSchema: true, // 개발 환경에서만 사용 (주의!)
       }),
       inject: [ConfigService],
     }),

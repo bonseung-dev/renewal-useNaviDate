@@ -8,14 +8,20 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   password: string;
 
-  @Column()
+  @Column({ nullable: true })
   nickname: string;
 
-  @Column()
+  @Column({ nullable: true })
   profileImage: string;
+
+  @Column({ nullable: true })
+  googleId: string;
+
+  @Column({ default: false })
+  isVerified: boolean;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -19,7 +19,7 @@ export class UsersService {
   }
 
   async findByGoogleId(googleId: string): Promise<User | null> {
-    return this.usersRepository.findOne({ where: { google_id: googleId } });
+    return this.usersRepository.findOne({ where: { googleId: googleId } });
   }
 
   async create(userData: Partial<User>): Promise<User> {

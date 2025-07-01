@@ -8,10 +8,13 @@ export interface BaseEntity {
 export type User = {
   id: string;
   email: string;
-  password: string;
-  nickname: string;
-  profileImage: string;
+  password?: string;
+  nickname?: string;
+  profileImage?: string;
+  googleId?: string;
+  isVerified?: boolean;
   createdAt: string;
+  updatedAt: string;
   tempToken?: string;
 };
 
@@ -34,6 +37,7 @@ export interface Post {
   date: string;
   emotion: Emotion;
   createdAt: string;
+  updatedAt: string;
   deletedAt: string | null;
 }
 
