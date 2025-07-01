@@ -674,11 +674,6 @@
       "postId": "post-a1b2c3-008",
       "userId": "fixed-id-000002",
       "createdAt": "2025-06-15T00:00:00.000Z"
-    },
-    {
-      "id": "cc9a",
-      "postId": "post-a1b2c3-017",
-      "userId": "fixed-id-000001"
     }
   ],
   "anniversaries": [
