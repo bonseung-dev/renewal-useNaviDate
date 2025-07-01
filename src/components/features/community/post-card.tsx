@@ -98,7 +98,7 @@ const PostCard = ({ post }: PostCardProps) => {
           <div className="flex items-center">
             <figure className="w-9 h-9 rounded-full overflow-hidden relative">
               <Image
-                src={post.author?.profileImage || '/default-profile.jpg'}
+                src={post.author?.profileImage || '/placeholder-image.png'}
                 alt={`${post.author?.nickname || '작성자'}의 프로필 사진`}
                 width={36}
                 height={36}
