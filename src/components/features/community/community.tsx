@@ -51,9 +51,12 @@ const Community = () => {
     return <div className="text-center py-10 text-skin4">로딩 중...</div>;
 
   return (
-    <div className="w-full max-w-[360px] px-4 pt-3 pb-[114px] mx-auto relative">
+    <section
+      className="w-full max-w-[360px] px-4 pt-3 pb-[114px] mx-auto relative"
+      aria-label="커뮤니티 포스트 목록"
+    >
       {/* 검색 + 정렬 */}
-      <div className="flex items-center justify-between mb-2">
+      <header className="flex items-center justify-between mb-2">
         <div className="relative w-[252px] h-[30px]">
           <input
             type="text"
@@ -62,50 +65,61 @@ const Community = () => {
             value={searchQuery}
             onChange={handleSearchChange}
             onKeyDown={handleKeyDown}
+            aria-label="검색어 입력"
           />
           <Search
             className="absolute top-1/2 right-2 -translate-y-1/2 w-4 h-4 text-skin5 cursor-pointer hover:text-skin1 transition-colors"
             onClick={handleExplicitSearch}
+            aria-label="검색 실행"
           />
         </div>
 
-        <Select
-          value={sortOption}
-          onValueChange={(value: string) => setSortOption(value as SortOption)}
-        >
-          <SelectTrigger className="w-[20px] h-[20px]">
-            <Menu className="w-5 h-5 text-skin1" />
-          </SelectTrigger>
-          <SelectContent className="w-[120px] h-[96px]">
-            <SelectItem value={SORT_OPTIONS.LATEST}>최신순</SelectItem>
-            <SelectItem value={SORT_OPTIONS.LIKES}>좋아요순</SelectItem>
-            <SelectItem value={SORT_OPTIONS.BOOKMARKS}>북마크순</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+        {/* 정렬 드롭다운 */}
+        <nav aria-label="정렬 옵션">
+          <Select
+            value={sortOption}
+            onValueChange={(value: string) =>
+              setSortOption(value as SortOption)
+            }
+          >
+            <SelectTrigger className="w-[20px] h-[20px]">
+              <Menu className="w-5 h-5 text-skin1" aria-hidden="true" />
+            </SelectTrigger>
+            <SelectContent className="w-[120px] h-[96px]">
+              <SelectItem value={SORT_OPTIONS.LATEST}>최신순</SelectItem>
+              <SelectItem value={SORT_OPTIONS.LIKES}>좋아요순</SelectItem>
+              <SelectItem value={SORT_OPTIONS.BOOKMARKS}>북마크순</SelectItem>
+            </SelectContent>
+          </Select>
+        </nav>
+      </header>
 
+      {/* 검색 결과 */}
       {debouncedQuery && (
-        <div className="mb-1 text-b-h3 font-bold text-skin1">
+        <h2 className="mb-1 text-b-h3 font-bold text-skin1">
           “{debouncedQuery}” 검색 결과 {sortedPosts.length}개
-        </div>
+        </h2>
       )}
 
-      <div className="flex flex-col gap-[20px] mt-5">
+      {/* 포스트 리스트 */}
+      <div className="flex flex-col gap-[20px] mt-5" role="list">
         {sortedPosts.length > 0 ? (
           sortedPosts.map((post) => (
-            <PostCard
+            <div
               key={post.id}
-              post={post}
-              isMyPost={userId === post.userId}
-            />
+              aria-labelledby={`post-${post.id}-title`}
+              role="listitem"
+            >
+              <PostCard post={post} isMyPost={userId === post.userId} />
+            </div>
           ))
         ) : (
-          <div className="text-center py-10 text-skin4">
+          <div className="text-center py-10 text-skin4" role="status">
             {debouncedQuery ? '검색 결과가 없습니다' : '포스트가 없습니다'}
           </div>
         )}
       </div>
-    </div>
+    </section>
   );
 };
 
