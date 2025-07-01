@@ -1,4 +1,15 @@
-{
+
+  "couples": [
+    {
+      "id": "835d4a81-3b72-4775-bd97-2d94130fa200",
+      "user_a_id": "userA",
+      "user_b_id": "userB",
+      "anniversary": "2023-01-01",
+      "name": "A와 B의 연인 공간",
+      "coupleId": "835d4a81-3b72-4775-bd97-2d94130fa200",
+      "status": "confirm",
+      "created_at": "2025-06-27T12:09:34.960Z"
+
   "users": [
     {
       "id": "fixed-id-000001",
