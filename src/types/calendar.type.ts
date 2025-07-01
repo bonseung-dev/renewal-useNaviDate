@@ -39,13 +39,3 @@ export type BackendHolidayItem = {
   type: '법정공휴일' | '기념일' | '대체공휴일';
   meta?: Record<string, unknown>;
 };
-
-export type Anniversary = {
-  id: string;
-  coupleId: string;
-  title: string;
-  date: string;
-  repeat: 'NONE' | 'YEARLY';
-  memo: string;
-  createdBy: string;
-};
