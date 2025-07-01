@@ -1,0 +1,243 @@
+import { apiClient, createAuthenticatedApiClient } from './client';
+import { 
+  LoginDto, 
+  CreateUserDto, 
+  AuthResponse, 
+  User, 
+  Post, 
+  CreatePostDto, 
+  Couple, 
+  CreateCoupleDto,
+  Anniversary,
+  CreateAnniversaryDto,
+  Notification,
+  CreateNotificationDto,
+  Setting,
+  UpdateSettingDto,
+  Image,
+  Chat,
+  Bookmark,
+  Like,
+  ApiResponse
+} from '@use-navi-date/shared';
+
+// Auth Service
+export class AuthService {
+  static async login(credentials: LoginDto): Promise<AuthResponse> {
+    return apiClient.post<AuthResponse>('/auth/login', credentials);
+  }
+
+  static async register(userData: CreateUserDto): Promise<AuthResponse> {
+    return apiClient.post<AuthResponse>('/auth/register', userData);
+  }
+
+  static async getProfile(token: string): Promise<ApiResponse<{ user: User }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.get<{ user: User }>('/auth/profile');
+  }
+
+  static async logout(token: string): Promise<ApiResponse<{ message: string }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.post<{ message: string }>('/auth/logout');
+  }
+}
+
+// User Service
+export class UserService {
+  static async getUser(id: string, token: string): Promise<ApiResponse<{ user: User }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.get<{ user: User }>(`/users/${id}`);
+  }
+}
+
+// Post Service
+export class PostService {
+  static async getPosts(token: string): Promise<ApiResponse<{ posts: Post[] }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.get<{ posts: Post[] }>('/posts');
+  }
+
+  static async getMyPosts(token: string): Promise<ApiResponse<{ posts: Post[] }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.get<{ posts: Post[] }>('/posts/my');
+  }
+
+  static async getPost(id: string, token: string): Promise<ApiResponse<{ post: Post }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.get<{ post: Post }>(`/posts/${id}`);
+  }
+
+  static async createPost(postData: CreatePostDto, token: string): Promise<ApiResponse<{ post: Post }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.post<{ post: Post }>('/posts', postData);
+  }
+
+  static async updatePost(id: string, postData: Partial<CreatePostDto>, token: string): Promise<ApiResponse<{ post: Post }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.patch<{ post: Post }>(`/posts/${id}`, postData);
+  }
+
+  static async deletePost(id: string, token: string): Promise<ApiResponse<{ message: string }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.delete<{ message: string }>(`/posts/${id}`);
+  }
+}
+
+// Couple Service
+export class CoupleService {
+  static async getCouples(token: string): Promise<ApiResponse<{ couples: Couple[] }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.get<{ couples: Couple[] }>('/couples');
+  }
+
+  static async getCouple(id: string, token: string): Promise<ApiResponse<{ couple: Couple }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.get<{ couple: Couple }>(`/couples/${id}`);
+  }
+
+  static async createCouple(coupleData: CreateCoupleDto, token: string): Promise<ApiResponse<{ couple: Couple }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.post<{ couple: Couple }>('/couples', coupleData);
+  }
+
+  static async deleteCouple(id: string, token: string): Promise<ApiResponse<{ message: string }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.delete<{ message: string }>(`/couples/${id}`);
+  }
+}
+
+// Anniversary Service
+export class AnniversaryService {
+  static async getCoupleAnniversaries(coupleId: string, token: string): Promise<ApiResponse<{ anniversaries: Anniversary[] }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.get<{ anniversaries: Anniversary[] }>(`/anniversaries/couple/${coupleId}`);
+  }
+
+  static async getAnniversary(id: string, token: string): Promise<ApiResponse<{ anniversary: Anniversary }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.get<{ anniversary: Anniversary }>(`/anniversaries/${id}`);
+  }
+
+  static async createAnniversary(anniversaryData: CreateAnniversaryDto, token: string): Promise<ApiResponse<{ anniversary: Anniversary }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.post<{ anniversary: Anniversary }>('/anniversaries', anniversaryData);
+  }
+
+  static async updateAnniversary(id: string, anniversaryData: Partial<CreateAnniversaryDto>, token: string): Promise<ApiResponse<{ anniversary: Anniversary }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.patch<{ anniversary: Anniversary }>(`/anniversaries/${id}`, anniversaryData);
+  }
+
+  static async deleteAnniversary(id: string, token: string): Promise<ApiResponse<{ message: string }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.delete<{ message: string }>(`/anniversaries/${id}`);
+  }
+}
+
+// Bookmark Service
+export class BookmarkService {
+  static async getBookmarks(token: string): Promise<ApiResponse<{ bookmarks: Bookmark[] }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.get<{ bookmarks: Bookmark[] }>('/bookmarks');
+  }
+
+  static async createBookmark(postId: string, token: string): Promise<ApiResponse<{ bookmark: Bookmark }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.post<{ bookmark: Bookmark }>(`/bookmarks/${postId}`);
+  }
+
+  static async deleteBookmark(postId: string, token: string): Promise<ApiResponse<{ message: string }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.delete<{ message: string }>(`/bookmarks/${postId}`);
+  }
+}
+
+// Like Service
+export class LikeService {
+  static async getLikes(postId: string, token: string): Promise<ApiResponse<{ likes: Like[] }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.get<{ likes: Like[] }>(`/likes/${postId}`);
+  }
+
+  static async createLike(postId: string, token: string): Promise<ApiResponse<{ like: Like }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.post<{ like: Like }>(`/likes/${postId}`);
+  }
+
+  static async deleteLike(postId: string, token: string): Promise<ApiResponse<{ message: string }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.delete<{ message: string }>(`/likes/${postId}`);
+  }
+}
+
+// Setting Service
+export class SettingService {
+  static async getSettings(token: string): Promise<ApiResponse<{ settings: Setting }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.get<{ settings: Setting }>('/settings');
+  }
+
+  static async updateSettings(settingsData: UpdateSettingDto, token: string): Promise<ApiResponse<{ settings: Setting }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.patch<{ settings: Setting }>('/settings', settingsData);
+  }
+}
+
+// Notification Service
+export class NotificationService {
+  static async getNotifications(token: string): Promise<ApiResponse<{ notifications: Notification[] }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.get<{ notifications: Notification[] }>('/notifications');
+  }
+
+  static async getNotification(id: string, token: string): Promise<ApiResponse<{ notification: Notification }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.get<{ notification: Notification }>(`/notifications/${id}`);
+  }
+
+  static async createNotification(notificationData: CreateNotificationDto, token: string): Promise<ApiResponse<{ notification: Notification }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.post<{ notification: Notification }>('/notifications', notificationData);
+  }
+
+  static async deleteNotification(id: string, token: string): Promise<ApiResponse<{ message: string }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.delete<{ message: string }>(`/notifications/${id}`);
+  }
+}
+
+// Image Service
+export class ImageService {
+  static async getImages(token: string): Promise<ApiResponse<{ images: Image[] }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.get<{ images: Image[] }>('/images');
+  }
+
+  static async getImage(id: string, token: string): Promise<ApiResponse<{ image: Image }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.get<{ image: Image }>(`/images/${id}`);
+  }
+
+  static async deleteImage(id: string, token: string): Promise<ApiResponse<{ message: string }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.delete<{ message: string }>(`/images/${id}`);
+  }
+}
+
+// Chat Service
+export class ChatService {
+  static async getChats(token: string): Promise<ApiResponse<{ chats: Chat[] }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.get<{ chats: Chat[] }>('/chats');
+  }
+
+  static async getChat(id: string, token: string): Promise<ApiResponse<{ chat: Chat }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.get<{ chat: Chat }>(`/chats/${id}`);
+  }
+
+  static async deleteChat(id: string, token: string): Promise<ApiResponse<{ message: string }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.delete<{ message: string }>(`/chats/${id}`);
+  }
+} 

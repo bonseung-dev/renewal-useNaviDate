@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>구글 로그인 테스트</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .container {
+        border: 1px solid #ccc;
+        padding: 20px;
+        border-radius: 8px;
+      }
+      button {
+        background-color: #4285f4;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #357abd;
+      }
+      .status {
+        margin-top: 20px;
+        padding: 10px;
+        border-radius: 4px;
+      }
+      .success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+      .error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+      #token-display {
+        margin-top: 20px;
+        word-break: break-all;
+      }
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>구글 로그인 테스트</h1>
+      <button id="google-login-btn">구글로 로그인</button>
+      
+      <div id="success-message" class="status success hidden">
+        로그인 성공! JWT가 쿠키에 저장되었습니다.
+      </div>
+      
+      <div id="error-message" class="status error hidden">
+        로그인 실패! 다시 시도해주세요.
+      </div>
+
+      <div id="token-display"></div>
+    </div>
+
+    <script>
+      // 로그인 버튼 클릭 핸들러
+      document.getElementById('google-login-btn').onclick = function() {
+        window.location.href = 'http://localhost:3000/auth/google';
+      };
+
+      // URL 파라미터에서 상태 확인
+      const urlParams = new URLSearchParams(window.location.search);
+      const status = urlParams.get('status');
+
+      if (status === 'success') {
+        document.getElementById('success-message').classList.remove('hidden');
+      } else if (status === 'error') {
+        document.getElementById('error-message').classList.remove('hidden');
+      }
+
+      // JWT 쿠키 확인
+      function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+      }
+
+      const jwt = getCookie('jwt');
+      if (jwt) {
+        document.getElementById('token-display').innerHTML = `
+          <h3>저장된 JWT:</h3>
+          <pre>${jwt}</pre>
+        `;
+      }
+    </script>
+  </body>
+</html> 
