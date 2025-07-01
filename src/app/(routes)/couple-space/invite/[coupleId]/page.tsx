@@ -17,8 +17,8 @@ const InviteAcceptPage = ({ params }: InviteAcceptPageProps) => {
   const handleAcceptInvite = () => {
     createCouple(
       {
-        user_a_id: userAId,
-        user_b_id: userBId,
+        userAId: userAId,
+        userBId: userBId,
         anniversary: '2023-01-01',
         name: 'A와 B의 연인 공간',
         coupleId: params.coupleId,
@@ -43,12 +43,14 @@ const InviteAcceptPage = ({ params }: InviteAcceptPageProps) => {
   }
 
   return (
-    <div>
-      <h2>커플 초대 수락</h2>
-      <p>연인과 함께 추억을 기록하시겠습니까?</p>
-      <Button onClick={handleAcceptInvite} disabled={isPending}>
-        {isPending ? '처리 중...' : '초대 수락'}
-      </Button>
+    <div className="flex items-center justify-center w-[320px] h-[480px] bg-skin3 rounded-[20px] ">
+      <section className="text-center ">
+        <h2>커플 초대 수락</h2>
+        <p>연인과 함께 추억을 기록하시겠습니까?</p>
+        <Button onClick={handleAcceptInvite} disabled={isPending}>
+          {isPending ? '처리 중...' : '초대 수락'}
+        </Button>
+      </section>
     </div>
   );
 };
