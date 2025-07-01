@@ -5,9 +5,10 @@ import { Bookmark, Heart } from 'lucide-react';
 import { EnhancedPost } from '@/types/community.type';
 import { useState } from 'react';
 import { formatDate } from '@/lib/utils/coomunity.utils';
-import { useToggleLike } from '@/lib/mutations/like.mutation';
-import { useToggleBookmark } from '@/lib/mutations/bookmark.mutation';
+
 import Tooltip from '@/components/ui/tooltip';
+import { useUpdateLikeMutation } from '@/lib/mutations/like.mutation';
+import { useUpdateBookmarkMutation } from '@/lib/mutations/bookmark.mutation';
 
 type PostCardProps = {
   post: EnhancedPost;
@@ -17,8 +18,8 @@ const PostCard = ({ post }: PostCardProps) => {
   const [showLikesCount, setShowLikesCount] = useState(false);
   const [showBookmarksCount, setShowBookmarksCount] = useState(false);
 
-  const { mutate: toggleLike } = useToggleLike();
-  const { mutate: toggleBookmark } = useToggleBookmark();
+  const { mutate: toggleLike } = useUpdateLikeMutation();
+  const { mutate: toggleBookmark } = useUpdateBookmarkMutation();
 
   const userId =
     typeof window !== 'undefined' ? localStorage.getItem('userId') : null;

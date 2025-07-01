@@ -1,15 +1,15 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { toggleBookmark } from '../services/community.services';
+import { updateBookmark } from '../services/community.services';
 import { QUERY_KEYS } from '@/constants/query-keys.constants';
 import { Bookmark, EnhancedPost, Post } from '@/types/community.type';
 
-// 북마크 뮤테이션 훅
-export const useToggleBookmark = () => {
+// 북마크 업데이트 뮤테이션 훅
+export const useUpdateBookmarkMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: ({ postId, userId }: { postId: string; userId: string }) =>
-      toggleBookmark(postId, userId),
+      updateBookmark(postId, userId),
 
     onMutate: async ({ postId, userId }) => {
       await queryClient.cancelQueries({ queryKey: [QUERY_KEYS.POSTS] });

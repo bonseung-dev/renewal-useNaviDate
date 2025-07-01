@@ -1,23 +1,20 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { toggleLike } from '../services/community.services';
+import { updateLike } from '../services/community.services';
 import { QUERY_KEYS } from '@/constants/query-keys.constants';
 import { EnhancedPost, Like, Post } from '@/types/community.type';
 
-// 좋아요 토글 뮤테이션 훅
-export const useToggleLike = () => {
+// 좋아요 업데이트 뮤테이션 훅
+export const useUpdateLikeMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: ({ postId, userId }: { postId: string; userId: string }) =>
-      toggleLike(postId, userId),
+      updateLike(postId, userId),
 
-    // 낙관적 업데이트 시작
     onMutate: async ({ postId, userId }) => {
-      // 진행 중인 모든 쿼리 취소
       await queryClient.cancelQueries({ queryKey: [QUERY_KEYS.POSTS] });
       await queryClient.cancelQueries({ queryKey: [QUERY_KEYS.LIKES] });
 
-      // 이전 데이터 스냅샷 저장
       const previousPosts = queryClient.getQueryData<Post[]>([
         QUERY_KEYS.POSTS,
       ]);
@@ -25,7 +22,6 @@ export const useToggleLike = () => {
         QUERY_KEYS.LIKES,
       ]);
 
-      // 새로운 데이터로 낙관적 업데이트
       queryClient.setQueryData<EnhancedPost[]>(
         [QUERY_KEYS.POSTS],
         (old) =>
@@ -76,7 +72,6 @@ export const useToggleLike = () => {
       return { previousPosts, previousLikes };
     },
 
-    // 오류 발생 시 롤백
     onError: (err, variables, context) => {
       if (context?.previousPosts) {
         queryClient.setQueryData([QUERY_KEYS.POSTS], context.previousPosts);
@@ -86,7 +81,6 @@ export const useToggleLike = () => {
       }
     },
 
-    // 성공/실패 여부와 관계없이 최종 동기화
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.POSTS] });
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.LIKES] });
