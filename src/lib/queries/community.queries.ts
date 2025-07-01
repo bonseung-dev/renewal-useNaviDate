@@ -13,13 +13,11 @@ import { QUERY_KEYS } from '@/constants/query-keys.constants';
 // 게시물 조회 쿼리
 export const usePostsQuery = (debouncedQuery: string = '') => {
   return useQuery({
-    queryKey: debouncedQuery
-      ? QUERY_KEYS.POSTS_SEARCH(debouncedQuery)
-      : [QUERY_KEYS.POSTS],
+    queryKey: ['posts', { search: debouncedQuery }],
     queryFn: () => fetchPosts(debouncedQuery),
+    enabled: true,
   });
 };
-
 // 사용자 조회 쿼리
 export const useUsersQuery = () => {
   return useQuery({

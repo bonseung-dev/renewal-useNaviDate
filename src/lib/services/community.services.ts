@@ -11,11 +11,53 @@ import {
 
 // 포스트 조회
 export const fetchPosts = async (query = ''): Promise<Post[]> => {
-  const response = await fetch(
-    `${BASE_URL}/posts?visibility=public${query ? `&q=${encodeURIComponent(query)}` : ''}`,
-  );
-  if (!response.ok) throw new Error('포스트를 가져오는데 실패했습니다.');
-  return response.json();
+  const url = new URL(`${BASE_URL}/posts`);
+  url.searchParams.append('visibility', 'public');
+
+  const response = await fetch(url.toString());
+  if (!response.ok) throw new Error('포스트 가져오기 실패');
+
+  const posts: unknown = await response.json();
+
+  // 타입 안정성을 위한 함수
+  const isPostArray = (
+    data: unknown,
+  ): data is Array<Post & { tags?: PostTag[] }> => {
+    return (
+      Array.isArray(data) &&
+      data.every(
+        (item) =>
+          typeof item === 'object' &&
+          item !== null &&
+          'id' in item &&
+          'title' in item,
+      )
+    );
+  };
+
+  if (!isPostArray(posts)) {
+    throw new Error('Invalid posts data format');
+  }
+
+  if (!query) return posts;
+
+  return posts.filter((post) => {
+    const titleMatch = post.title.toLowerCase().includes(query.toLowerCase());
+
+    // 태그 검사
+    const tagMatch =
+      Array.isArray(post.tags) &&
+      post.tags.some(
+        (tag: unknown) =>
+          typeof tag === 'object' &&
+          tag !== null &&
+          'name' in tag &&
+          typeof tag.name === 'string' &&
+          tag.name.toLowerCase().includes(query.toLowerCase()),
+      );
+
+    return titleMatch || tagMatch;
+  });
 };
 
 // 사용자 조회

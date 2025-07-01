@@ -9,15 +9,16 @@ export const sortPosts = (
 ): EnhancedPost[] => {
   return [...posts].sort((a, b) => {
     if (sortOption === SORT_OPTIONS.LATEST) {
-      return b.createdAt.getTime() - a.createdAt.getTime(); // 최신순 (내림차순)
+      return b.createdAt.getTime() - a.createdAt.getTime(); // 최신순
     } else if (sortOption === SORT_OPTIONS.LIKES) {
-      return b.likesCount - a.likesCount; // 좋아요순 (내림차순)
+      return b.likesCount - a.likesCount; // 좋아요순
     } else if (sortOption === SORT_OPTIONS.BOOKMARKS) {
-      return b.bookmarksCount - a.bookmarksCount; // 북마크순 (내림차순)
+      return b.bookmarksCount - a.bookmarksCount; // 북마크순
     }
     return 0;
   });
 };
+
 // 디바운스 유틸리티
 export const createDebouncedSearch = (
   delay: number,

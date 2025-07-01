@@ -21,12 +21,12 @@ export const useSearchQuery = () => {
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
-      debouncedSearch.flush(); // 즉시 실행
+      debouncedSearch.flush();
     }
   };
 
   const handleExplicitSearch = () => {
-    debouncedSearch.flush(); // 즉시 실행
+    debouncedSearch.flush();
   };
 
   return {
