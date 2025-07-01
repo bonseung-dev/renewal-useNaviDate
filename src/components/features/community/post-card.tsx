@@ -8,10 +8,9 @@ import { formatDate } from '@/lib/utils/coomunity.utils';
 
 interface PostCardProps {
   post: EnhancedPost;
-  isMyPost: boolean;
 }
 
-const PostCard = ({ post, isMyPost }: PostCardProps) => {
+const PostCard = ({ post }: PostCardProps) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [showLikesCount, setShowLikesCount] = useState(false);
@@ -19,9 +18,7 @@ const PostCard = ({ post, isMyPost }: PostCardProps) => {
 
   return (
     <article
-      className={`w-[280px] h-[320px] rounded-[20px] overflow-hidden relative shadow-shadow1 ${
-        isMyPost ? 'border-2 border-skin1' : ''
-      }`}
+      className="w-[280px] h-[320px] rounded-[20px] overflow-hidden relative shadow-shadow1 "
       aria-labelledby={`post-${post.id}-title`}
     >
       <div className="absolute inset-0">
@@ -71,9 +68,6 @@ const PostCard = ({ post, isMyPost }: PostCardProps) => {
               <span key={tag.id}>#{tag.name} </span>
             ))}
           </div>
-          {isMyPost && (
-            <div className="mt-1 text-skin5 text-m-h4 font-bold">내 포스트</div>
-          )}
         </header>
 
         {/* 하단 정보 */}

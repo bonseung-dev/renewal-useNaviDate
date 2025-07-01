@@ -1,6 +1,5 @@
 import {
   useBookmarksQuery,
-  useCouplesQuery,
   useLikesQuery,
   usePostImagesQuery,
   usePostsQuery,
@@ -11,7 +10,6 @@ import {
 export const useCommunityData = (debouncedQuery: string = '') => {
   const postsQuery = usePostsQuery(debouncedQuery);
   const usersQuery = useUsersQuery();
-  const couplesQuery = useCouplesQuery();
   const tagsQuery = usePostTagsQuery();
   const imagesQuery = usePostImagesQuery();
   const likesQuery = useLikesQuery();
@@ -21,7 +19,6 @@ export const useCommunityData = (debouncedQuery: string = '') => {
     posts: postsQuery.data,
     isLoading: postsQuery.isLoading,
     users: usersQuery.data,
-    couples: couplesQuery.data,
     tags: tagsQuery.data,
     images: imagesQuery.data,
     likes: likesQuery.data,

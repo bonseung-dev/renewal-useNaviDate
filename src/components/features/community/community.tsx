@@ -18,7 +18,7 @@ import { SORT_OPTIONS } from '@/constants/community.constants';
 
 const Community = () => {
   const [sortOption, setSortOption] = useState<SortOption>(SORT_OPTIONS.LATEST);
-  const [userId, setUserId] = useState<string | null>(null);
+  const [, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
     const stored = localStorage.getItem('userId');
@@ -33,13 +33,12 @@ const Community = () => {
     handleExplicitSearch,
   } = useSearchQuery();
 
-  const { posts, isLoading, users, couples, tags, images, likes, bookmarks } =
+  const { posts, isLoading, users, tags, images, likes, bookmarks } =
     useCommunityData(debouncedQuery);
 
   const enhancedPosts = useEnhancedPosts(
     posts,
     users,
-    couples,
     tags,
     images,
     likes,
@@ -108,7 +107,7 @@ const Community = () => {
               aria-labelledby={`post-${post.id}-title`}
               role="listitem"
             >
-              <PostCard post={post} isMyPost={userId === post.userId} />
+              <PostCard post={post} />
             </div>
           ))
         ) : (
