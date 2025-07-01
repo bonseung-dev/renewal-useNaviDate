@@ -14,10 +14,12 @@ const UnconnectedCouplePage = () => {
   };
 
   return (
-    <div>
-      <h2>연인을 초대하세요!</h2>
-      <p>연인과 함께 추억을 기록할 특별한 공간을 만들어보세요.</p>
-      <Button onClick={handleInvite}>초대하기</Button>
+    <div className="flex items-center justify-center w-[320px] h-[480px] bg-skin3 rounded-[20px] ">
+      <section className="text-center ">
+        <p>아직 커플 등록이 안되어있어요!</p>
+        <p>연인을 초대해보세요</p>
+        <Button onClick={handleInvite}>링크 공유하기</Button>
+      </section>
     </div>
   );
 };
