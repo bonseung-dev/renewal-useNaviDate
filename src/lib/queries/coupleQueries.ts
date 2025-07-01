@@ -28,8 +28,8 @@ export const useCreateCouple = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (data: {
-      user_a_id: string;
-      user_b_id: string;
+      userAId: string;
+      userBId: string;
       anniversary: string;
       name: string;
       coupleId?: string;
@@ -38,7 +38,7 @@ export const useCreateCouple = () => {
         ...data,
         id: data.coupleId || crypto.randomUUID(),
         status: 'confirm',
-        created_at: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
       };
       const response = await fetch(`${API_BASE_URL}/couples`, {
         method: 'POST',
@@ -56,8 +56,8 @@ export const useCreateCouple = () => {
       if (typeof window !== 'undefined') {
         localStorage.setItem('coupleId', data.id);
       }
-      queryClient.invalidateQueries({ queryKey: ['couples', data.user_a_id] });
-      queryClient.refetchQueries({ queryKey: ['couples', data.user_a_id] });
+      queryClient.invalidateQueries({ queryKey: ['couples', data.userAId] });
+      queryClient.refetchQueries({ queryKey: ['couples', data.userAId] });
     },
     onError: (error: Error) => {
       alert(error.message || '커플 생성에 실패했어요.');
