@@ -2,7 +2,6 @@ import { useQuery } from '@tanstack/react-query';
 import {
   getAllPosts,
   getAllUsers,
-  getAllCouples,
   getAllPostTags,
   getAllPostImages,
   getAllLikes,
@@ -27,14 +26,6 @@ export const useGetAllUsersQuery = () => {
   return useQuery({
     queryKey: [QUERY_KEYS.USERS],
     queryFn: getAllUsers,
-  });
-};
-
-// 커플 조회 쿼리
-export const useGetAllCouplesQuery = () => {
-  return useQuery({
-    queryKey: [QUERY_KEYS.COUPLES],
-    queryFn: getAllCouples,
   });
 };
 

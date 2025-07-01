@@ -1,7 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateBookmark } from '../services/community.services';
 import { QUERY_KEYS } from '@/constants/query-keys.constants';
-import { Bookmark, EnhancedPost, Post } from '@/types/community.type';
+import { Post } from '@/types/post.type';
+import { Bookmark } from '@/types/like-bookmark.type';
+import { CommunityPost } from '@/types/community.type';
 
 // 북마크 업데이트 뮤테이션 훅
 export const useUpdateBookmarkMutation = () => {
@@ -23,7 +25,7 @@ export const useUpdateBookmarkMutation = () => {
       ]);
 
       // 북마크 낙관적 업데이트
-      queryClient.setQueryData<EnhancedPost[]>(
+      queryClient.setQueryData<CommunityPost[]>(
         [QUERY_KEYS.POSTS],
         (old) =>
           old?.map((post) => {

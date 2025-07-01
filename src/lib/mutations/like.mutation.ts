@@ -1,7 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateLike } from '../services/community.services';
 import { QUERY_KEYS } from '@/constants/query-keys.constants';
-import { EnhancedPost, Like, Post } from '@/types/community.type';
+import { Post } from '@/types/post.type';
+import { Like } from '@/types/like-bookmark.type';
+import { CommunityPost } from '@/types/community.type';
 
 // 좋아요 업데이트 뮤테이션 훅
 export const useUpdateLikeMutation = () => {
@@ -22,7 +24,7 @@ export const useUpdateLikeMutation = () => {
         QUERY_KEYS.LIKES,
       ]);
 
-      queryClient.setQueryData<EnhancedPost[]>(
+      queryClient.setQueryData<CommunityPost[]>(
         [QUERY_KEYS.POSTS],
         (old) =>
           old?.map((post) => {

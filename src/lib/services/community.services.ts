@@ -1,13 +1,8 @@
 import { BASE_URL } from '@/constants/url.constants';
-import {
-  Post,
-  User,
-  Couple,
-  PostTag,
-  PostImage,
-  Like,
-  Bookmark,
-} from '@/types/community.type';
+
+import { Bookmark, Like } from '@/types/like-bookmark.type';
+import { Post, PostImage, PostTag } from '@/types/post.type';
+import { User } from '@/types/user.type';
 
 // 본 파일은 테스트 기간 동안 개발 및 수정 용이성을 위해 커뮤니티 관련 api 들을 임시로 모아둔 파일입니다.
 // 백엔드 db와 제대로 연결이 되면 분리할 예정입니다.
@@ -67,13 +62,6 @@ export const getAllPosts = async (query = ''): Promise<Post[]> => {
 export const getAllUsers = async (): Promise<User[]> => {
   const response = await fetch(`${BASE_URL}/users`);
   if (!response.ok) throw new Error('사용자를 가져오는데 실패했습니다.');
-  return response.json();
-};
-
-// 커플 조회
-export const getAllCouples = async (): Promise<Couple[]> => {
-  const response = await fetch(`${BASE_URL}/couples`);
-  if (!response.ok) throw new Error('커플을 가져오는데 실패했습니다.');
   return response.json();
 };
 

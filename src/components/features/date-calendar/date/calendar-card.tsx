@@ -4,16 +4,17 @@ import { Dispatch, SetStateAction } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import type { Emotion, ExtendedPost, Holiday } from '@/types/calendar.type';
+import type { Holiday } from '@/types/calendar.type';
 import { WEEKDAYS } from '@/constants/calendar.constants';
 import { EMOTION_IMAGES } from '@/constants/emotions.constants';
 import Tooltip from '@/components/ui/tooltip';
+import { CalendarPost } from '@/types/post.type';
 
 type Props = {
   currentDate: Dayjs;
   setCurrentDate: Dispatch<SetStateAction<Dayjs>>;
   holidays: Holiday[];
-  posts: ExtendedPost[];
+  posts: CalendarPost[];
 };
 
 const CalendarCard = ({
@@ -123,8 +124,8 @@ const CalendarCard = ({
                       <div className="relative aspect-square w-full overflow-hidden rounded-full">
                         <Image
                           src={
-                            post.imageUrl ||
-                            EMOTION_IMAGES[post.emotion as Emotion]
+                            post.images.find((img) => img.isRepresentative)
+                              ?.imageUrl || EMOTION_IMAGES[post.emotion]
                           }
                           alt="대표 이미지"
                           width={32}

@@ -1,12 +1,12 @@
 import { SORT_OPTIONS } from '@/constants/community.constants';
-import { EnhancedPost, SortOption } from '@/types/community.type';
+import { CommunityPost, SortOption } from '@/types/community.type';
 import { debounce } from 'lodash';
 
 // 정렬 함수
 export const sortPosts = (
-  posts: EnhancedPost[],
+  posts: CommunityPost[],
   sortOption: SortOption,
-): EnhancedPost[] => {
+): CommunityPost[] => {
   return [...posts].sort((a, b) => {
     if (sortOption === SORT_OPTIONS.LATEST) {
       return b.createdAt.getTime() - a.createdAt.getTime();

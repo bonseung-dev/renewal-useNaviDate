@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 import { sortPosts } from '@/lib/utils/coomunity.utils';
-import { EnhancedPost, SortOption } from '@/types/community.type';
+import { CommunityPost, SortOption } from '@/types/community.type';
 
 export const useSortedPosts = (
-  posts: EnhancedPost[],
+  posts: CommunityPost[],
   sortOption: SortOption,
 ) => {
   return useMemo(() => sortPosts(posts, sortOption), [posts, sortOption]);

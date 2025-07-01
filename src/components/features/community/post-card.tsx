@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { Bookmark, Heart } from 'lucide-react';
-import { EnhancedPost } from '@/types/community.type';
+import { CommunityPost } from '@/types/community.type';
 import { useState } from 'react';
 import { formatDate } from '@/lib/utils/coomunity.utils';
 
@@ -11,7 +11,7 @@ import { useUpdateLikeMutation } from '@/lib/mutations/like.mutation';
 import { useUpdateBookmarkMutation } from '@/lib/mutations/bookmark.mutation';
 
 type PostCardProps = {
-  post: EnhancedPost;
+  post: CommunityPost;
 };
 
 const PostCard = ({ post }: PostCardProps) => {

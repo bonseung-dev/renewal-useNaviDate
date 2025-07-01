@@ -12,7 +12,7 @@ import PostCard from './post-card';
 import { SortOption } from '@/types/community.type';
 import { useSearchQuery } from '@/lib/hooks/community/use-search-query';
 import { useCommunityData } from '@/lib/hooks/community/use-community-data';
-import { useEnhancedPosts } from '@/lib/hooks/community/use-enhanced-posts';
+import { useCommunityPosts } from '@/lib/hooks/community/use-enhanced-posts';
 import { useSortedPosts } from '@/lib/hooks/community/use-sorted-posts';
 import { SORT_OPTIONS } from '@/constants/community.constants';
 
@@ -36,7 +36,7 @@ const Community = () => {
   const { posts, isLoading, users, tags, images, likes, bookmarks } =
     useCommunityData(debouncedQuery);
 
-  const enhancedPosts = useEnhancedPosts(
+  const communityPosts = useCommunityPosts(
     posts,
     users,
     tags,
@@ -44,7 +44,7 @@ const Community = () => {
     likes,
     bookmarks,
   );
-  const sortedPosts = useSortedPosts(enhancedPosts, sortOption);
+  const sortedPosts = useSortedPosts(communityPosts, sortOption);
 
   if (isLoading)
     return <div className="text-center py-10 text-skin4">로딩 중...</div>;

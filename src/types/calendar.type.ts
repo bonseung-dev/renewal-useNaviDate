@@ -40,52 +40,6 @@ export type BackendHolidayItem = {
   meta?: Record<string, unknown>;
 };
 
-// 일담 임시로 calendar에 타입을 지정했으나 종연님이 해주시면 교체할 예정
-export type Emotion = 'Joy' | 'Fun' | 'Soso' | 'Sad' | 'Mad';
-
-export type Post = {
-  id: string;
-  userId: string;
-  title: string;
-  content: string;
-  visibility: 'private' | 'public';
-  date: string;
-  emotion: Emotion;
-  createdAt: Date;
-  deletedAt: Date | null;
-};
-
-export type ExtendedPost = {
-  id: string;
-  userId: string;
-  title: string;
-  content: string;
-  visibility: 'private' | 'public';
-  date: string;
-  emotion: 'Joy' | 'Fun' | 'Soso' | 'Sad' | 'Mad';
-  createdAt: string;
-  deletedAt: string | null;
-  imageUrl?: string;
-  likesCount: number;
-  bookmarksCount: number;
-  images: PostImage[];
-  tags: PostTag[];
-};
-
-export type PostImage = {
-  id: string;
-  postId: string;
-  imageUrl: string;
-  address: string | null;
-  isRepresentative: boolean;
-};
-
-export type PostTag = {
-  id: string;
-  postId: string;
-  name: string;
-};
-
 export type Anniversary = {
   id: string;
   coupleId: string;
