@@ -1,0 +1,68 @@
+'use client';
+
+import { Anniversary, RepeatOption } from '@/types/anniversary.type';
+import AnniversaryForm from './anniversary-form';
+import {
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { useState } from 'react';
+
+type AnniversaryEditorProps = {
+  coupleId: string;
+  userId: string;
+  onAdd: (data: Omit<Anniversary, 'id'>, userId: string) => void;
+  onUpdate: (data: Anniversary) => void;
+  initialData?: Anniversary | null;
+  onSubmitSuccess?: () => void;
+};
+
+const AnniversaryEditor = ({
+  coupleId,
+  userId,
+  onAdd,
+  onUpdate,
+  initialData,
+  onSubmitSuccess,
+}: AnniversaryEditorProps) => {
+  const [repeat, setRepeat] = useState<RepeatOption>('YEARLY');
+
+  const handleSubmit = (data: {
+    title: string;
+    date: string;
+    repeat: RepeatOption;
+  }) => {
+    if (initialData) {
+      onUpdate({
+        ...initialData,
+        ...data,
+        coupleId,
+        createdBy: initialData.createdBy,
+      });
+    } else {
+      onAdd({ ...data, createdBy: userId, coupleId }, userId);
+    }
+    onSubmitSuccess?.();
+  };
+
+  return (
+    <DialogContent className="bg-skin5 p-1 shadow-shadow1 rounded-xl w-[320px] h-[330px]">
+      <DialogTitle className="sr-only">
+        {initialData ? '기념일 수정' : '기념일 추가'}
+      </DialogTitle>
+      <DialogDescription className="sr-only">
+        기념일 정보를 입력해 주세요.
+      </DialogDescription>
+
+      <AnniversaryForm
+        repeat={repeat}
+        onRepeatChange={setRepeat}
+        onSubmit={handleSubmit}
+        editingAnniversary={initialData}
+      />
+    </DialogContent>
+  );
+};
+
+export default AnniversaryEditor;

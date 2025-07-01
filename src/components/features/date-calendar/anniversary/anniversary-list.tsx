@@ -36,7 +36,7 @@ const AnniversaryList = ({
     <>
       <ul>
         {sorted.map((a) => {
-          const isUserCreated = a.created_by === 'user';
+          const isUserCreated = a.createdBy !== 'system';
           const heartColor = isUserCreated ? 'fill-skin6' : 'fill-skin1';
 
           return (
@@ -61,9 +61,20 @@ const AnniversaryList = ({
                   />
                 </svg>
               </div>
-              <div className="flex flex-col justify-center flex-1">
+              <div className="flex flex-col justify-center flex-1 ">
                 <div className="flex items-center gap-2">
-                  <p className="font-bold text-b-h3 text-font1">{a.title}</p>
+                  <div className="relative group max-w-[120px]">
+                    <p className="font-bold text-b-h3 text-font1 truncate cursor-default">
+                      {a.title}
+                    </p>
+
+                    {/* 툴팁 */}
+                    {a.title.length > 8 && (
+                      <div className="absolute -top-4 left-[53px] -translate-x-1/2 bg-skin1/50 text-skin5 text-l-title5 px-1 rounded-full whitespace-nowrap z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                        {a.title}
+                      </div>
+                    )}
+                  </div>
                   {isUserCreated && (
                     <div className="flex gap-2">
                       <button
@@ -86,7 +97,7 @@ const AnniversaryList = ({
                 <p className="text-m-h4 text-font1">{a.date}</p>
               </div>
               <div className="flex flex-col items-center gap-1">
-                <span className="w-[60px] h-[24px] flex items-center justify-center border border-skin1 text-skin1 text-m-h4 rounded-full px-3 py-0.5">
+                <span className="w-[60px] h-[24px] flex items-center justify-center border border-skin1 text-skin1 text-l-title5 rounded-full px-3 py-0.5">
                   {calculateDDay(a.date)}
                 </span>
               </div>
