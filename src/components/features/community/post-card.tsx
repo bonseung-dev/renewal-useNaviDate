@@ -5,20 +5,43 @@ import { Bookmark, Heart } from 'lucide-react';
 import { EnhancedPost } from '@/types/community.type';
 import { useState } from 'react';
 import { formatDate } from '@/lib/utils/coomunity.utils';
+import { useToggleLike } from '@/lib/mutations/like.mutation';
+import { useToggleBookmark } from '@/lib/mutations/bookmark.mutation';
+import Tooltip from '@/components/ui/tooltip';
 
-interface PostCardProps {
+type PostCardProps = {
   post: EnhancedPost;
-}
+};
 
 const PostCard = ({ post }: PostCardProps) => {
-  const [isLiked, setIsLiked] = useState(false);
-  const [isBookmarked, setIsBookmarked] = useState(false);
   const [showLikesCount, setShowLikesCount] = useState(false);
   const [showBookmarksCount, setShowBookmarksCount] = useState(false);
 
+  const { mutate: toggleLike } = useToggleLike();
+  const { mutate: toggleBookmark } = useToggleBookmark();
+
+  const userId =
+    typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
+
+  // 현재 사용자의 좋아요 및 북마크 상태 확인
+  const isLiked = post.likes.some((like) => like.userId === userId);
+  const isBookmarked = post.bookmarks.some(
+    (bookmark) => bookmark.userId === userId,
+  );
+
+  const handleLike = () => {
+    if (!userId) return;
+    toggleLike({ postId: post.id, userId });
+  };
+
+  const handleBookmark = () => {
+    if (!userId) return;
+    toggleBookmark({ postId: post.id, userId });
+  };
+
   return (
     <article
-      className="w-[280px] h-[320px] rounded-[20px] overflow-hidden relative shadow-shadow1 "
+      className="w-[280px] h-[320px] rounded-[20px] overflow-hidden relative shadow-shadow1"
       aria-labelledby={`post-${post.id}-title`}
     >
       <div className="absolute inset-0">
@@ -100,13 +123,13 @@ const PostCard = ({ post }: PostCardProps) => {
           <nav aria-label="포스트 액션">
             <div className="flex gap-1">
               {/* 좋아요 버튼 */}
-              <div className="relative group">
+              <Tooltip content={post.likesCount} show={showLikesCount}>
                 <button
                   aria-label={`좋아요 ${isLiked ? '취소' : ''} (현재 ${post.likesCount}개)`}
                   className="w-[25px] h-[25px] flex items-center justify-center transition-all duration-200"
-                  onClick={() => setIsLiked(!isLiked)}
+                  onClick={handleLike}
                   onMouseEnter={() => setShowLikesCount(true)}
-                  onMouseLeave={() => setShowBookmarksCount(false)}
+                  onMouseLeave={() => setShowLikesCount(false)}
                 >
                   <Heart
                     className={`w-[25px] h-[25px] transition-all duration-200 ${
@@ -116,22 +139,14 @@ const PostCard = ({ post }: PostCardProps) => {
                     }`}
                   />
                 </button>
-                {showLikesCount && (
-                  <div
-                    className="absolute -top-6 left-1/2 -translate-x-1/2 bg-skin1/60 text-skin5 text-l-title5 font-light px-2 py-1 rounded whitespace-nowrap"
-                    role="tooltip"
-                  >
-                    {post.likesCount} likes
-                  </div>
-                )}
-              </div>
+              </Tooltip>
 
               {/* 북마크 버튼 */}
-              <div className="relative group">
+              <Tooltip content={post.bookmarksCount} show={showBookmarksCount}>
                 <button
                   aria-label={`북마크 ${isBookmarked ? '취소' : ''} (현재 ${post.bookmarksCount}개)`}
                   className="w-[25px] h-[25px] flex items-center justify-center transition-all duration-200"
-                  onClick={() => setIsBookmarked(!isBookmarked)}
+                  onClick={handleBookmark}
                   onMouseEnter={() => setShowBookmarksCount(true)}
                   onMouseLeave={() => setShowBookmarksCount(false)}
                 >
@@ -143,15 +158,7 @@ const PostCard = ({ post }: PostCardProps) => {
                     }`}
                   />
                 </button>
-                {showBookmarksCount && (
-                  <div
-                    className="absolute -top-6 left-1/2 -translate-x-1/2 bg-skin1/60 text-skin5 text-l-title5 font-light px-2 py-1 rounded whitespace-nowrap"
-                    role="tooltip"
-                  >
-                    {post.bookmarksCount} bookmarks
-                  </div>
-                )}
-              </div>
+              </Tooltip>
             </div>
           </nav>
         </footer>

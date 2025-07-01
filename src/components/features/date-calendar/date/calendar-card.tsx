@@ -7,6 +7,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { Emotion, ExtendedPost, Holiday } from '@/types/calendar.type';
 import { WEEKDAYS } from '@/constants/calendar.constants';
 import { EMOTION_IMAGES } from '@/constants/emotions.constants';
+import Tooltip from '@/components/ui/tooltip';
 
 type Props = {
   currentDate: Dayjs;
@@ -118,21 +119,20 @@ const CalendarCard = ({
               <div className="relative w-full h-full flex items-center justify-center">
                 {post ? (
                   <div className="relative w-full h-full">
-                    <div className="group relative w-full h-full">
-                      <Image
-                        src={
-                          post.imageUrl ||
-                          EMOTION_IMAGES[post.emotion as Emotion]
-                        }
-                        alt="대표 이미지"
-                        width={32}
-                        height={32}
-                        className="rounded-full w-full h-full object-cover hover:opacity-90"
-                      />
-                      <div className="absolute top-[calc(100%+4px)] left-1/2 -translate-x-1/2 px-2 py-1 text-l-title5 font-light bg-skin2 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity z-20 whitespace-nowrap shadow-md pointer-events-none before:absolute before:-top-1 before:left-1/2 before:-translate-x-1/2 before:w-2 before:h-2 before:bg-skin2 before:rotate-45">
-                        {post.title}
+                    <Tooltip content={post.title} position="bottom">
+                      <div className="relative aspect-square w-full overflow-hidden rounded-full">
+                        <Image
+                          src={
+                            post.imageUrl ||
+                            EMOTION_IMAGES[post.emotion as Emotion]
+                          }
+                          alt="대표 이미지"
+                          width={32}
+                          height={32}
+                          className="absolute top-1/2 left-1/2 min-w-full min-h-full w-full h-full -translate-x-1/2 -translate-y-1/2 object-cover hover:opacity-90"
+                        />
                       </div>
-                    </div>
+                    </Tooltip>
                   </div>
                 ) : (
                   <span className={`${textColor} text-l-title4 font-light`}>
