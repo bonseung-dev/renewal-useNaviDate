@@ -11,6 +11,15 @@ export class LikesService {
     private likesRepository: Repository<LikeEntity>,
   ) {}
 
+  private convertToSharedType(entity: LikeEntity): Like {
+    return {
+      id: entity.id,
+      postId: entity.postId,
+      userId: entity.userId,
+      createdAt: entity.createdAt.toISOString(),
+    };
+  }
+
   async create(userId: string, postId: string): Promise<ApiResponse<Like>> {
     try {
       const like = this.likesRepository.create({
@@ -22,14 +31,14 @@ export class LikesService {
       
       return {
         success: true,
-        data: savedLike,
-        message: '좋아요가 성공적으로 추가되었습니다.',
+        data: this.convertToSharedType(savedLike),
+        message: '좋아요가 성공적으로 생성되었습니다.',
       };
     } catch (error) {
       return {
         success: false,
         error: error.message,
-        message: '좋아요 추가에 실패했습니다.',
+        message: '좋아요 생성에 실패했습니다.',
       };
     }
   }
@@ -41,7 +50,7 @@ export class LikesService {
       });
       return {
         success: true,
-        data: likes,
+        data: likes.map(entity => this.convertToSharedType(entity)),
         message: '좋아요 목록을 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -67,7 +76,7 @@ export class LikesService {
       }
       return {
         success: true,
-        data: like,
+        data: this.convertToSharedType(like),
         message: '좋아요를 성공적으로 조회했습니다.',
       };
     } catch (error) {

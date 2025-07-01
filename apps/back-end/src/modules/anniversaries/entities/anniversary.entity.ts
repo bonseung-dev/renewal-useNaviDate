@@ -1,14 +1,13 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
-import { Anniversary as SharedAnniversary } from '@use-navi-date/shared';
 import { Couple } from '../../couples/entities/couple.entity';
 
 @Entity('anniversaries')
-export class Anniversary implements SharedAnniversary {
+export class Anniversary {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  couple_id: string;
+  coupleId: string;
 
   @Column()
   title: string;
@@ -23,7 +22,7 @@ export class Anniversary implements SharedAnniversary {
   memo?: string;
 
   @Column()
-  created_by: string;
+  createdBy: string;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -32,6 +31,6 @@ export class Anniversary implements SharedAnniversary {
   updatedAt: Date;
 
   @ManyToOne(() => Couple, { nullable: true })
-  @JoinColumn({ name: 'couple_id' })
+  @JoinColumn({ name: 'coupleId' })
   couple?: Couple;
 } 

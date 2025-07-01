@@ -1,18 +1,20 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
-import { Chat as SharedChat } from '@use-navi-date/shared';
 import { User } from '../../users/entities/user.entity';
 import { ChatMessage } from './chat-message.entity';
 
 @Entity('chats')
-export class Chat implements SharedChat {
+export class Chat {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  user1Id: string;
+  userAId: string;
 
   @Column()
-  user2Id: string;
+  userBId: string;
+
+  @Column('text')
+  message: string;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -21,11 +23,11 @@ export class Chat implements SharedChat {
   updatedAt: Date;
 
   @ManyToOne(() => User, { nullable: true })
-  @JoinColumn({ name: 'user1Id' })
+  @JoinColumn({ name: 'userAId' })
   user1?: User;
 
   @ManyToOne(() => User, { nullable: true })
-  @JoinColumn({ name: 'user2Id' })
+  @JoinColumn({ name: 'userBId' })
   user2?: User;
 
   @OneToMany(() => ChatMessage, message => message.chat)

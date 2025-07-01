@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { Anniversary } from '@/types/anniversary.type';
+import { Anniversary } from '@use-navi-date/shared';
 import { STORAGE_KEY } from '@/constants/holiday.constants';
 
 export const generateAutoAnniversaries = (

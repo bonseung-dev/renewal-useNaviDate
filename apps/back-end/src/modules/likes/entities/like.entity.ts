@@ -1,10 +1,9 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
-import { Like as SharedLike } from '@use-navi-date/shared';
 import { User } from '../../users/entities/user.entity';
 import { Post } from '../../posts/entities/post.entity';
 
 @Entity('likes')
-export class Like implements SharedLike {
+export class Like {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

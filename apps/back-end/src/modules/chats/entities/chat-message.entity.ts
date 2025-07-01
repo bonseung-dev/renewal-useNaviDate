@@ -1,10 +1,9 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
-import { ChatMessage as SharedChatMessage } from '@use-navi-date/shared';
 import { Chat } from './chat.entity';
 import { User } from '../../users/entities/user.entity';
 
 @Entity('chat_messages')
-export class ChatMessage implements SharedChatMessage {
+export class ChatMessage {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

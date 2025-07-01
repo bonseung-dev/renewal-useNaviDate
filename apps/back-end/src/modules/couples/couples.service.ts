@@ -11,13 +11,25 @@ export class CouplesService {
     private couplesRepository: Repository<CoupleEntity>,
   ) {}
 
+  private convertToSharedType(entity: CoupleEntity): Couple {
+    return {
+      id: entity.id,
+      userAId: entity.userAId,
+      userBId: entity.userBId,
+      anniversary: entity.anniversary,
+      name: entity.name,
+      status: entity.status,
+      createdAt: entity.createdAt.toISOString(),
+    };
+  }
+
   async create(createCoupleDto: CreateCoupleDto): Promise<ApiResponse<Couple>> {
     try {
       const couple = this.couplesRepository.create({
-        user_a_id: createCoupleDto.user2Id, // 임시로 user2Id를 user_a_id로 설정
-        user_b_id: null,
-        anniversary: new Date().toISOString(),
-        name: '새로운 커플',
+        userAId: createCoupleDto.user2Id, // 임시로 user2Id를 userAId로 설정
+        userBId: null,
+        anniversary: new Date().toISOString().split('T')[0], // 임시로 오늘 날짜 설정
+        name: '새로운 커플', // 임시 이름
         status: 'pending',
       });
       
@@ -25,7 +37,7 @@ export class CouplesService {
       
       return {
         success: true,
-        data: savedCouple,
+        data: this.convertToSharedType(savedCouple),
         message: '커플이 성공적으로 생성되었습니다.',
       };
     } catch (error) {
@@ -44,7 +56,7 @@ export class CouplesService {
       });
       return {
         success: true,
-        data: couples,
+        data: couples.map(entity => this.convertToSharedType(entity)),
         message: '커플 목록을 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -70,7 +82,7 @@ export class CouplesService {
       }
       return {
         success: true,
-        data: couple,
+        data: this.convertToSharedType(couple),
         message: '커플을 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -97,7 +109,7 @@ export class CouplesService {
       
       return {
         success: true,
-        data: updatedCouple,
+        data: this.convertToSharedType(updatedCouple),
         message: '커플이 성공적으로 업데이트되었습니다.',
       };
     } catch (error) {

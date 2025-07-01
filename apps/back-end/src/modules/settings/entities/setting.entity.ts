@@ -1,26 +1,25 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
-import { Setting as SharedSetting } from '@use-navi-date/shared';
 import { User } from '../../users/entities/user.entity';
 
 @Entity('settings')
-export class Setting implements SharedSetting {
+export class Setting {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
   userId: string;
 
+  @Column({ type: 'enum', enum: ['light', 'dark'] })
+  theme: 'light' | 'dark';
+
+  @Column({ default: true })
+  allowPush: boolean;
+
   @Column({ nullable: true })
   notificationPreference?: string;
 
-  @Column({ nullable: true })
-  themePreference?: string;
-
   @Column({ default: true })
   emailNotification?: boolean;
-
-  @Column({ default: true })
-  pushNotification?: boolean;
 
   @Column('json', { nullable: true })
   privacySettings?: {

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { getHolidaysByMonth } from '@/lib/services/holiday.services';
-import type { Holiday, Post } from '@/types/calendar.type';
+import type { Holiday, Post } from '@use-navi-date/shared';
 import CalendarCard from './date/calendar-card';
 import AnalysisButton from './date/analysis-button';
 import DateAnalysis from './date/date-analysis';

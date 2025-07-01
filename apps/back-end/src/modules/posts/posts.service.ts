@@ -11,18 +11,28 @@ export class PostsService {
     private postsRepository: Repository<PostEntity>,
   ) {}
 
+  private convertToSharedType(entity: PostEntity): Post {
+    return {
+      id: entity.id,
+      userId: entity.userId,
+      title: entity.title,
+      content: entity.content,
+      visibility: entity.visibility,
+      date: entity.date.toISOString(),
+      emotion: entity.emotion,
+      createdAt: entity.createdAt.toISOString(),
+      deletedAt: entity.deletedAt ? entity.deletedAt.toISOString() : null,
+    };
+  }
+
   async create(createPostDto: CreatePostDto): Promise<ApiResponse<Post>> {
     try {
       const post = this.postsRepository.create({
-        user_id: createPostDto.coupleId || '', // 임시로 빈 문자열 설정
-        coupleId: createPostDto.coupleId,
+        userId: createPostDto.coupleId || '', // 임시로 빈 문자열 설정
         title: createPostDto.title,
         content: createPostDto.content,
         date: createPostDto.date,
-        location: createPostDto.location,
         emotion: createPostDto.emotion,
-        images: createPostDto.images,
-        tags: createPostDto.tags,
         visibility: createPostDto.isPublic ? 'public' : 'private',
       });
       
@@ -30,7 +40,7 @@ export class PostsService {
       
       return {
         success: true,
-        data: savedPost,
+        data: this.convertToSharedType(savedPost),
         message: '게시글이 성공적으로 생성되었습니다.',
       };
     } catch (error) {
@@ -45,11 +55,11 @@ export class PostsService {
   async findAll(): Promise<ApiResponse<Post[]>> {
     try {
       const posts = await this.postsRepository.find({
-        relations: ['user'],
+        relations: ['user', 'couple'],
       });
       return {
         success: true,
-        data: posts,
+        data: posts.map(entity => this.convertToSharedType(entity)),
         message: '게시글 목록을 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -65,7 +75,7 @@ export class PostsService {
     try {
       const post = await this.postsRepository.findOne({
         where: { id },
-        relations: ['user'],
+        relations: ['user', 'couple'],
       });
       if (!post) {
         return {
@@ -75,7 +85,7 @@ export class PostsService {
       }
       return {
         success: true,
-        data: post,
+        data: this.convertToSharedType(post),
         message: '게시글을 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -102,7 +112,7 @@ export class PostsService {
       
       return {
         success: true,
-        data: updatedPost,
+        data: this.convertToSharedType(updatedPost),
         message: '게시글이 성공적으로 업데이트되었습니다.',
       };
     } catch (error) {

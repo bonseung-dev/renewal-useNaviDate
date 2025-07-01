@@ -29,7 +29,7 @@ export class AuthController {
           user: {
             id: user.id,
             email: user.email,
-            name: user.name,
+            nickname: user.nickname,
             profileImage: user.profileImage,
           },
           message: 'Google 로그인이 성공했습니다.',
@@ -70,7 +70,7 @@ export class AuthController {
           user: {
             id: user.id,
             email: user.email,
-            name: user.name,
+            nickname: user.nickname,
             profileImage: user.profileImage,
           },
           message: '로그인이 성공했습니다.',
@@ -111,7 +111,7 @@ export class AuthController {
           user: {
             id: user.id,
             email: user.email,
-            name: user.name,
+            nickname: user.nickname,
             profileImage: user.profileImage,
           },
           message: '회원가입이 성공했습니다.',

@@ -1,5 +1,5 @@
 import { CALENDAR_ID, LEGAL_HOLIDAYS } from '@/constants/holiday.constants';
-import type { Holiday, HolidayEvent } from '@/types/calendar.type'; // HolidayEvent는 타입 단언에 사용됨 (TS6385는 무시해도 됨)
+import type { Holiday, HolidayEvent } from '@use-navi-date/shared';
 import dayjs from 'dayjs';
 
 /**
@@ -36,9 +36,8 @@ export const getHolidaysByMonth = async (
   // 예: if (data.status === 'error') throw new Error(data.message);
   if (!res.ok) throw new Error(data.error?.message || '공휴일 가져오기 실패');
 
-  // 백엔드 연동 시 수정 - 백엔드 API 응답이 BackendHoliday[] 형식이므로 데이터 가공 로직 제거
-  // 수정할 부분: 현재 Promise<Holiday[]> 반환 타입은 백엔드 연동 시 Promise<BackendHoliday[]>로 변경
-  // 백엔드 응답 예: [{ date: '2025-05-05', items: [{ name: '어린이날', type: '법정공휴일', meta?: {...} }, ...] }]
+  // 백엔드 연동 시 수정 - 백엔드 API가 BackendHoliday[] 형식을 반환하면 이 변환 로직 제거
+  // 현재: Google Calendar API 응답을 Holiday[]로 변환
   const groupedByDate: Record<
     string,
     { summaries: string[]; isLegalHoliday: boolean }

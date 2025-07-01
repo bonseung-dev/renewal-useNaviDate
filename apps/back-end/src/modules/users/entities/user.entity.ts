@@ -1,9 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn } from 'typeorm';
-import { User as SharedUser } from '@use-navi-date/shared';
-import { Image } from '../../images/entities/image.entity';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity('users')
-export class User implements SharedUser {
+export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -11,21 +9,17 @@ export class User implements SharedUser {
   email: string;
 
   @Column()
-  name: string;
+  password: string;
 
-  @Column({ nullable: true })
-  password?: string;
+  @Column()
+  nickname: string;
 
-  @Column({ nullable: true })
-  profileImage?: string;
+  @Column()
+  profileImage: string;
 
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
-
-  @OneToOne(() => Image, { nullable: true })
-  @JoinColumn()
-  profileImageEntity?: Image;
 } 

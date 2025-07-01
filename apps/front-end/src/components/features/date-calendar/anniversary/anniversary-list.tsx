@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Anniversary } from '@/types/anniversary.type';
+import { Anniversary } from '@use-navi-date/shared';
 import dayjs from 'dayjs';
 import { Pencil, Trash2 } from 'lucide-react';
 

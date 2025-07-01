@@ -1,6 +1,6 @@
 import NumberPicker from '@/components/ui/number-picker';
 
-import { Anniversary, RepeatOption } from '@/types/anniversary.type';
+import { Anniversary, RepeatOption } from '@use-navi-date/shared';
 import { DialogClose } from '@radix-ui/react-dialog';
 import { useState, useEffect } from 'react';
 import dayjs from 'dayjs';

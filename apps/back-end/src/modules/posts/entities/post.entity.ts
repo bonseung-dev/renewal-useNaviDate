@@ -1,18 +1,16 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
-import { Post as SharedPost } from '@use-navi-date/shared';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { Couple } from '../../couples/entities/couple.entity';
+import { PostImage } from './post-image.entity';
+import { PostTag } from './post-tag.entity';
 
 @Entity('posts')
-export class Post implements SharedPost {
+export class Post {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  user_id: string;
-
-  @Column({ nullable: true })
-  coupleId?: string;
+  userId: string;
 
   @Column()
   title: string;
@@ -20,38 +18,35 @@ export class Post implements SharedPost {
   @Column('text')
   content: string;
 
-  @Column('date')
-  date: Date;
-
-  @Column({ nullable: true })
-  location?: string;
-
-  @Column({ type: 'enum', enum: ['happy', 'sad', 'excited', 'angry', 'usual'] })
-  emotion: 'happy' | 'sad' | 'excited' | 'angry' | 'usual';
-
-  @Column('simple-array', { nullable: true })
-  images?: string[];
-
-  @Column('simple-array', { nullable: true })
-  tags?: string[];
-
   @Column({ type: 'enum', enum: ['private', 'public'] })
   visibility: 'private' | 'public';
 
-  @CreateDateColumn()
-  created_at: Date;
+  @Column('date')
+  date: Date;
 
-  @Column({ type: 'timestamp', nullable: true })
-  deleted_at: Date | null;
+  @Column({ type: 'enum', enum: ['Joy', 'Fun', 'Soso', 'Sad', 'Mad'] })
+  emotion: 'Joy' | 'Fun' | 'Soso' | 'Sad' | 'Mad';
+
+  @CreateDateColumn()
+  createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @Column({ type: 'timestamp', nullable: true })
+  deletedAt: Date | null;
+
   @ManyToOne(() => User, { nullable: true })
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn({ name: 'userId' })
   user?: User;
 
   @ManyToOne(() => Couple, { nullable: true, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'coupleId' })
-  couple: Couple;
+  couple?: Couple;
+
+  @OneToMany(() => PostImage, image => image.post)
+  images?: PostImage[];
+
+  @OneToMany(() => PostTag, tag => tag.post)
+  tags?: PostTag[];
 } 

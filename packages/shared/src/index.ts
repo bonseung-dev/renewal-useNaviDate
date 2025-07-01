@@ -5,56 +5,46 @@ export interface BaseEntity {
   updatedAt: Date;
 }
 
-export interface User {
+export type User = {
   id: string;
   email: string;
-  name: string;
-  password?: string;
-  profileImage?: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+  password: string;
+  nickname: string;
+  profileImage: string;
+  createdAt: string;
+  tempToken?: string;
+};
 
 export interface Couple {
   id: string;
-  user_a_id: string;
-  user_b_id: string | null;
-  user1?: User;
-  user2?: User;
+  userAId: string;
+  userBId: string | null;
   anniversary: string;
   name: string;
   status: 'pending' | 'confirm' | 'delete';
-  created_at: Date;
-  updatedAt: Date;
+  createdAt: string;
 }
 
 export interface Post {
   id: string;
-  user_id: string;
-  coupleId?: string;
+  userId: string;
   title: string;
   content: string;
-  date: Date;
-  location?: string;
-  emotion: 'happy' | 'sad' | 'excited' | 'angry' | 'usual';
-  images?: string[];
-  tags?: string[];
   visibility: 'private' | 'public';
-  created_at: Date;
-  deleted_at: Date | null;
-  updatedAt: Date;
+  date: string;
+  emotion: Emotion;
+  createdAt: string;
+  deletedAt: string | null;
 }
 
 export interface Anniversary {
   id: string;
-  couple_id: string;
+  coupleId: string;
   title: string;
-  date: Date;
-  repeat: 'NONE' | 'YEARLY';
+  date: string;
+  repeat: RepeatOption;
   memo?: string;
-  created_by: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdBy: string;
 }
 
 export interface Image {
@@ -72,28 +62,24 @@ export interface Image {
 
 export interface Bookmark {
   id: string;
-  userId: string;
   postId: string;
-  createdAt: Date;
-  updatedAt: Date;
+  userId: string;
+  createdAt: string;
 }
 
 export interface Like {
   id: string;
-  userId: string;
   postId: string;
-  createdAt: Date;
-  updatedAt: Date;
+  userId: string;
+  createdAt: string;
 }
 
 export interface Chat {
   id: string;
-  user1Id: string;
-  user2Id: string;
-  user1?: User;
-  user2?: User;
+  userAId: string;
+  userBId: string;
+  message: string;
   createdAt: Date;
-  updatedAt: Date;
 }
 
 export interface ChatMessage {
@@ -108,28 +94,18 @@ export interface ChatMessage {
 export interface Setting {
   id: string;
   userId: string;
-  notificationPreference?: string;
-  themePreference?: string;
-  emailNotification?: boolean;
-  pushNotification?: boolean;
-  privacySettings?: {
-    showProfile: boolean;
-    showStatus: boolean;
-    showLastSeen: boolean;
-  };
+  theme: 'light' | 'dark';
+  allowPush: boolean;
   createdAt: Date;
-  updatedAt: Date;
 }
 
 export interface Notification {
   id: string;
   userId: string;
-  type: string;
-  title: string;
+  type: 'like' | 'event' | 'anniversary';
   message: string;
   isRead: boolean;
   createdAt: Date;
-  updatedAt: Date;
 }
 
 // Auth types
@@ -218,7 +194,7 @@ export interface UpdateSettingDto {
 
 // Enums and constants
 export type RepeatOption = 'NONE' | 'YEARLY';
-export type Emotion = 'happy' | 'sad' | 'excited' | 'angry' | 'usual';
+export type Emotion = 'Joy' | 'Fun' | 'Soso' | 'Sad' | 'Mad';
 
 export const EMOTIONS = {
   HAPPY: 'happy',
@@ -260,4 +236,89 @@ export const isValidEmail = (email: string): boolean => {
 };
 
 // Shared constants
-export const DEFAULT_PAGE_SIZE = 10; 
+export const DEFAULT_PAGE_SIZE = 10;
+
+// ====== 병합: Post/Tag/Image/CalendarPost ======
+export type PostTag = {
+  id: string;
+  postId: string;
+  name: string;
+};
+
+export type PostImage = {
+  id: string;
+  postId: string;
+  imageUrl: string;
+  address: string | null;
+  isRepresentative: boolean;
+};
+
+export type CalendarPost = {
+  id: string;
+  userId: string;
+  title: string;
+  content: string;
+  visibility: 'private' | 'public';
+  date: string;
+  emotion: Emotion;
+  createdAt: string;
+  deletedAt: string | null;
+  images: PostImage[];
+};
+
+// ====== 병합: Calendar/Holiday ======
+export type HolidayEvent = {
+  start: {
+    date: string; // YYYY-MM-DD
+  };
+  summary: string; // 공휴일 이름
+};
+
+export type Holiday = {
+  date: string;
+  summary: string;
+  isLegalHoliday: boolean;
+};
+
+export type BackendHoliday = {
+  date: string;
+  items: BackendHolidayItem[];
+};
+
+export type BackendHolidayItem = {
+  name: string;
+  type: '법정공휴일' | '기념일' | '대체공휴일';
+  meta?: Record<string, unknown>;
+};
+
+// ====== 병합: CommunityPost ======
+export type SortOption = 'latest' | 'likes' | 'bookmarks';
+export type CommunityPost = Omit<Post, 'createdAt' | 'deletedAt'> & {
+  createdAt: Date;
+  deletedAt: Date | null;
+  author?: User;
+  partner?: User;
+  tags: PostTag[];
+  images: PostImage[];
+  likesCount: number;
+  bookmarksCount: number;
+  likes: Like[];
+  bookmarks: Bookmark[];
+};
+
+// ====== 기타 ======
+export type PartnerInfo = {
+  id: string;
+  profileImage: string;
+  nickname: string;
+};
+
+export type CoupleResponse = {
+  userAId: string;
+  userBId: string;
+};
+
+export type UserResponse = {
+  profileImage?: string;
+  nickname?: string;
+}; 

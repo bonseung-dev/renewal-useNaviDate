@@ -11,12 +11,22 @@ export class NotificationsService {
     private notificationsRepository: Repository<NotificationEntity>,
   ) {}
 
+  private convertToSharedType(entity: NotificationEntity): Notification {
+    return {
+      id: entity.id,
+      userId: entity.userId,
+      type: entity.type,
+      message: entity.message,
+      isRead: entity.isRead,
+      createdAt: entity.createdAt,
+    };
+  }
+
   async create(createNotificationDto: CreateNotificationDto): Promise<ApiResponse<Notification>> {
     try {
       const notification = this.notificationsRepository.create({
         userId: createNotificationDto.userId,
-        type: createNotificationDto.type,
-        title: createNotificationDto.title,
+        type: createNotificationDto.type as 'like' | 'event' | 'anniversary',
         message: createNotificationDto.message,
         isRead: false,
       });
@@ -25,7 +35,7 @@ export class NotificationsService {
       
       return {
         success: true,
-        data: savedNotification,
+        data: this.convertToSharedType(savedNotification),
         message: '알림이 성공적으로 생성되었습니다.',
       };
     } catch (error) {
@@ -44,7 +54,7 @@ export class NotificationsService {
       });
       return {
         success: true,
-        data: notifications,
+        data: notifications.map(entity => this.convertToSharedType(entity)),
         message: '알림 목록을 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -70,7 +80,7 @@ export class NotificationsService {
       }
       return {
         success: true,
-        data: notification,
+        data: this.convertToSharedType(notification),
         message: '알림을 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -97,7 +107,7 @@ export class NotificationsService {
       
       return {
         success: true,
-        data: updatedNotification,
+        data: this.convertToSharedType(updatedNotification),
         message: '알림이 성공적으로 업데이트되었습니다.',
       };
     } catch (error) {
@@ -124,7 +134,7 @@ export class NotificationsService {
       
       return {
         success: true,
-        data: updatedNotification,
+        data: this.convertToSharedType(updatedNotification),
         message: '알림이 읽음으로 표시되었습니다.',
       };
     } catch (error) {

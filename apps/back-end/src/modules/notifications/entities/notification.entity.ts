@@ -10,8 +10,8 @@ export class Notification implements SharedNotification {
   @Column()
   userId: string;
 
-  @Column()
-  type: string;
+  @Column({ type: 'enum', enum: ['like', 'event', 'anniversary'] })
+  type: 'like' | 'event' | 'anniversary';
 
   @Column()
   title: string;

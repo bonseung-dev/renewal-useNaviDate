@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import type { Emotion, Holiday, Post } from '@/types/calendar.type';
+import type { Emotion, Holiday, Post } from '@use-navi-date/shared';
 
 const emotionImages: Record<Emotion, string> = {
   Joy: '/emotions/emotion_happy.png',

@@ -11,22 +11,34 @@ export class AnniversariesService {
     private anniversariesRepository: Repository<AnniversaryEntity>,
   ) {}
 
+  private convertToSharedType(entity: AnniversaryEntity): Anniversary {
+    return {
+      id: entity.id,
+      coupleId: entity.coupleId,
+      title: entity.title,
+      date: entity.date.toISOString(),
+      repeat: entity.repeat,
+      memo: entity.memo,
+      createdBy: entity.createdBy,
+    };
+  }
+
   async create(createAnniversaryDto: CreateAnniversaryDto): Promise<ApiResponse<Anniversary>> {
     try {
       const anniversary = this.anniversariesRepository.create({
-        couple_id: createAnniversaryDto.coupleId,
+        coupleId: createAnniversaryDto.coupleId,
         title: createAnniversaryDto.title,
         date: createAnniversaryDto.date,
         repeat: 'NONE',
         memo: createAnniversaryDto.description,
-        created_by: '', // 임시로 빈 문자열 설정
+        createdBy: '', // 임시로 빈 문자열 설정
       });
       
       const savedAnniversary = await this.anniversariesRepository.save(anniversary);
       
       return {
         success: true,
-        data: savedAnniversary,
+        data: this.convertToSharedType(savedAnniversary),
         message: '기념일이 성공적으로 생성되었습니다.',
       };
     } catch (error) {
@@ -45,7 +57,7 @@ export class AnniversariesService {
       });
       return {
         success: true,
-        data: anniversaries,
+        data: anniversaries.map(entity => this.convertToSharedType(entity)),
         message: '기념일 목록을 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -71,7 +83,7 @@ export class AnniversariesService {
       }
       return {
         success: true,
-        data: anniversary,
+        data: this.convertToSharedType(anniversary),
         message: '기념일을 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -98,7 +110,7 @@ export class AnniversariesService {
       
       return {
         success: true,
-        data: updatedAnniversary,
+        data: this.convertToSharedType(updatedAnniversary),
         message: '기념일이 성공적으로 업데이트되었습니다.',
       };
     } catch (error) {

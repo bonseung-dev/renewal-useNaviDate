@@ -1,9 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
-import { Image as SharedImage } from '@use-navi-date/shared';
 import { User } from '../../users/entities/user.entity';
 
 @Entity('images')
-export class Image implements SharedImage {
+export class Image {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

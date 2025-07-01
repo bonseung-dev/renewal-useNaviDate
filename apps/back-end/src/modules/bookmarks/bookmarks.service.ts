@@ -11,6 +11,15 @@ export class BookmarksService {
     private bookmarksRepository: Repository<BookmarkEntity>,
   ) {}
 
+  private convertToSharedType(entity: BookmarkEntity): Bookmark {
+    return {
+      id: entity.id,
+      postId: entity.postId,
+      userId: entity.userId,
+      createdAt: entity.createdAt.toISOString(),
+    };
+  }
+
   async create(userId: string, postId: string): Promise<ApiResponse<Bookmark>> {
     try {
       const bookmark = this.bookmarksRepository.create({
@@ -22,14 +31,14 @@ export class BookmarksService {
       
       return {
         success: true,
-        data: savedBookmark,
-        message: '북마크가 성공적으로 추가되었습니다.',
+        data: this.convertToSharedType(savedBookmark),
+        message: '북마크가 성공적으로 생성되었습니다.',
       };
     } catch (error) {
       return {
         success: false,
         error: error.message,
-        message: '북마크 추가에 실패했습니다.',
+        message: '북마크 생성에 실패했습니다.',
       };
     }
   }
@@ -41,7 +50,7 @@ export class BookmarksService {
       });
       return {
         success: true,
-        data: bookmarks,
+        data: bookmarks.map(entity => this.convertToSharedType(entity)),
         message: '북마크 목록을 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -67,7 +76,7 @@ export class BookmarksService {
       }
       return {
         success: true,
-        data: bookmark,
+        data: this.convertToSharedType(bookmark),
         message: '북마크를 성공적으로 조회했습니다.',
       };
     } catch (error) {

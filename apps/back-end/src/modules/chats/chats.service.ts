@@ -14,25 +14,47 @@ export class ChatsService {
     private chatMessagesRepository: Repository<ChatMessageEntity>,
   ) {}
 
-  async create(user1Id: string, user2Id: string): Promise<ApiResponse<Chat>> {
+  private convertToSharedType(entity: ChatEntity): Chat {
+    return {
+      id: entity.id,
+      userAId: entity.userAId,
+      userBId: entity.userBId,
+      message: entity.message,
+      createdAt: entity.createdAt,
+    };
+  }
+
+  private convertMessageToSharedType(entity: ChatMessageEntity): ChatMessage {
+    return {
+      id: entity.id,
+      chatId: entity.chatId,
+      userId: entity.userId,
+      content: entity.content,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
+    };
+  }
+
+  async create(userAId: string, userBId: string): Promise<ApiResponse<Chat>> {
     try {
       const chat = this.chatsRepository.create({
-        user1Id,
-        user2Id,
+        userAId,
+        userBId,
+        message: '', // 임시 메시지
       });
       
       const savedChat = await this.chatsRepository.save(chat);
       
       return {
         success: true,
-        data: savedChat,
-        message: '채팅방이 성공적으로 생성되었습니다.',
+        data: this.convertToSharedType(savedChat),
+        message: '채팅이 성공적으로 생성되었습니다.',
       };
     } catch (error) {
       return {
         success: false,
         error: error.message,
-        message: '채팅방 생성에 실패했습니다.',
+        message: '채팅 생성에 실패했습니다.',
       };
     }
   }
@@ -44,14 +66,14 @@ export class ChatsService {
       });
       return {
         success: true,
-        data: chats,
-        message: '채팅방 목록을 성공적으로 조회했습니다.',
+        data: chats.map(entity => this.convertToSharedType(entity)),
+        message: '채팅 목록을 성공적으로 조회했습니다.',
       };
     } catch (error) {
       return {
         success: false,
         error: error.message,
-        message: '채팅방 목록 조회에 실패했습니다.',
+        message: '채팅 목록 조회에 실패했습니다.',
       };
     }
   }
@@ -65,19 +87,19 @@ export class ChatsService {
       if (!chat) {
         return {
           success: false,
-          message: '채팅방을 찾을 수 없습니다.',
+          message: '채팅을 찾을 수 없습니다.',
         };
       }
       return {
         success: true,
-        data: chat,
-        message: '채팅방을 성공적으로 조회했습니다.',
+        data: this.convertToSharedType(chat),
+        message: '채팅을 성공적으로 조회했습니다.',
       };
     } catch (error) {
       return {
         success: false,
         error: error.message,
-        message: '채팅방 조회에 실패했습니다.',
+        message: '채팅 조회에 실패했습니다.',
       };
     }
   }
@@ -94,7 +116,7 @@ export class ChatsService {
       
       return {
         success: true,
-        data: savedMessage,
+        data: this.convertMessageToSharedType(savedMessage),
         message: '메시지가 성공적으로 전송되었습니다.',
       };
     } catch (error) {
@@ -112,7 +134,7 @@ export class ChatsService {
       if (!chat) {
         return {
           success: false,
-          message: '채팅방을 찾을 수 없습니다.',
+          message: '채팅을 찾을 수 없습니다.',
         };
       }
 
@@ -120,13 +142,13 @@ export class ChatsService {
       
       return {
         success: true,
-        message: '채팅방이 성공적으로 삭제되었습니다.',
+        message: '채팅이 성공적으로 삭제되었습니다.',
       };
     } catch (error) {
       return {
         success: false,
         error: error.message,
-        message: '채팅방 삭제에 실패했습니다.',
+        message: '채팅 삭제에 실패했습니다.',
       };
     }
   }

@@ -12,19 +12,31 @@ export class UsersService {
     private usersRepository: Repository<UserEntity>,
   ) {}
 
+  private convertToSharedType(entity: UserEntity): User {
+    return {
+      id: entity.id,
+      email: entity.email,
+      password: entity.password,
+      nickname: entity.nickname,
+      profileImage: entity.profileImage,
+      createdAt: entity.createdAt.toISOString(),
+    };
+  }
+
   async create(createUserDto: CreateUserDto): Promise<ApiResponse<User>> {
     try {
       const user = this.usersRepository.create({
         email: createUserDto.email,
-        name: createUserDto.nickname,
-        profileImage: createUserDto.profileImage,
+        password: createUserDto.password || '',
+        nickname: createUserDto.nickname,
+        profileImage: createUserDto.profileImage || '',
       });
       
       const savedUser = await this.usersRepository.save(user);
       
       return {
         success: true,
-        data: savedUser,
+        data: this.convertToSharedType(savedUser),
         message: '사용자가 성공적으로 생성되었습니다.',
       };
     } catch (error) {
@@ -41,7 +53,7 @@ export class UsersService {
       const users = await this.usersRepository.find();
       return {
         success: true,
-        data: users,
+        data: users.map(entity => this.convertToSharedType(entity)),
         message: '사용자 목록을 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -64,7 +76,7 @@ export class UsersService {
       }
       return {
         success: true,
-        data: user,
+        data: this.convertToSharedType(user),
         message: '사용자를 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -87,7 +99,7 @@ export class UsersService {
       }
       return {
         success: true,
-        data: user,
+        data: this.convertToSharedType(user),
         message: '사용자를 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -114,7 +126,7 @@ export class UsersService {
       
       return {
         success: true,
-        data: updatedUser,
+        data: this.convertToSharedType(updatedUser),
         message: '사용자가 성공적으로 업데이트되었습니다.',
       };
     } catch (error) {
@@ -122,31 +134,6 @@ export class UsersService {
         success: false,
         error: error.message,
         message: '사용자 업데이트에 실패했습니다.',
-      };
-    }
-  }
-
-  async remove(id: string): Promise<ApiResponse<void>> {
-    try {
-      const user = await this.usersRepository.findOne({ where: { id } });
-      if (!user) {
-        return {
-          success: false,
-          message: '사용자를 찾을 수 없습니다.',
-        };
-      }
-
-      await this.usersRepository.remove(user);
-      
-      return {
-        success: true,
-        message: '사용자가 성공적으로 삭제되었습니다.',
-      };
-    } catch (error) {
-      return {
-        success: false,
-        error: error.message,
-        message: '사용자 삭제에 실패했습니다.',
       };
     }
   }
@@ -171,7 +158,7 @@ export class UsersService {
       
       return {
         success: true,
-        data: updatedUser,
+        data: this.convertToSharedType(updatedUser),
         message: '사용자가 성공적으로 업데이트되었습니다.',
       };
     } catch (error) {
@@ -197,7 +184,7 @@ export class UsersService {
       
       return {
         success: true,
-        data: updatedUser,
+        data: this.convertToSharedType(updatedUser),
         message: '사용자 프로필 이미지가 성공적으로 업데이트되었습니다.',
       };
     } catch (error) {
@@ -205,6 +192,58 @@ export class UsersService {
         success: false,
         error: error.message,
         message: '사용자 프로필 이미지 업데이트에 실패했습니다.',
+      };
+    }
+  }
+
+  async updateNickname(id: string, nickname: string): Promise<ApiResponse<User>> {
+    try {
+      const user = await this.usersRepository.findOne({ where: { id } });
+      if (!user) {
+        return {
+          success: false,
+          message: '사용자를 찾을 수 없습니다.',
+        };
+      }
+
+      user.nickname = nickname;
+      const updatedUser = await this.usersRepository.save(user);
+      
+      return {
+        success: true,
+        data: this.convertToSharedType(updatedUser),
+        message: '닉네임이 성공적으로 업데이트되었습니다.',
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: '닉네임 업데이트에 실패했습니다.',
+      };
+    }
+  }
+
+  async remove(id: string): Promise<ApiResponse<void>> {
+    try {
+      const user = await this.usersRepository.findOne({ where: { id } });
+      if (!user) {
+        return {
+          success: false,
+          message: '사용자를 찾을 수 없습니다.',
+        };
+      }
+
+      await this.usersRepository.remove(user);
+      
+      return {
+        success: true,
+        message: '사용자가 성공적으로 삭제되었습니다.',
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: '사용자 삭제에 실패했습니다.',
       };
     }
   }

@@ -14,14 +14,29 @@ export class ImagesService {
     private imagesRepository: Repository<ImageEntity>,
   ) {}
 
-  async create(imageData: Partial<Image>): Promise<ApiResponse<Image>> {
+  private convertToSharedType(entity: ImageEntity): Image {
+    return {
+      id: entity.id,
+      filename: entity.filename,
+      originalName: entity.originalName,
+      mimeType: entity.mimeType,
+      size: entity.size,
+      path: entity.path,
+      url: entity.url,
+      userId: entity.userId,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
+    };
+  }
+
+  async create(imageData: Partial<ImageEntity>): Promise<ApiResponse<Image>> {
     try {
       const image = this.imagesRepository.create(imageData);
       const savedImage = await this.imagesRepository.save(image);
       
       return {
         success: true,
-        data: savedImage,
+        data: this.convertToSharedType(savedImage),
         message: '이미지가 성공적으로 업로드되었습니다.',
       };
     } catch (error) {
@@ -96,10 +111,12 @@ export class ImagesService {
 
   async findAll(): Promise<ApiResponse<Image[]>> {
     try {
-      const images = await this.imagesRepository.find();
+      const images = await this.imagesRepository.find({
+        relations: ['user'],
+      });
       return {
         success: true,
-        data: images,
+        data: images.map(entity => this.convertToSharedType(entity)),
         message: '이미지 목록을 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -113,7 +130,10 @@ export class ImagesService {
 
   async findOne(id: string): Promise<ApiResponse<Image>> {
     try {
-      const image = await this.imagesRepository.findOne({ where: { id } });
+      const image = await this.imagesRepository.findOne({
+        where: { id },
+        relations: ['user'],
+      });
       if (!image) {
         return {
           success: false,
@@ -122,7 +142,7 @@ export class ImagesService {
       }
       return {
         success: true,
-        data: image,
+        data: this.convertToSharedType(image),
         message: '이미지를 성공적으로 조회했습니다.',
       };
     } catch (error) {

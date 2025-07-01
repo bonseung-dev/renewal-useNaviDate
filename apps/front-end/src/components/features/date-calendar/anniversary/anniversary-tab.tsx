@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Anniversary, RepeatOption } from '@/types/anniversary.type';
+import { Anniversary, RepeatOption } from '@use-navi-date/shared';
 import {
   addAnniversary,
   getAnniversaries,
