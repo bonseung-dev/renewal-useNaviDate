@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import type { Emotion, Holiday, Post } from '@use-navi-date/shared';
+import type { Emotion, Holiday, CalendarPost } from '@use-navi-date/shared';
 
 const emotionImages: Record<Emotion, string> = {
   Joy: '/emotions/emotion_happy.png',
@@ -18,7 +18,7 @@ type Props = {
   currentDate: Dayjs;
   setCurrentDate: Dispatch<SetStateAction<Dayjs>>;
   holidays: Holiday[];
-  posts: Post[];
+  posts: CalendarPost[];
 };
 
 const CalendarCard = ({
@@ -136,7 +136,7 @@ const CalendarCard = ({
               <div className="relative w-full h-full flex items-center justify-center">
                 {post ? (
                   <Image
-                    src={post.imageUrl || emotionImages[post.emotion]}
+                    src={post.images.find(img => img.isRepresentative)?.imageUrl || emotionImages[post.emotion]}
                     alt="대표 이미지"
                     width={32}
                     height={32}

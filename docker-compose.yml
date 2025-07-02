@@ -12,28 +12,59 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - use-navi-date-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: use-navi-date-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=secret
+      - DB_DATABASE=use_navi_date_db
+      - JWT_SECRET=your-jwt-secret-key
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - GOOGLE_REDIRECT_URI=http://localhost:3000/auth/google/callback
+      - FRONTEND_URL=http://localhost:3001
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - use-navi-date-network
     restart: unless-stopped
 
-#   backend:
-#     build:
-#       context: .
-#       dockerfile: Dockerfile
-#     container_name: use-navi-date-backend
-#     ports:
-#       - "3000:3000"
-#     environment:
-#       - NODE_ENV=production
-#       - DB_HOST=postgres
-#       - DB_PORT=5432
-#       - DB_USERNAME=${DB_USERNAME}
-#       - DB_PASSWORD=${DB_PASSWORD}
-#       - DB_DATABASE=${DB_DATABASE}
-#     depends_on:
-#       postgres:
-#         condition: service_healthy
-#     networks:
-#       - use-navi-date-network
-#     restart: unless-stopped
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: use-navi-date-frontend
+    ports:
+      - "3001:3000"
+    environment:
+      - NEXT_PUBLIC_BACKEND_URL=http://localhost:3000
+    depends_on:
+      - backend
+    networks:
+      - use-navi-date-network
+    restart: unless-stopped
+
+networks:
+  use-navi-date-network:
+    driver: bridge
 
 volumes:
   postgres_data:

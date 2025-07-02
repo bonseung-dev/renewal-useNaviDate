@@ -3,33 +3,35 @@
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { getHolidaysByMonth } from '@/lib/services/holiday.services';
-import type { Holiday, Post } from '@use-navi-date/shared';
+import type { Holiday, CalendarPost } from '@use-navi-date/shared';
 import CalendarCard from './date/calendar-card';
 import AnalysisButton from './date/analysis-button';
 import DateAnalysis from './date/date-analysis';
 
-const dummyPosts: Post[] = [
+const dummyPosts: CalendarPost[] = [
   {
     id: '1',
-    user_id: 'user1',
+    userId: 'user1',
     title: '룰루랄라 데이트~ 제목입니다',
     content: '내용1',
     visibility: 'public',
     date: '2025-06-05',
     emotion: 'Joy',
-    created_at: '',
-    deleted_at: null,
+    createdAt: '',
+    deletedAt: null,
+    images: [],
   },
   {
     id: '2',
-    user_id: 'user1',
+    userId: 'user1',
     title: '데이트2',
     content: '내용2',
     visibility: 'public',
     date: '2025-06-15',
     emotion: 'Sad',
-    created_at: '',
-    deleted_at: null,
+    createdAt: '',
+    deletedAt: null,
+    images: [],
   },
 ];
 

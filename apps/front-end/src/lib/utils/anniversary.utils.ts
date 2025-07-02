@@ -12,11 +12,11 @@ export const generateAutoAnniversaries = (
 
   return days.map((day) => ({
     id: generateId(),
-    couple_id: coupleId,
+    coupleId: coupleId,
     title: `${day}일`,
     date: dayjs(startDate).add(day, 'day').format('YYYY-MM-DD'),
     repeat: 'NONE',
-    created_by: 'system',
+    createdBy: 'system',
   }));
 };
 
@@ -31,35 +31,35 @@ export const getDummyCustomAnniversaries = (
   return [
     {
       id: generateId(),
-      couple_id: coupleId,
+      coupleId: coupleId,
       title: '남자친구 생일',
       date: '2025-08-15',
       repeat: 'YEARLY',
-      created_by: 'user',
+      createdBy: 'user',
     },
     {
       id: generateId(),
-      couple_id: coupleId,
+      coupleId: coupleId,
       title: '내 생일',
       date: '2025-10-10',
       repeat: 'YEARLY',
-      created_by: 'user',
+      createdBy: 'user',
     },
     {
       id: generateId(),
-      couple_id: coupleId,
+      coupleId: coupleId,
       title: '처음 여행간 날',
       date: '2025-07-20',
       repeat: 'NONE',
-      created_by: 'user',
+      createdBy: 'user',
     },
     {
       id: generateId(),
-      couple_id: coupleId,
+      coupleId: coupleId,
       title: '첫 데이트',
       date: '2024-12-25',
       repeat: 'NONE',
-      created_by: 'user',
+      createdBy: 'user',
     },
   ];
 };

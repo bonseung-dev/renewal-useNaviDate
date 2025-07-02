@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { setAuthToken, getTokenFromCookie } from '@/lib/utils/api';
 
-const OAuthCallbackPage = () => {
+const OAuthCallbackContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
@@ -124,6 +124,18 @@ const OAuthCallbackPage = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const OAuthCallbackPage = () => {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-skin4 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-skin1"></div>
+      </div>
+    }>
+      <OAuthCallbackContent />
+    </Suspense>
   );
 };
 

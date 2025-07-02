@@ -5,7 +5,6 @@ WORKDIR /app
 
 # Copy package files
 COPY package.json package-lock.json ./
-COPY apps/back-end/package.json ./apps/back-end/
 COPY apps/front-end/package.json ./apps/front-end/
 COPY packages/shared/package.json ./packages/shared/
 
@@ -18,8 +17,8 @@ COPY . .
 # Build shared package first
 RUN npm run build:shared
 
-# Build backend
-RUN npm run build:back
+# Build frontend
+RUN npm run build:front
 
 # Production stage
 FROM node:20-alpine
@@ -28,14 +27,15 @@ WORKDIR /app
 
 # Copy package files
 COPY package.json package-lock.json ./
-COPY apps/back-end/package.json ./apps/back-end/
+COPY apps/front-end/package.json ./apps/front-end/
 COPY packages/shared/package.json ./packages/shared/
 
 # Install production dependencies only
 RUN npm ci --only=production
 
 # Copy built application from builder stage
-COPY --from=builder /app/apps/back-end/dist ./apps/back-end/dist
+COPY --from=builder /app/apps/front-end/.next ./apps/front-end/.next
+COPY --from=builder /app/apps/front-end/public ./apps/front-end/public
 COPY --from=builder /app/packages/shared/dist ./packages/shared/dist
 
 # Set environment variables
@@ -45,4 +45,4 @@ ENV NODE_ENV=production
 EXPOSE 3000
 
 # Start the application
-CMD ["npm", "run", "start:back"] 
+CMD ["npm", "run", "start:front"] 

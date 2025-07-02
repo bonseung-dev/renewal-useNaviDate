@@ -20,7 +20,7 @@ export const getAnniversaries = (
   const custom = JSON.parse(
     localStorage.getItem(STORAGE_KEY) || '[]',
   ) as Anniversary[];
-  const all = [...auto, ...custom.filter((a) => a.couple_id === coupleId)];
+  const all = [...auto, ...custom.filter((a) => a.coupleId === coupleId)];
   const oneYearLater = dayjs().add(1, 'year');
   return all.filter((a) => dayjs(a.date).isBefore(oneYearLater));
 };
@@ -165,16 +165,56 @@ export const useDeleteAnniversary = () => {
   });
 };
 
-// 백엔드 연결 후 대체 (기존 로컬 스토리지 기반 함수들)
-export const updateAnniversary = (
+// API 기반 함수들로 교체
+export const updateAnniversary = async (
   updatedAnniversary: Anniversary,
-): Anniversary => {
-  const current = JSON.parse(
-    localStorage.getItem(STORAGE_KEY) || '[]',
-  ) as Anniversary[];
-  const updatedList = current.map((a) =>
-    a.id === updatedAnniversary.id ? updatedAnniversary : a,
+): Promise<Anniversary> => {
+  const token = getClientAuthToken();
+  if (!token) {
+    throw new Error('인증 토큰이 필요합니다.');
+  }
+
+  const response = await AnniversaryService.updateAnniversary(
+    updatedAnniversary.id,
+    {
+      coupleId: updatedAnniversary.coupleId,
+      title: updatedAnniversary.title,
+      date: new Date(updatedAnniversary.date),
+      description: updatedAnniversary.memo,
+    },
+    token
   );
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedList));
-  return updatedAnniversary;
+  
+  if (!response.success) {
+    throw new Error(response.message || '기념일 수정에 실패했습니다.');
+  }
+  
+  return response.data!.anniversary;
+};
+
+// 기존 코드와의 호환성을 위한 별칭 함수들 (API 기반)
+export const addAnniversary = async (anniversary: CreateAnniversaryDto): Promise<Anniversary> => {
+  const token = getClientAuthToken();
+  if (!token) {
+    throw new Error('인증 토큰이 필요합니다.');
+  }
+
+  const response = await AnniversaryService.createAnniversary(anniversary, token);
+  if (!response.success) {
+    throw new Error(response.message || '기념일 생성에 실패했습니다.');
+  }
+  
+  return response.data!.anniversary;
+};
+
+export const deleteAnniversary = async (anniversaryId: string): Promise<void> => {
+  const token = getClientAuthToken();
+  if (!token) {
+    throw new Error('인증 토큰이 필요합니다.');
+  }
+
+  const response = await AnniversaryService.deleteAnniversary(anniversaryId, token);
+  if (!response.success) {
+    throw new Error(response.message || '기념일 삭제에 실패했습니다.');
+  }
 };

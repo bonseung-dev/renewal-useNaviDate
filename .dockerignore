@@ -32,4 +32,16 @@ coverage
 # Docker
 Dockerfile
 docker-compose*.yml
-.dockerignore 
+.dockerignore
+
+# Additional files
+README.md
+.env.local
+.env.development
+.env.production
+.nyc_output
+.cache
+.parcel-cache
+.next
+*.log
+*~ 

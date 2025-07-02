@@ -36,7 +36,7 @@ const AnniversaryList = ({
     <>
       <ul>
         {sorted.map((a) => {
-          const isUserCreated = a.created_by === 'user';
+          const isUserCreated = a.createdBy === 'user';
           const heartColor = isUserCreated ? 'fill-skin6' : 'fill-skin1';
 
           return (

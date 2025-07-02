@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, CreateDateColumn, DeleteDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
 import { Post } from './post.entity';
 
 @Entity('post_images')
@@ -7,35 +7,27 @@ export class PostImage {
   id: string;
 
   @Column()
-  post_id: string;
+  postId: string;
 
   @Column()
-  original_name: string;
-
-  @Column()
-  file_name: string;
-
-  @Column()
-  file_path: string;
-
-  @Column()
-  file_type: string;
-
-  @Column()
-  file_size: number;
+  imageUrl: string;
 
   @Column({ nullable: true })
-  address: string;
+  address: string | null;
 
-  @Column({ nullable: true })
-  order: number;
-
-  @CreateDateColumn()
-  created_at: Date;
-
-  @DeleteDateColumn()
-  deleted_at: Date;
+  @Column({ default: false })
+  isRepresentative: boolean;
 
   @ManyToOne(() => Post, post => post.images)
+  @JoinColumn({ name: 'postId' })
   post: Post;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
 } 

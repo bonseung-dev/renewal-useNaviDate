@@ -6,7 +6,7 @@ import Header from '@/components/features/nav/header';
 import Footer from '@/components/features/nav/footer';
 import { User, Image } from '@use-navi-date/shared';
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -118,11 +118,11 @@ const page = () => {
               ) : (
                 <div className="w-20 h-20 bg-skin3 rounded-full mx-auto mb-4 flex items-center justify-center">
                   <span className="text-2xl text-skin1 font-bold">
-                    {user.name.charAt(0).toUpperCase()}
+                    {(user.nickname || user.email).charAt(0).toUpperCase()}
                   </span>
                 </div>
               )}
-              <h1 className="text-2xl font-bold text-skin1 mb-2">안녕하세요, {user.name}님!</h1>
+              <h1 className="text-2xl font-bold text-skin1 mb-2">안녕하세요, {user.nickname || user.email}님!</h1>
               <p className="text-skin4 mb-6">오늘도 특별한 데이트를 기록해보세요</p>
             </div>
             
@@ -188,4 +188,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

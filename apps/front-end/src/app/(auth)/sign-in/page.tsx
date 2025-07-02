@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -9,7 +9,7 @@ import { setAuthToken, getTokenFromCookie } from '@/lib/utils/api';
 import { AuthService } from '@/lib/api/services';
 import GoogleLoginButton from '@/components/ui/google-login-button';
 
-const SignInPage = () => {
+const SignInContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [formData, setFormData] = useState<LoginDto>({
@@ -179,6 +179,18 @@ const SignInPage = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const SignInPage = () => {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-skin4 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-skin1"></div>
+      </div>
+    }>
+      <SignInContent />
+    </Suspense>
   );
 };
 

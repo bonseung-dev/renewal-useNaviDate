@@ -45,13 +45,13 @@ export type Emotion = 'Joy' | 'Fun' | 'Soso' | 'Sad' | 'Mad';
 
 export type Post = {
   id: string;
-  user_id: string;
+  userId: string;
   title: string;
   content: string;
   visibility: 'private' | 'public';
   date: string;
   emotion: Emotion;
   imageUrl?: string;
-  created_at: string;
-  deleted_at: string | null;
+  createdAt: string;
+  deletedAt: string | null;
 };

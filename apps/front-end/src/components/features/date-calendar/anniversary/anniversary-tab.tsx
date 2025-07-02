@@ -42,15 +42,20 @@ const AnniversaryTab = ({ coupleId, startDate }: AnniversaryTabProps) => {
     setAnniversaries(data);
   }, [coupleId, startDate]);
 
-  const handleAddAnniversary = (newAnniversary: NewAnniversary) => {
-    const added = addAnniversary(coupleId, {
-      ...newAnniversary,
-      created_by: 'user',
-      couple_id: coupleId,
-    });
-    setAnniversaries((prev) => [...prev, added]);
-    setOpen(false);
-    console.log('기념일 추가:', added); // 디버깅 로그
+  const handleAddAnniversary = async (newAnniversary: NewAnniversary) => {
+    try {
+      const added = await addAnniversary({
+        coupleId: coupleId,
+        title: newAnniversary.title,
+        date: new Date(newAnniversary.date),
+        description: '',
+      });
+      setAnniversaries((prev) => [...prev, added]);
+      setOpen(false);
+      console.log('기념일 추가:', added); // 디버깅 로그
+    } catch (error) {
+      console.error('기념일 추가 실패:', error);
+    }
   };
 
   const handleEditAnniversary = (id: string) => {
@@ -62,27 +67,34 @@ const AnniversaryTab = ({ coupleId, startDate }: AnniversaryTabProps) => {
     }
   };
 
-  const handleUpdateAnniversary = (updatedAnniversary: NewAnniversary) => {
+  const handleUpdateAnniversary = async (updatedAnniversary: NewAnniversary) => {
     if (!editingAnniversary) return;
-    const updated = {
-      ...editingAnniversary,
-      ...updatedAnniversary,
-      created_by: 'user',
-      couple_id: coupleId,
-    };
-    updateAnniversary(updated);
-    setAnniversaries((prev) =>
-      prev.map((a) => (a.id === editingAnniversary.id ? updated : a)),
-    );
-    setEditingAnniversary(null);
-    setOpen(false);
-    console.log('기념일 수정:', updated); // 디버깅 로그
+    try {
+      const updated = await updateAnniversary({
+        ...editingAnniversary,
+        title: updatedAnniversary.title,
+        date: updatedAnniversary.date,
+        repeat: updatedAnniversary.repeat,
+      });
+      setAnniversaries((prev) =>
+        prev.map((a) => (a.id === editingAnniversary.id ? updated : a)),
+      );
+      setEditingAnniversary(null);
+      setOpen(false);
+      console.log('기념일 수정:', updated); // 디버깅 로그
+    } catch (error) {
+      console.error('기념일 수정 실패:', error);
+    }
   };
 
-  const handleDeleteAnniversary = (id: string) => {
-    deleteAnniversary(id);
-    setAnniversaries((prev) => prev.filter((a) => a.id !== id));
-    console.log('기념일 삭제:', id); // 디버깅 로그
+  const handleDeleteAnniversary = async (id: string) => {
+    try {
+      await deleteAnniversary(id);
+      setAnniversaries((prev) => prev.filter((a) => a.id !== id));
+      console.log('기념일 삭제:', id); // 디버깅 로그
+    } catch (error) {
+      console.error('기념일 삭제 실패:', error);
+    }
   };
 
   return (
