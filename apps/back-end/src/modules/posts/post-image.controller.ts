@@ -13,9 +13,8 @@ export class PostImageController {
   async uploadFile(
     @UploadedFile() file: Express.Multer.File,
     @Param('postId') postId: string,
-    @Body('address') address?: string,
   ) {
-    return this.postImageService.uploadFile(file, postId, address);
+    return this.postImageService.uploadFile(file, postId);
   }
 
   @Delete(':id')

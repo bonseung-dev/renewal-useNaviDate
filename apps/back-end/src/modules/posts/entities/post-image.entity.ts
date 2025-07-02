@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
 import { Post } from './post.entity';
+import { Image } from '../../images/entities/image.entity';
 
 @Entity('post_images')
 export class PostImage {
@@ -10,10 +11,7 @@ export class PostImage {
   postId: string;
 
   @Column()
-  imageUrl: string;
-
-  @Column({ nullable: true })
-  address: string | null;
+  imageId: string;
 
   @Column({ default: false })
   isRepresentative: boolean;
@@ -21,6 +19,10 @@ export class PostImage {
   @ManyToOne(() => Post, post => post.images)
   @JoinColumn({ name: 'postId' })
   post: Post;
+
+  @ManyToOne(() => Image)
+  @JoinColumn({ name: 'imageId' })
+  image: Image;
 
   @CreateDateColumn()
   createdAt: Date;

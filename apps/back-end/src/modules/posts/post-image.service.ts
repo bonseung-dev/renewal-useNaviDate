@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PostImage } from './entities/post-image.entity';
+import { Image } from '../images/entities/image.entity';
 import * as fs from 'fs';
 import * as path from 'path';
 import { v4 as uuidv4 } from 'uuid';
@@ -11,9 +12,11 @@ export class PostImageService {
   constructor(
     @InjectRepository(PostImage)
     private postImageRepository: Repository<PostImage>,
+    @InjectRepository(Image)
+    private imageRepository: Repository<Image>,
   ) {}
 
-  async uploadFile(file: Express.Multer.File, postId: string, address?: string): Promise<PostImage> {
+  async uploadFile(file: Express.Multer.File, postId: string): Promise<PostImage> {
     const uploadDir = path.join(process.cwd(), 'uploads', 'posts');
     
     // 디렉토리가 없으면 생성
@@ -29,43 +32,61 @@ export class PostImageService {
     // 파일 저장
     fs.writeFileSync(filePath, file.buffer);
 
-    // DB에 저장
+    // Image 엔티티 생성 및 저장
+    const image = new Image();
+    image.filename = fileName;
+    image.originalName = file.originalname;
+    image.mimeType = file.mimetype;
+    image.size = file.size;
+    image.path = filePath;
+    image.url = `/uploads/posts/${fileName}`;
+    
+    const savedImage = await this.imageRepository.save(image);
+
+    // PostImage 엔티티 생성 및 저장
     const postImage = new PostImage();
     postImage.postId = postId;
-    postImage.imageUrl = `/uploads/posts/${fileName}`;
-    if (address) {
-      postImage.address = address;
-    }
+    postImage.imageId = savedImage.id;
 
     return this.postImageRepository.save(postImage);
   }
 
   async deleteFile(id: string): Promise<void> {
-    const image = await this.postImageRepository.findOne({ where: { id } });
-    if (!image) {
+    const postImage = await this.postImageRepository.findOne({ 
+      where: { id },
+      relations: ['image']
+    });
+    
+    if (!postImage) {
       return;
     }
 
-    // 파일 삭제 (imageUrl에서 파일 경로 추출)
-    const filePath = path.join(process.cwd(), 'uploads', 'posts', path.basename(image.imageUrl));
-    if (fs.existsSync(filePath)) {
-      fs.unlinkSync(filePath);
+    // 파일 삭제
+    if (fs.existsSync(postImage.image.path)) {
+      fs.unlinkSync(postImage.image.path);
     }
 
-    // DB에서 삭제
+    // Image 엔티티 삭제
+    await this.imageRepository.delete(postImage.imageId);
+
+    // PostImage 엔티티 삭제
     await this.postImageRepository.softDelete(id);
   }
 
   async getFilesByPostId(postId: string): Promise<PostImage[]> {
     return this.postImageRepository.find({
       where: { postId },
+      relations: ['image'],
       order: { createdAt: 'ASC' },
     });
   }
 
   async updateOrder(id: string, order: number): Promise<PostImage | null> {
     // order 필드가 없으므로 createdAt으로 정렬
-    return this.postImageRepository.findOne({ where: { id } });
+    return this.postImageRepository.findOne({ 
+      where: { id },
+      relations: ['image']
+    });
   }
 
   async create(postImageData: Partial<PostImage>): Promise<PostImage> {
@@ -74,15 +95,23 @@ export class PostImageService {
   }
 
   async findAll(): Promise<PostImage[]> {
-    return await this.postImageRepository.find();
+    return await this.postImageRepository.find({
+      relations: ['image']
+    });
   }
 
   async findOne(id: string): Promise<PostImage | null> {
-    return await this.postImageRepository.findOne({ where: { id } });
+    return await this.postImageRepository.findOne({ 
+      where: { id },
+      relations: ['image']
+    });
   }
 
   async findByPostId(postId: string): Promise<PostImage[]> {
-    return await this.postImageRepository.find({ where: { postId } });
+    return await this.postImageRepository.find({
+      where: { postId },
+      relations: ['image']
+    });
   }
 
   async update(id: string, updateData: Partial<PostImage>): Promise<PostImage | null> {
