@@ -33,8 +33,11 @@ const AnniversaryList = ({
   );
 
   return (
-    <>
-      <ul>
+    <section aria-labelledby="anniversary-list-heading">
+      <h2 id="anniversary-list-heading" className="sr-only">
+        기념일 목록
+      </h2>
+      <ul role="list">
         {sorted.map((a) => {
           const isUserCreated = a.createdBy !== 'system';
           const heartColor = isUserCreated ? 'fill-skin6' : 'fill-skin1';
@@ -42,6 +45,7 @@ const AnniversaryList = ({
           return (
             <li
               key={a.id}
+              role="listitem"
               className="w-[320px] h-[80px] relative flex items-center justify-between bg-white px-4"
             >
               <div className="absolute left-6 top-0 bottom-0 w-[1px] bg-skin1" />
@@ -52,6 +56,7 @@ const AnniversaryList = ({
                   viewBox="0 0 24 24"
                   stroke="none"
                   className={`w-5 h-5 ${heartColor}`}
+                  aria-hidden="true"
                 >
                   <path
                     d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 
@@ -61,40 +66,47 @@ const AnniversaryList = ({
                   />
                 </svg>
               </div>
-              <div className="flex flex-col justify-center flex-1 ">
+              <div className="flex flex-col justify-center flex-1">
                 <div className="flex items-center gap-2">
                   <div className="relative group max-w-[120px]">
-                    <p className="font-bold text-b-h3 text-font1 truncate cursor-default">
+                    <h3 className="font-bold text-b-h3 text-font1 truncate cursor-default">
                       {a.title}
-                    </p>
+                    </h3>
 
                     {/* 툴팁 */}
                     {a.title.length > 8 && (
-                      <div className="absolute -top-4 left-[53px] -translate-x-1/2 bg-skin1/50 text-skin5 text-l-title5 px-1 rounded-full whitespace-nowrap z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                      <div
+                        role="tooltip"
+                        className="absolute -top-4 left-[53px] -translate-x-1/2 bg-skin1/50 text-skin5 text-l-title5 px-1 rounded-full whitespace-nowrap z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                      >
                         {a.title}
                       </div>
                     )}
                   </div>
                   {isUserCreated && (
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => onEdit(a.id)}
-                        className="text-font4 hover:text-skin1 transition-colors"
-                        aria-label="수정"
-                      >
-                        <Pencil size={12} />
-                      </button>
-                      <button
-                        onClick={() => onDelete(a.id)}
-                        className="text-font4 hover:text-skin7 transition-colors"
-                        aria-label="삭제"
-                      >
-                        <Trash2 size={12} />
-                      </button>
-                    </div>
+                    <nav aria-label="기념일 액션 메뉴">
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => onEdit(a.id)}
+                          className="text-font4 hover:text-skin1 transition-colors"
+                          aria-label={`${a.title} 수정`}
+                        >
+                          <Pencil size={12} />
+                        </button>
+                        <button
+                          onClick={() => onDelete(a.id)}
+                          className="text-font4 hover:text-skin7 transition-colors"
+                          aria-label={`${a.title} 삭제`}
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                      </div>
+                    </nav>
                   )}
                 </div>
-                <p className="text-m-h4 text-font1">{a.date}</p>
+                <time dateTime={a.date} className="text-m-h4 text-font1">
+                  {a.date}
+                </time>
               </div>
               <div className="flex flex-col items-center gap-1">
                 <span className="w-[60px] h-[24px] flex items-center justify-center border border-skin1 text-skin1 text-l-title5 rounded-full px-3 py-0.5">
@@ -105,7 +117,7 @@ const AnniversaryList = ({
           );
         })}
       </ul>
-    </>
+    </section>
   );
 };
 

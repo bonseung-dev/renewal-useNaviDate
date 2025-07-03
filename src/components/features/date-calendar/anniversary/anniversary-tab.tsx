@@ -109,7 +109,14 @@ const AnniversaryTab = ({
 
   return (
     <Dialog open={isEditorOpen} onOpenChange={setIsEditorOpen}>
-      <div className="flex items-center justify-center flex-col">
+      <section
+        className="flex items-center justify-center flex-col"
+        aria-labelledby="anniversary-section"
+      >
+        <h1 id="anniversary-section" className="sr-only">
+          기념일 관리
+        </h1>
+
         <AnniversaryHeader partner={partner} onAddClick={handleAddClick} />
 
         <AnniversaryList
@@ -126,7 +133,7 @@ const AnniversaryTab = ({
           initialData={editingAnniversary}
           onSubmitSuccess={handleSubmitSuccess}
         />
-      </div>
+      </section>
     </Dialog>
   );
 };

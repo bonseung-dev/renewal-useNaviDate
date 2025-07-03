@@ -10,17 +10,21 @@ type AnniversaryHeaderProps = {
 
 const AnniversaryHeader = ({ partner, onAddClick }: AnniversaryHeaderProps) => {
   return (
-    <div className="w-[320px] h-[60px] flex items-center justify-between bg-skin1 rounded-[40px] px-4">
+    <header className="w-[320px] h-[60px] flex items-center justify-between bg-skin1 rounded-[40px] px-4">
       <div className="flex items-center gap-2">
-        <div className="relative h-9 w-9 rounded-full overflow-hidden">
+        <figure className="relative h-9 w-9 rounded-full overflow-hidden">
           <Image
             src={partner?.profileImage || '/placeholder-image.png'}
-            alt={partner?.nickname || '애인 프로필'}
+            alt={
+              partner?.nickname
+                ? `${partner.nickname}의 프로필 이미지`
+                : '애인 프로필 이미지'
+            }
             fill
             sizes="36px"
             className="object-cover"
           />
-        </div>
+        </figure>
         <div className="flex flex-col">
           <span className="text-l-title4 font-light text-skin5">
             {partner?.nickname || '애인 이름'}
@@ -35,7 +39,7 @@ const AnniversaryHeader = ({ partner, onAddClick }: AnniversaryHeaderProps) => {
       >
         추가하기
       </button>
-    </div>
+    </header>
   );
 };
 
