@@ -1,6 +1,6 @@
 import { CommunityPost } from '@/types/community.type';
-import PostCard from './post-card';
 import CommunityStatus from './community-status';
+import PostCard from './post-card/post-card';
 
 type PostListProps = {
   posts: CommunityPost[];
