@@ -3,11 +3,12 @@
 import { useEffect } from 'react';
 import AnniversaryHeader from './anniversary-header';
 import AnniversaryList from './anniversary-list';
-import AnniversaryEditor from './anniversary-editor';
+
 import { Dialog } from '@/components/ui/dialog';
 import { useAnniversaries } from '@/lib/hooks/date-calendar/use-anniversaries';
 import { usePartnerInfo } from '@/lib/hooks/date-calendar/use-partner-infor';
 import { useAnniversaryActions } from '@/lib/hooks/date-calendar/use-anniversary-actions';
+import AnniversaryEditor from './anniversary-form/anniversary-editor';
 
 type AnniversaryTabProps = {
   coupleId: string;

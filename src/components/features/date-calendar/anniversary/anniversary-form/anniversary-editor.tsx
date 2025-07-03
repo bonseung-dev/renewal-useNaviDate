@@ -1,13 +1,11 @@
-'use client';
-
 import { Anniversary, RepeatOption } from '@/types/anniversary.type';
-import AnniversaryForm from './anniversary-form';
 import {
   DialogContent,
   DialogDescription,
   DialogTitle,
 } from '@/components/ui/dialog';
 import { useState } from 'react';
+import AnniversaryForm from './anniversary-form';
 
 type AnniversaryEditorProps = {
   coupleId: string;

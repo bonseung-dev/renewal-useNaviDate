@@ -1,7 +1,7 @@
-import { AnniversaryActions } from './anniversary-actions';
+import AnniversaryActions from './anniversary-actions';
 import { Heart } from 'lucide-react';
 import { Anniversary } from '@/types/anniversary.type';
-import { TruncatedTextWithTooltip } from './truncated-text-with-tooltip';
+import TruncatedTextWithTooltip from './truncated-text-with-tooltip';
 import { calculateDDay } from '@/lib/utils/anniversary.utils';
 
 type AnniversaryItemProps = {

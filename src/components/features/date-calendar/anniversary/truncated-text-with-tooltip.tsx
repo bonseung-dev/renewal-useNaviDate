@@ -4,7 +4,7 @@ type TruncatedTextProps = {
   className?: string;
 };
 
-export const TruncatedTextWithTooltip = ({
+const TruncatedTextWithTooltip = ({
   text,
   maxLength,
   className,
@@ -24,3 +24,5 @@ export const TruncatedTextWithTooltip = ({
     )}
   </div>
 );
+
+export default TruncatedTextWithTooltip;

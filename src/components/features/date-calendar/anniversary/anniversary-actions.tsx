@@ -6,7 +6,7 @@ type AnniversaryActionsProps = {
   className?: string;
 };
 
-export const AnniversaryActions = ({
+const AnniversaryActions = ({
   onEdit,
   onDelete,
   className,
@@ -30,3 +30,5 @@ export const AnniversaryActions = ({
     </div>
   </nav>
 );
+
+export default AnniversaryActions;
