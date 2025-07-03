@@ -6,8 +6,9 @@ import { getHolidaysByMonth } from '@/lib/services/holiday.services';
 import AnalysisButton from './date/analysis-button';
 import DateAnalysis from './date/date-analysis';
 import CalendarCard from './date/calendar-card';
-import { ExtendedPost, Holiday } from '@/types/calendar.type';
+import { Holiday } from '@/types/calendar.type';
 import { fetchPostsByCouple } from '@/lib/services/calendar.services';
+import { CalendarPost } from '@/types/post.type';
 
 type DateTabProps = {
   coupleId: string;
@@ -16,7 +17,7 @@ type DateTabProps = {
 const DateTab = ({ coupleId }: DateTabProps) => {
   const [currentDate, setCurrentDate] = useState<Dayjs>(dayjs());
   const [holidays, setHolidays] = useState<Holiday[]>([]);
-  const [postsWithImages, setPostsWithImages] = useState<ExtendedPost[]>([]);
+  const [postsWithImages, setPostsWithImages] = useState<CalendarPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isAnalysisView, setIsAnalysisView] = useState(false);
 
