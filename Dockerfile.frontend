@@ -4,21 +4,18 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Copy package files
-COPY package.json package-lock.json ./
-COPY apps/front-end/package.json ./apps/front-end/
-COPY packages/shared/package.json ./packages/shared/
+COPY package*.json ./
+COPY apps/front-end/package*.json ./apps/front-end/
+COPY packages/shared/package*.json ./packages/shared/
 
 # Install dependencies
-RUN npm ci
+RUN npm install
 
 # Copy source code
 COPY . .
 
-# Build shared package first
-RUN npm run build:shared
-
-# Build frontend
-RUN npm run build:front
+# Build the frontend application
+RUN npm run build:shared && npm run build:front
 
 # Production stage
 FROM node:20-alpine
@@ -26,12 +23,12 @@ FROM node:20-alpine
 WORKDIR /app
 
 # Copy package files
-COPY package.json package-lock.json ./
-COPY apps/front-end/package.json ./apps/front-end/
-COPY packages/shared/package.json ./packages/shared/
+COPY package*.json ./
+COPY apps/front-end/package*.json ./apps/front-end/
+COPY packages/shared/package*.json ./packages/shared/
 
 # Install production dependencies only
-RUN npm ci --only=production
+RUN npm install --production
 
 # Copy built application from builder stage
 COPY --from=builder /app/apps/front-end/.next ./apps/front-end/.next

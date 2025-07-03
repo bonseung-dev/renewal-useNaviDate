@@ -1,17 +1,18 @@
 version: '3.8'
 
 services:
-  postgres:
+  db:
     image: postgres:15
-    container_name: use_navi_date_db
+    container_name: usenavi-db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: secret
-      POSTGRES_DB: use_navi_date_db
+      POSTGRES_DB: use_navi_date
     ports:
-      - "5432:5432"
+      - "10004:5432"   # usenavi-db.dev.sorune.org
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./init-multi-db.sql:/docker-entrypoint-initdb.d/init-multi-db.sql:ro
     networks:
       - use-navi-date-network
     restart: unless-stopped
@@ -21,43 +22,64 @@ services:
       timeout: 5s
       retries: 5
 
-  backend:
+  backend-dev:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: use-navi-date-backend
-    ports:
-      - "3000:3000"
+    container_name: usenavi-backend-dev
     environment:
-      - NODE_ENV=production
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_USERNAME=postgres
-      - DB_PASSWORD=secret
-      - DB_DATABASE=use_navi_date_db
-      - JWT_SECRET=your-jwt-secret-key
-      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
-      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
-      - GOOGLE_REDIRECT_URI=http://localhost:3000/auth/google/callback
-      - FRONTEND_URL=http://localhost:3001
+      NODE_ENV: development
+    ports:
+      - "10003:3000"   # usenavi-api.dev.sorune.org
     depends_on:
-      postgres:
+      db:
         condition: service_healthy
     networks:
       - use-navi-date-network
     restart: unless-stopped
 
-  frontend:
+  frontend-dev:
     build:
       context: .
       dockerfile: Dockerfile.frontend
-    container_name: use-navi-date-frontend
-    ports:
-      - "3001:3000"
+    container_name: usenavi-frontend-dev
     environment:
-      - NEXT_PUBLIC_BACKEND_URL=http://localhost:3000
+      NODE_ENV: development
+    ports:
+      - "10002:3000"   # usenavi.dev.sorune.org
     depends_on:
-      - backend
+      - backend-dev
+    networks:
+      - use-navi-date-network
+    restart: unless-stopped
+
+  backend-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: usenavi-backend-prod
+    environment:
+      NODE_ENV: production
+    ports:
+      - "10006:3000"   # usenavi-api.sorune.org
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - use-navi-date-network
+    restart: unless-stopped
+
+  frontend-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: usenavi-frontend-prod
+    environment:
+      NODE_ENV: production
+    ports:
+      - "10005:3000"   # usenavi.sorune.org
+    depends_on:
+      - backend-prod
     networks:
       - use-navi-date-network
     restart: unless-stopped
@@ -68,4 +90,4 @@ networks:
 
 volumes:
   postgres_data:
-    driver: local 
+    driver: local

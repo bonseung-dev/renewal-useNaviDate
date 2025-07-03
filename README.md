@@ -110,3 +110,92 @@ import { User } from '@use-navi-date/shared';
 - TypeScript
 - ESLint
 - Prettier
+
+## 개발 환경 설정
+
+### 로컬 개발
+```bash
+# 모든 의존성 설치
+npm run install:all
+
+# 백엔드 개발 서버 실행
+npm run dev:backend
+
+# 프론트엔드 개발 서버 실행 (새 터미널)
+npm run dev:frontend
+```
+
+### Docker를 사용한 개발 환경
+```bash
+# 개발 환경 실행 (DB + 백엔드 + 프론트엔드)
+npm run docker:dev
+
+# 개발 환경 빌드 후 실행
+npm run docker:dev:build
+
+# 개발 환경 로그 확인
+npm run docker:dev:logs
+
+# 개발 환경 중지
+npm run docker:dev:down
+```
+
+### Docker를 사용한 프로덕션 환경
+```bash
+# 프로덕션 환경 실행
+npm run docker:prod
+
+# 프로덕션 환경 빌드 후 실행
+npm run docker:prod:build
+
+# 프로덕션 환경 로그 확인
+npm run docker:prod:logs
+
+# 프로덕션 환경 중지
+npm run docker:prod:down
+```
+
+## 환경별 포트 및 데이터베이스
+
+### 개발 환경 (Dev)
+- **백엔드**: http://localhost:3000
+- **프론트엔드**: http://localhost:3001
+- **데이터베이스**: localhost:10004 (use_navi_date_dev)
+- **네트워크**: usenavi-dev-network
+
+### 프로덕션 환경 (Prod)
+- **백엔드**: http://localhost:3002
+- **프론트엔드**: http://localhost:3003
+- **데이터베이스**: localhost:10005 (use_navi_date_prod)
+- **네트워크**: usenavi-prod-network
+
+## 빌드
+
+```bash
+# 공유 패키지 빌드
+npm run build:shared
+
+# 백엔드 빌드
+npm run build:nest
+
+# 프론트엔드 빌드
+npm run build:front
+
+# 전체 빌드
+npm run build
+```
+
+## 프로젝트 구조
+
+```
+useNaviDate/
+├── apps/
+│   ├── back-end/          # NestJS 백엔드
+│   └── front-end/         # Next.js 프론트엔드
+├── packages/
+│   └── shared/            # 공유 타입 및 상수
+├── docs/                  # 문서
+├── docker-compose.dev.yml # 개발 환경 Docker Compose
+├── docker-compose.prod.yml # 프로덕션 환경 Docker Compose
+└── Dockerfile*            # Docker 설정 파일들
+```
