@@ -5,10 +5,10 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import UploadedImageItems from './uploaded-image-items';
-import { Date } from '@/app/(routes)/date-detail/[id]/page';
+import { CalendarPost } from '@/types/post.type';
 
 export type UploadedImagesCarouselProps = {
-  date: Date;
+  date: CalendarPost;
 };
 
 const UploadedImagesCarousel = ({ date }: UploadedImagesCarouselProps) => {

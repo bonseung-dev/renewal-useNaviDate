@@ -17,7 +17,10 @@ const InviteAcceptPage = ({ params }: InviteAcceptPageProps) => {
   const handleAcceptInvite = () => {
     createCouple(
       {
-        user2Id: userBId,
+        userAId: userAId,
+        userBId: userBId,
+        anniversary: '2024-01-01', // TODO: 실제 값으로 교체
+        name: '커플 이름', // TODO: 실제 값으로 교체
       },
       {
         onSuccess: (data) => {
