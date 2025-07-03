@@ -1,0 +1,32 @@
+import { CommunityPost } from '@/types/community.type';
+import PostCard from './post-card';
+import CommunityStatus from './community-status';
+
+type PostListProps = {
+  posts: CommunityPost[];
+  searchQuery: string;
+};
+
+const PostList = ({ posts, searchQuery }: PostListProps) => {
+  return (
+    <div className="flex flex-col gap-[20px] mt-5" role="list">
+      {posts.length > 0 ? (
+        posts.map((post) => (
+          <div
+            key={post.id}
+            aria-labelledby={`post-${post.id}-title`}
+            role="listitem"
+          >
+            <PostCard post={post} />
+          </div>
+        ))
+      ) : (
+        <CommunityStatus
+          type={searchQuery ? 'no-search-results' : 'no-posts'}
+        />
+      )}
+    </div>
+  );
+};
+
+export default PostList;

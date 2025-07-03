@@ -1,11 +1,8 @@
-'use client';
-
 import Image from 'next/image';
 import { Bookmark, Heart } from 'lucide-react';
 import { CommunityPost } from '@/types/community.type';
 import { useState } from 'react';
 import { formatDate } from '@/lib/utils/coomunity.utils';
-
 import Tooltip from '@/components/ui/tooltip';
 import { useUpdateLikeMutation } from '@/lib/mutations/like.mutation';
 import { useUpdateBookmarkMutation } from '@/lib/mutations/bookmark.mutation';
