@@ -5,6 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useEffect, useState } from 'react';
 
 type NumberPickerProps = {
   label: string;
@@ -22,12 +23,20 @@ const NumberPicker = ({
   onChange,
 }: NumberPickerProps) => {
   const options = Array.from({ length: max - min + 1 }, (_, i) => min + i);
+  const [internalValue, setInternalValue] = useState(value.toString());
+
+  useEffect(() => {
+    setInternalValue(value.toString());
+  }, [value]);
 
   return (
-    <div className="flex items-center ">
+    <div className="flex items-center">
       <Select
-        value={value.toString()}
-        onValueChange={(v) => onChange(Number(v))}
+        value={internalValue}
+        onValueChange={(v) => {
+          setInternalValue(v);
+          onChange(Number(v));
+        }}
       >
         <SelectTrigger
           className="w-[48px] h-[40px] px-0 text-l-title5 font-light text-font4 bg-skin3 border-2 border-transparent 
