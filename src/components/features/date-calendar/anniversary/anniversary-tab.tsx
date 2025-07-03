@@ -7,14 +7,15 @@ import AnniversaryList from './anniversary-list';
 import AnniversaryEditor from './anniversary-editor';
 import { Anniversary, PartnerInfo } from '@/types/anniversary.type';
 import { Dialog } from '@/components/ui/dialog';
-import {
-  fetchCoupleData,
-  fetchUserData,
-} from '@/lib/services/anniversary.services';
+
 import {
   DEFAULT_NICKNAME,
   PLACEHOLDER_IMAGE,
 } from '@/constants/anniversary.constants';
+import {
+  getCoupleById,
+  getUserById,
+} from '@/lib/services/anniversary.services';
 
 type AnniversaryTabProps = {
   coupleId: string;
@@ -30,7 +31,7 @@ const AnniversaryTab = ({
   const {
     anniversaries,
     loadAnniversaries,
-    addAnniversary: add,
+    createAnniversary: add,
     updateAnniversary: update,
     deleteAnniversary: remove,
   } = useAnniversaries(coupleId, startDate);
@@ -42,12 +43,12 @@ const AnniversaryTab = ({
 
   const fetchPartnerInfo = useCallback(async () => {
     try {
-      const couple = await fetchCoupleData(coupleId);
+      const couple = await getCoupleById(coupleId);
 
       const partnerId =
         couple.userAId === userId ? couple.userBId : couple.userAId;
 
-      const partnerData = await fetchUserData(partnerId);
+      const partnerData = await getUserById(partnerId);
 
       setPartner({
         id: partnerId,
@@ -55,7 +56,7 @@ const AnniversaryTab = ({
         nickname: partnerData.nickname || DEFAULT_NICKNAME,
       });
     } catch (error) {
-      console.error('Error fetching partner info:', error);
+      console.error('파트너 정보 가져오기 실패했습니다.:', error);
       setPartner(null);
     }
   }, [coupleId, userId]);
@@ -65,7 +66,7 @@ const AnniversaryTab = ({
       try {
         await Promise.all([loadAnniversaries(), fetchPartnerInfo()]);
       } catch (error) {
-        console.error('Error loading initial data:', error);
+        console.error('초기 데이터 로딩 실패했습니다.:', error);
       }
     };
 
