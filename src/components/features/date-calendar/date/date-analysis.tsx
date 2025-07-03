@@ -10,22 +10,26 @@ type Props = {
 
 const DateAnalysis = ({ onBack }: Props) => {
   return (
-    <div className="w-[280px] bg-skin5">
+    <article className="w-[280px] bg-skin5">
       {/* 상단 헤더 */}
-      <div className="flex justify-between items-center mb-[24px]">
+      <header className="flex justify-between items-center mb-[24px]">
         <h2 className="text-b-h0 text-skin1 font-bold">데이트 분석</h2>
-        <span className="text-m-h4 text-font4">
+        <time
+          dateTime={dayjs().format('YYYY-MM-DD')}
+          className="text-m-h4 text-font4"
+        >
           {dayjs().format('YYYY.MM.DD')} 기준
-        </span>
-      </div>
+        </time>
+      </header>
 
-      <div className="space-y-[12px]">
+      <section className="space-y-[12px]">
         {/* 자주 간 장소 영역*/}
         <FrequentPlaces />
+
         {/* 취향/기분 카드 */}
-        <div className="flex justify-between gap-[12px]">
-          {/* 내 취향 도넛 차트 실제 데이터로 교체 예정 */}
-          <div className="w-[134px] h-[124px] bg-font5 rounded relative p-[8px]">
+        <section className="flex justify-between gap-[12px]">
+          {/* 내 취향 도넛 차트 */}
+          <article className="w-[134px] h-[124px] bg-font5 rounded relative p-[8px]">
             <div className="flex items-center mb-[6px]">
               <div className="w-[36px] h-[36px] rounded-full bg-skin5 flex items-center justify-center">
                 <ThumbsUp className="w-5 h-5 text-font4" />
@@ -38,10 +42,10 @@ const DateAnalysis = ({ onBack }: Props) => {
             <div className="flex justify-center items-center mt-[4px]">
               <div className="w-[64px] h-[64px] rounded-full border-[10px] border-skin1 border-t-transparent" />
             </div>
-          </div>
+          </article>
 
-          {/* 내 기분 도넛 차트 실제 데이터로 교체 예정 */}
-          <div className="w-[134px] h-[124px] bg-font5 rounded relative p-[8px]">
+          {/* 내 기분 도넛 차트 */}
+          <article className="w-[134px] h-[124px] bg-font5 rounded relative p-[8px]">
             <div className="flex items-center mb-[6px]">
               <div className="w-[36px] h-[36px] rounded-full bg-skin5 flex items-center justify-center">
                 <Smile className="w-5 h-5 text-font4" />
@@ -54,11 +58,11 @@ const DateAnalysis = ({ onBack }: Props) => {
             <div className="flex justify-center items-center mt-[4px]">
               <div className="w-[64px] h-[64px] rounded-full border-[10px] border-skin1 border-t-transparent" />
             </div>
-          </div>
-        </div>
+          </article>
+        </section>
 
-        {/* 월별 데이트 횟수 차트 실제 데이터 연동 예정 */}
-        <div className="w-[280px] h-[124px] bg-skin6 rounded p-4 mt-[12px]">
+        {/* 월별 데이트 횟수 차트 */}
+        <section className="w-[280px] h-[124px] bg-skin6 rounded p-4 mt-[12px]">
           <div className="flex items-center mb-2">
             <div className="w-[36px] h-[36px] rounded-full bg-skin5 flex items-center justify-center mr-2">
               <CalendarHeart className="w-[20px] h-[20px] text-skin6" />
@@ -87,17 +91,19 @@ const DateAnalysis = ({ onBack }: Props) => {
               })}
             </div>
           </div>
-        </div>
-      </div>
+        </section>
+      </section>
 
       {/* 돌아가기 버튼 */}
-      <button
-        onClick={onBack}
-        className="mt-4 w-full text-center text-m-h4 text-skin1 underline"
-      >
-        돌아가기
-      </button>
-    </div>
+      <footer>
+        <button
+          onClick={onBack}
+          className="mt-4 w-full text-center text-m-h4 text-skin1 underline"
+        >
+          돌아가기
+        </button>
+      </footer>
+    </article>
   );
 };
 

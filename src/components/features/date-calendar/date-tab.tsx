@@ -46,7 +46,10 @@ const DateTab = ({ coupleId }: DateTabProps) => {
   return (
     <div className="w-full flex flex-col items-center">
       {!isAnalysisView ? (
-        <>
+        <section aria-labelledby="date-calendar-section">
+          <h2 id="date-calendar-section" className="sr-only">
+            데이트 캘린더
+          </h2>
           <CalendarCard
             currentDate={currentDate}
             setCurrentDate={setCurrentDate}
@@ -54,9 +57,14 @@ const DateTab = ({ coupleId }: DateTabProps) => {
             posts={postsWithImages}
           />
           <AnalysisButton onClick={() => setIsAnalysisView(true)} />
-        </>
+        </section>
       ) : (
-        <DateAnalysis onBack={() => setIsAnalysisView(false)} />
+        <section aria-labelledby="date-analysis-section">
+          <h2 id="date-analysis-section" className="sr-only">
+            데이트 분석
+          </h2>
+          <DateAnalysis onBack={() => setIsAnalysisView(false)} />
+        </section>
       )}
     </div>
   );

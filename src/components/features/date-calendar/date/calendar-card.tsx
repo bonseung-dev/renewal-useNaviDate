@@ -51,43 +51,54 @@ const CalendarCard = ({
   for (let i = 1; i <= daysInMonth; i++) days.push(i);
 
   return (
-    <div className="relative w-[280px] rounded-[20px] shadow-shadow1 bg-skin5 p-[32px] pt-[22px] flex flex-col">
+    <article className="relative w-[280px] rounded-[20px] shadow-shadow1 bg-skin5 p-[32px] pt-[22px] flex flex-col">
       {/* 월 이동 */}
-      <button
-        onClick={handlePrevMonth}
-        className="absolute left-[-24px] top-[50%] -translate-y-1/2"
-      >
-        <ChevronLeft className="w-5 h-5 text-skin2" />
-      </button>
-      <button
-        onClick={handleNextMonth}
-        className="absolute right-[-24px] top-[50%] -translate-y-1/2"
-      >
-        <ChevronRight className="w-5 h-5 text-skin2" />
-      </button>
+      <nav aria-label="월간 이동">
+        <button
+          onClick={handlePrevMonth}
+          className="absolute left-[-24px] top-[50%] -translate-y-1/2"
+          aria-label="이전 달로 이동"
+        >
+          <ChevronLeft className="w-5 h-5 text-skin2" />
+        </button>
+        <button
+          onClick={handleNextMonth}
+          className="absolute right-[-24px] top-[50%] -translate-y-1/2"
+          aria-label="다음 달로 이동"
+        >
+          <ChevronRight className="w-5 h-5 text-skin2" />
+        </button>
+      </nav>
 
       {/* 헤더 */}
-      <div className="text-left mb-3 flex items-baseline">
-        <span className="text-calendar font-bold text-font3">
+      <header className="text-left mb-3 flex items-baseline">
+        <h3 className="text-calendar font-bold text-font3">
           {currentDate.format('MM')}
-        </span>
+        </h3>
         <div className="mx-3 h-[26px] w-[1px] bg-font3"></div>
-        <span className="text-b-h2 font-bold text-font4">
+        <h4 className="text-b-h2 font-bold text-font4">
           {currentDate.format('YYYY')}
-        </span>
-      </div>
+        </h4>
+      </header>
 
       {/* 요일 */}
-      <div className="grid grid-cols-7 text-center text-b-h3 text-font2 font-bold mb-1.5">
+      <div
+        role="rowgroup"
+        className="grid grid-cols-7 text-center text-b-h3 text-font2 font-bold mb-1.5"
+      >
         {WEEKDAYS.map((d, i) => (
-          <div key={i} className={i === 0 ? 'text-skin7' : ''}>
+          <div
+            key={i}
+            role="columnheader"
+            className={i === 0 ? 'text-skin7' : ''}
+          >
             {d}
           </div>
         ))}
       </div>
 
       {/* 날짜 */}
-      <div className="grid grid-cols-7 text-center text-m-h4">
+      <div role="grid" className="grid grid-cols-7 text-center text-m-h4">
         {days.map((day, idx) => {
           const dateStr = day
             ? dayjs(currentDate).date(day).format('YYYY-MM-DD')
@@ -111,8 +122,12 @@ const CalendarCard = ({
           return (
             <div
               key={idx}
+              role="gridcell"
               onClick={() => day && handleDateClick(day)}
               className={`relative my-1 mx-auto w-[30px] h-[30px] ${post ? 'cursor-pointer' : ''}`}
+              aria-label={
+                day ? `${currentDate.month() + 1}월 ${day}일` : '빈 날짜'
+              }
             >
               <div
                 className={`absolute inset-0 rounded-full transition ${bgColor}`}
@@ -121,18 +136,23 @@ const CalendarCard = ({
                 {post ? (
                   <div className="relative w-full h-full">
                     <Tooltip content={post.title} position="bottom">
-                      <div className="relative aspect-square w-full overflow-hidden rounded-full">
-                        <Image
-                          src={
-                            post.images.find((img) => img.isRepresentative)
-                              ?.imageUrl || EMOTION_IMAGES[post.emotion]
-                          }
-                          alt="대표 이미지"
-                          width={32}
-                          height={32}
-                          className="absolute top-1/2 left-1/2 min-w-full min-h-full w-full h-full -translate-x-1/2 -translate-y-1/2 object-cover hover:opacity-90"
-                        />
-                      </div>
+                      <figure>
+                        <div className="relative aspect-square w-full overflow-hidden rounded-full">
+                          <Image
+                            src={
+                              post.images.find((img) => img.isRepresentative)
+                                ?.imageUrl || EMOTION_IMAGES[post.emotion]
+                            }
+                            alt={`${post.title} 대표 이미지`}
+                            width={32}
+                            height={32}
+                            className="absolute top-1/2 left-1/2 min-w-full min-h-full w-full h-full -translate-x-1/2 -translate-y-1/2 object-cover hover:opacity-90"
+                          />
+                        </div>
+                        <figcaption className="sr-only">
+                          {post.title}
+                        </figcaption>
+                      </figure>
                     </Tooltip>
                   </div>
                 ) : (
@@ -145,7 +165,7 @@ const CalendarCard = ({
           );
         })}
       </div>
-    </div>
+    </article>
   );
 };
 
