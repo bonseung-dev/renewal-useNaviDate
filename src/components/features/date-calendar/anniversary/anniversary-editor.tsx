@@ -47,7 +47,7 @@ const AnniversaryEditor = ({
   };
 
   return (
-    <DialogContent className="bg-skin5 p-1 shadow-shadow1 rounded-xl w-[320px] h-[330px]">
+    <DialogContent className="bg-skin5 p-1 shadow-shadow1 rounded-xl w-[320px] h-[280px]">
       <DialogTitle className="sr-only">
         {initialData ? '기념일 수정' : '기념일 추가'}
       </DialogTitle>

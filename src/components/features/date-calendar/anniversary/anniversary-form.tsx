@@ -86,16 +86,30 @@ const AnniversaryForm = ({
         e.preventDefault();
         handleSubmit();
       }}
-      className="w-[258px] h-[251px] mt-[48px] mx-[32px] mb-[32px] box-border flex flex-col justify-between"
+      className="w-[258px] h-[200px] mt-[48px] mx-[32px] mb-[32px] box-border flex flex-col justify-between"
       aria-labelledby="anniversary-form-heading"
     >
       <div>
-        <h2
-          id="anniversary-form-heading"
-          className="font-bold text-b-h2 text-skin1 mb-[16px]"
-        >
-          {editingAnniversary ? '기념일 수정' : '기념일 추가'}
-        </h2>
+        <div className="flex items-center justify-between mb-[16px]">
+          <h2
+            id="anniversary-form-heading"
+            className="font-bold text-b-h2 text-skin1"
+          >
+            {editingAnniversary ? '기념일 수정' : '기념일 추가'}
+          </h2>
+
+          <div className="flex items-center gap-1">
+            <span className="text-m-h4 text-skin1">매년 반복</span>
+            <Switch
+              id="repeat-switch"
+              checked={isYearly}
+              onCheckedChange={handleSwitch}
+              className="w-[40px] h-[20px]"
+              thumbClassName="h-[16px] w-[16px] data-[state=checked]:translate-x-[20px]"
+              aria-label="매년 반복 설정"
+            />
+          </div>
+        </div>
 
         {/* 제목 인풋 */}
         <fieldset className="flex flex-col mb-[12px] relative">
@@ -125,7 +139,7 @@ const AnniversaryForm = ({
             <div
               id="title-help"
               role="alert"
-              className="absolute -top-5 left-[90px] z-10 bg-skin7/50 text-skin5 text-l-title5 px-1 rounded-full shadow transition-opacity duration-200"
+              className="absolute -top-4 left-[90px] z-10  text-skin7 text-l-title5 px-1 transition-opacity duration-200"
             >
               15자까지 입력할 수 있어요.
             </div>
@@ -134,9 +148,12 @@ const AnniversaryForm = ({
 
         {/* 날짜 선택 */}
         <fieldset className="flex items-center mb-[12px]">
-          <legend className="text-b-h3 font-bold w-[56px] text-skin1 sr-only">
+          <label
+            htmlFor="title"
+            className="text-b-h3 font-bold w-[56px] text-skin1"
+          >
             날짜
-          </legend>
+          </label>
           <div className="flex gap-2 w-[200px]">
             <NumberPicker
               key={`year-${year}`}
@@ -166,7 +183,7 @@ const AnniversaryForm = ({
         </fieldset>
 
         {/* 반복 스위치 */}
-        <div className="flex items-center mb-[32px]">
+        {/* <div className="flex items-center mb-[32px]">
           <label
             htmlFor="repeat-switch"
             className="text-b-h3 font-bold text-skin1"
@@ -181,7 +198,7 @@ const AnniversaryForm = ({
             thumbClassName="h-[28px] w-[28px] data-[state=checked]:translate-x-[41px]"
             aria-label="매년 반복 설정"
           />
-        </div>
+        </div> */}
       </div>
 
       <div className="flex items-center justify-center gap-2 mt-2">
