@@ -1,5 +1,6 @@
 import { BASE_URL } from '@/constants/url.constants';
-import { User, Couple } from '@/types/community.type';
+import { Couple } from '@/types/couple.type';
+import { User } from '@/types/user.type';
 
 // 사용자 로그인 함수
 export const loginUser = async (

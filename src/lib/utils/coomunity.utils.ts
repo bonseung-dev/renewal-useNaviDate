@@ -1,17 +1,18 @@
-import { EnhancedPost, SortOption } from '@/types/community.type';
+import { SORT_OPTIONS } from '@/constants/community.constants';
+import { CommunityPost, SortOption } from '@/types/community.type';
 import { debounce } from 'lodash';
 
 // 정렬 함수
 export const sortPosts = (
-  posts: EnhancedPost[],
+  posts: CommunityPost[],
   sortOption: SortOption,
-): EnhancedPost[] => {
+): CommunityPost[] => {
   return [...posts].sort((a, b) => {
-    if (sortOption === 'latest') {
+    if (sortOption === SORT_OPTIONS.LATEST) {
       return b.createdAt.getTime() - a.createdAt.getTime();
-    } else if (sortOption === 'likes') {
+    } else if (sortOption === SORT_OPTIONS.LIKES) {
       return b.likesCount - a.likesCount;
-    } else if (sortOption === 'bookmarks') {
+    } else if (sortOption === SORT_OPTIONS.BOOKMARKS) {
       return b.bookmarksCount - a.bookmarksCount;
     }
     return 0;
@@ -24,4 +25,12 @@ export const createDebouncedSearch = (
   callback: (query: string) => void,
 ) => {
   return debounce(callback, delay);
+};
+
+export const formatDate = (date: Date) => {
+  return new Intl.DateTimeFormat('ko-KR', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(date);
 };

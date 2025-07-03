@@ -4,7 +4,7 @@ export const SORT_OPTIONS = {
   BOOKMARKS: 'bookmarks',
 } as const;
 
-export type SortOption = keyof typeof SORT_OPTIONS;
+export type SortOption = (typeof SORT_OPTIONS)[keyof typeof SORT_OPTIONS];
 
 export const ERROR_MESSAGES = {
   POSTS: '포스트를 가져오는데 실패했습니다.',

@@ -1,4 +1,4 @@
-import { Emotion } from '@/types/calendar.type';
+import { Emotion } from '@/types/post.type';
 
 export const EMOTION_IMAGES: Record<Emotion, string> = {
   Joy: '/emotions/emotion_happy.png',

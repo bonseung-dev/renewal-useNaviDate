@@ -16,7 +16,7 @@ const Header = () => {
         useNavidate( )
       </div>
 
-      <div className="flex items-center gap-1">
+      <nav className="flex items-center gap-1">
         <Link
           href="/notice"
           className="w-6 h-6 flex items-center justify-center"
@@ -37,7 +37,7 @@ const Header = () => {
         >
           <Settings className="w-[22px] h-[22px] text-skin1" />
         </Link>
-      </div>
+      </nav>
     </header>
   );
 };

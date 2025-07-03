@@ -1,30 +1,39 @@
 import {
-  useBookmarksQuery,
-  useCouplesQuery,
-  useLikesQuery,
-  usePostImagesQuery,
-  usePostsQuery,
-  usePostTagsQuery,
-  useUsersQuery,
+  useGetAllBookmarksQuery,
+  useGetAllLikesQuery,
+  useGetAllPostImagesQuery,
+  useGetAllPostsQuery,
+  useGetAllPostTagsQuery,
+  useGetAllUsersQuery,
 } from '@/lib/queries/community.queries';
 
-export const useCommunityData = (debouncedQuery: string = '') => {
-  const postsQuery = usePostsQuery(debouncedQuery);
-  const usersQuery = useUsersQuery();
-  const couplesQuery = useCouplesQuery();
-  const tagsQuery = usePostTagsQuery();
-  const imagesQuery = usePostImagesQuery();
-  const likesQuery = useLikesQuery();
-  const bookmarksQuery = useBookmarksQuery();
+export const useCommunityData = (debouncedQuery: string) => {
+  const { data: posts = [], isLoading: isPostsLoading } =
+    useGetAllPostsQuery(debouncedQuery);
+  const { data: users = [], isLoading: isUsersLoading } = useGetAllUsersQuery();
+  const { data: tags = [], isLoading: isTagsLoading } =
+    useGetAllPostTagsQuery();
+  const { data: images = [], isLoading: isImagesLoading } =
+    useGetAllPostImagesQuery();
+  const { data: likes = [], isLoading: isLikesLoading } = useGetAllLikesQuery();
+  const { data: bookmarks = [], isLoading: isBookmarksLoading } =
+    useGetAllBookmarksQuery();
+
+  const isLoading =
+    isPostsLoading ||
+    isUsersLoading ||
+    isTagsLoading ||
+    isImagesLoading ||
+    isLikesLoading ||
+    isBookmarksLoading;
 
   return {
-    posts: postsQuery.data,
-    isLoading: postsQuery.isLoading,
-    users: usersQuery.data,
-    couples: couplesQuery.data,
-    tags: tagsQuery.data,
-    images: imagesQuery.data,
-    likes: likesQuery.data,
-    bookmarks: bookmarksQuery.data,
+    posts,
+    users,
+    tags,
+    images,
+    likes,
+    bookmarks,
+    isLoading,
   };
 };
