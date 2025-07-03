@@ -4,15 +4,11 @@ import { Dispatch, SetStateAction } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import type { Emotion, Holiday, CalendarPost } from '@use-navi-date/shared';
-
-const emotionImages: Record<Emotion, string> = {
-  Joy: '/emotions/emotion_happy.png',
-  Fun: '/emotions/emotion_excited.png',
-  Soso: '/emotions/emotion_usual.png',
-  Sad: '/emotions/emotion_sad.png',
-  Mad: '/emotions/emotion_angry.png',
-};
+import type { Holiday } from '@/types/calendar.type';
+import { WEEKDAYS } from '@/constants/calendar.constants';
+import { EMOTION_IMAGES } from '@/constants/emotions.constants';
+import Tooltip from '@/components/ui/tooltip';
+import { CalendarPost } from '@/types/post.type';
 
 type Props = {
   currentDate: Dayjs;
@@ -39,7 +35,7 @@ const CalendarCard = ({
     const selected = dayjs(
       `${currentDate.year()}-${currentDate.month() + 1}-${day}`,
     ).format('YYYY-MM-DD');
-    console.log('Selected:', selected);
+    console.log('선택된 항목:', selected);
   };
 
   const getPostForDate = (dateStr: string) => {
@@ -71,22 +67,20 @@ const CalendarCard = ({
       </button>
 
       {/* 헤더 */}
-      <div className="text-left mb-3">
+      <div className="text-left mb-3 flex items-baseline">
         <span className="text-calendar font-bold text-font3">
           {currentDate.format('MM')}
         </span>
-        <span className="text-b-h2 text-font4 ml-1">
-          | {currentDate.format('YYYY')}
+        <div className="mx-3 h-[26px] w-[1px] bg-font3"></div>
+        <span className="text-b-h2 font-bold text-font4">
+          {currentDate.format('YYYY')}
         </span>
       </div>
 
       {/* 요일 */}
       <div className="grid grid-cols-7 text-center text-b-h3 text-font2 font-bold mb-1.5">
-        {['일', '월', '화', '수', '목', '금', '토'].map((d, i) => (
-          <div
-            key={i}
-            className={i === 0 ? 'text-skin7' : i === 6 ? 'text-skin1' : ''}
-          >
+        {WEEKDAYS.map((d, i) => (
+          <div key={i} className={i === 0 ? 'text-skin7' : ''}>
             {d}
           </div>
         ))}
@@ -103,19 +97,14 @@ const CalendarCard = ({
           const isToday = day && dayjs().isSame(dateStr, 'day');
 
           const isLegalHoliday = holiday?.isLegalHoliday;
-          const isCustomHoliday = holiday && !isLegalHoliday;
 
           const textColor = isToday
             ? 'text-skin5'
             : isLegalHoliday
               ? 'text-skin7'
-              : isCustomHoliday
-                ? 'text-skin6'
-                : idx % 7 === 0
-                  ? 'text-skin7'
-                  : idx % 7 === 6
-                    ? 'text-skin1'
-                    : 'text-font2';
+              : idx % 7 === 0
+                ? 'text-skin7'
+                : 'text-font2';
 
           const bgColor = isToday ? 'bg-skin1' : '';
 
@@ -123,27 +112,33 @@ const CalendarCard = ({
             <div
               key={idx}
               onClick={() => day && handleDateClick(day)}
-              className={`relative mx-auto w-8 h-8 group ${post || holiday ? 'cursor-pointer' : ''}`}
+              className={`relative my-1 mx-auto w-[30px] h-[30px] ${post ? 'cursor-pointer' : ''}`}
             >
-              {(post || holiday) && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 px-2 py-1 text-l-title5 bg-skin2 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity z-20 whitespace-nowrap shadow-md before:content-[''] before:absolute before:-top-1 before:left-1/2 before:-translate-x-1/2 before:w-2 before:h-2 before:bg-skin2 before:rotate-45 before:z-10">
-                  {holiday?.summary || post?.title}
-                </div>
-              )}
               <div
-                className={`absolute inset-0 rounded-full transition ${bgColor} hover:bg-font5`}
+                className={`absolute inset-0 rounded-full transition ${bgColor}`}
               />
               <div className="relative w-full h-full flex items-center justify-center">
                 {post ? (
-                  <Image
-                    src={post.images.find(img => img.isRepresentative)?.imageUrl || emotionImages[post.emotion]}
-                    alt="대표 이미지"
-                    width={32}
-                    height={32}
-                    className="rounded-full w-full h-full object-cover"
-                  />
+                  <div className="relative w-full h-full">
+                    <Tooltip content={post.title} position="bottom">
+                      <div className="relative aspect-square w-full overflow-hidden rounded-full">
+                        <Image
+                          src={
+                            post.images.find((img) => img.isRepresentative)
+                              ?.imageUrl || EMOTION_IMAGES[post.emotion]
+                          }
+                          alt="대표 이미지"
+                          width={32}
+                          height={32}
+                          className="absolute top-1/2 left-1/2 min-w-full min-h-full w-full h-full -translate-x-1/2 -translate-y-1/2 object-cover hover:opacity-90"
+                        />
+                      </div>
+                    </Tooltip>
+                  </div>
                 ) : (
-                  <span className={`${textColor} font-medium`}>{day}</span>
+                  <span className={`${textColor} text-l-title4 font-light`}>
+                    {day}
+                  </span>
                 )}
               </div>
             </div>

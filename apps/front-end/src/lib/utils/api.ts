@@ -95,7 +95,7 @@ export function removeAuthToken(): void {
 }
 
 export function getBackendUrl(): string {
-  return process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+  return process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000';
 }
 
 export function extractTokenFromRequest(request: NextRequest): string | null {

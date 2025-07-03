@@ -325,4 +325,7 @@ export type CoupleResponse = {
 export type UserResponse = {
   profileImage?: string;
   nickname?: string;
-}; 
+};
+
+// Export constants
+export * from './constants'; 

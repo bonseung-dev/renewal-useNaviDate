@@ -39,19 +39,3 @@ export type BackendHolidayItem = {
   type: '법정공휴일' | '기념일' | '대체공휴일';
   meta?: Record<string, unknown>;
 };
-
-// 일담 임시로 calendar에 타입을 지정했으나 종연님이 해주시면 교체할 예정
-export type Emotion = 'Joy' | 'Fun' | 'Soso' | 'Sad' | 'Mad';
-
-export type Post = {
-  id: string;
-  userId: string;
-  title: string;
-  content: string;
-  visibility: 'private' | 'public';
-  date: string;
-  emotion: Emotion;
-  imageUrl?: string;
-  createdAt: string;
-  deletedAt: string | null;
-};

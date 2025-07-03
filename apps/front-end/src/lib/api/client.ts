@@ -124,13 +124,13 @@ export class ApiClient {
 
 // 기본 API 클라이언트 인스턴스
 export const apiClient = new ApiClient({
-  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001',
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000',
 });
 
 // 인증이 필요한 API 클라이언트 팩토리
 export function createAuthenticatedApiClient(token: string): ApiClient {
   return new ApiClient({
-    baseURL: process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001',
+    baseURL: process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,

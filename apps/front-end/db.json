@@ -64,6 +64,16 @@
       "name": "MoonStar",
       "status": "confirm",
       "createdAt": "2025-01-10T00:00:00.000Z"
+    },
+    {
+      "id": "835d4a81-3b72-4775-bd97-2d94130fa200",
+      "userAId": "userA",
+      "userBId": "userB",
+      "anniversary": "2023-01-01",
+      "name": "A와 B의 연인 공간",
+      "coupleId": "835d4a81-3b72-4775-bd97-2d94130fa200",
+      "status": "confirm",
+      "createdAt": "2025-06-27T12:09:34.960Z"
     }
   ],
   "posts": [

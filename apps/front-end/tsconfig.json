@@ -18,10 +18,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"],
-      "@use-navi-date/shared": ["../../packages/shared/src/index.ts"]
-    },
-    "baseUrl": "."
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
