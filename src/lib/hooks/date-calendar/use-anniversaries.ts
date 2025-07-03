@@ -5,7 +5,7 @@ import {
   deleteAnniversaryById,
   getAllAnniversariesByCoupleId,
   updateAnniversaryById,
-} from '../services/anniversary.services';
+} from '@/lib/services/anniversary.services';
 
 export const useAnniversaries = (coupleId: string, startDate: string) => {
   const [anniversaries, setAnniversaries] = useState<Anniversary[]>([]);
