@@ -5,10 +5,11 @@ import dayjs, { Dayjs } from 'dayjs';
 import { getHolidaysByMonth } from '@/lib/services/holiday.services';
 import AnalysisButton from './date/analysis-button';
 import DateAnalysis from './date/date-analysis';
-import CalendarCard from './date/calendar-card';
+
 import { Holiday } from '@/types/calendar.type';
 import { fetchPostsByCouple } from '@/lib/services/calendar.services';
 import { CalendarPost } from '@/types/post.type';
+import CalendarCard from './date/calendar/calendar-card';
 
 type DateTabProps = {
   coupleId: string;
