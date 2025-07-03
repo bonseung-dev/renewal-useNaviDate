@@ -194,7 +194,7 @@ const AnniversaryForm = ({
         <DialogClose asChild>
           <button
             type="button"
-            className="w-[100px] h-[32px] bg-skin3 text-font2 hover:bg-gray-300 rounded-[20px] text-m-h2"
+            className="w-[100px] h-[32px] bg-skin3 text-font2 rounded-[20px] text-m-h2"
             aria-label="취소"
           >
             취소

@@ -21,3 +21,12 @@ export const generateAutoAnniversaries = (
     };
   });
 };
+
+export const calculateDDay = (date: string): string => {
+  const today = dayjs().startOf('day');
+  const targetDate = dayjs(date).startOf('day');
+  const diff = targetDate.diff(today, 'day');
+
+  if (diff === 0) return 'D-Day';
+  return diff > 0 ? `D-${diff}` : `D+${Math.abs(diff)}`;
+};
