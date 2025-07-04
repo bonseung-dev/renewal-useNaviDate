@@ -1,5 +1,3 @@
-'use client';
-
 import AnalysisIcon from './analysis-icon';
 
 type Props = {

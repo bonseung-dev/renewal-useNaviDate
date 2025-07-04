@@ -1,5 +1,3 @@
-'use client';
-
 import { Anniversary, RepeatOption } from '@/types/anniversary.type';
 import { useAnniversaryForm } from '@/lib/hooks/date-calendar/use-anniversary-form';
 import AnniversaryFormButtons from './anniversary-form-buttons';

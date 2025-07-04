@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
 import DateTab from './date-tab';
 import AnniversaryTab from './anniversary/anniversary-tab';
+import { useState } from 'react';
 
 type CalendarTabsProps = {
   coupleId: string;

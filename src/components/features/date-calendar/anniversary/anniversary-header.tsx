@@ -1,5 +1,3 @@
-'use client';
-
 import Image from 'next/image';
 import { PartnerInfo } from '@/types/anniversary.type';
 

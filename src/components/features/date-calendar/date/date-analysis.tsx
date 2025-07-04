@@ -1,5 +1,3 @@
-'use client';
-
 import dayjs from 'dayjs';
 import FrequentPlaces from './frequent-places';
 import { CalendarHeart, Smile, ThumbsUp } from 'lucide-react';

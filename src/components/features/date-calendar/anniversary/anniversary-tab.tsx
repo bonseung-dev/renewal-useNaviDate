@@ -1,9 +1,6 @@
-'use client';
-
 import { useEffect } from 'react';
 import AnniversaryHeader from './anniversary-header';
 import AnniversaryList from './anniversary-list';
-
 import { Dialog } from '@/components/ui/dialog';
 import { useAnniversaries } from '@/lib/hooks/date-calendar/use-anniversaries';
 import { usePartnerInfo } from '@/lib/hooks/date-calendar/use-partner-infor';

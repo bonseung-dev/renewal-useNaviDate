@@ -1,5 +1,3 @@
-'use client';
-
 import { Dispatch, SetStateAction } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import type { Holiday } from '@/types/calendar.type';

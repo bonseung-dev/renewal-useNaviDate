@@ -1,7 +1,6 @@
 import CalendarTabs from '@/components/features/date-calendar/calendar-tabs';
 import LoginPrompt from '@/components/features/date-calendar/login-prompt';
 import { getServerCookie } from '@/lib/utils/cookes.utils';
-
 import { Metadata } from 'next';
 
 export async function generateMetadata({
