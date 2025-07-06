@@ -10,48 +10,67 @@ import UploadImageCarousel from '@/components/features/write-date/upload-image-c
 import WriteContent from '@/components/features/write-date/write-content';
 import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Date } from '../date-detail/[dateId]/page';
 import { useRouter } from 'next/navigation';
 import { QUERY_KEYS } from '@/constants/query-keys.constants';
 import { BASE_URL } from '@/constants/url.constants';
 import { PATH } from '@/constants/path';
+import { Emotion, Post, PostImage, PostTag } from '@/types/post.type';
 
 const WriteDate = () => {
-  const [imageUrls, setImageUrls] = useState<string[]>([]);
-  const [visibility, setVisibility] = useState<boolean>(false);
-  const [emotion, setEmotion] = useState<string>('');
+  const [images, setImages] = useState<string[]>([]);
+  const [visibility, setVisibility] = useState<'private' | 'public'>('private');
+  const [emotion, setEmotion] = useState<Emotion>('Soso');
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
-  const [tags, setTags] = useState<string[]>([]);
+  const [tag, setTag] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>('');
 
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  const addDate = async (newDate: Date) => {
-    await fetch(`${BASE_URL}/dates`, {
+  const createPost = async (newPost: Post) => {
+    await fetch(`${BASE_URL}/posts`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newDate),
+      body: JSON.stringify(newPost),
+    });
+  };
+  const createImage = async (newImage: PostImage) => {
+    await fetch(`${BASE_URL}/postImages`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newImage),
+    });
+  };
+
+  const createTag = async (newTag: PostTag) => {
+    await fetch(`${BASE_URL}/postTags`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newTag),
     });
   };
 
   const resetForm = () => {
-    setImageUrls([]);
-    setVisibility(false);
-    setEmotion('');
+    setVisibility('private');
+    setEmotion('Soso');
     setTitle('');
     setContent('');
-    setTags([]);
     setInputValue('');
+    setImages([]);
+    setTag([]);
   };
 
-  const { mutate } = useMutation({
-    mutationFn: addDate,
+  const { mutate: createPostMutate } = useMutation({
+    mutationFn: createPost,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.DATE] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.WRITE_POSTS] });
       resetForm();
       alert('게시글이 성공적으로 등록되었습니다!');
       router.push(PATH.COMMUNITY);
@@ -62,21 +81,52 @@ const WriteDate = () => {
     },
   });
 
+  const { mutate: createImageMutate } = useMutation({
+    mutationFn: createImage,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.WRITE_IMAGES] });
+    },
+  });
+
+  const { mutate: createTagMutate } = useMutation({
+    mutationFn: createTag,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.WRITE_TAGS] });
+    },
+  });
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const newDate = {
-      images: imageUrls,
+    const newPost: Post = {
+      id: crypto.randomUUID(),
+      userId: crypto.randomUUID(),
       visibility,
-      address: '서울특별시 송파구 잠실 어쩌구 56-1',
       emotion,
       date: '2025-01-01',
       title,
       content,
-      tags,
+      createdAt: new Date().toISOString(),
+      deletedAt: null,
     };
 
-    mutate(newDate);
+    createPostMutate(newPost);
+    images.forEach((image) => {
+      createImageMutate({
+        id: crypto.randomUUID(),
+        postId: newPost.id,
+        imageUrl: image,
+        address: '서울특별시 송파구 잠실 어쩌구 56-1',
+        isRepresentative: true,
+      });
+    });
+    tag.forEach((tag) => {
+      createTagMutate({
+        id: crypto.randomUUID(),
+        postId: newPost.id,
+        name: tag,
+      });
+    });
   };
 
   return (
@@ -85,7 +135,7 @@ const WriteDate = () => {
       className="flex flex-col justify-center items-center px-1"
     >
       {/* 캐러셀 이미지 업로드 */}
-      <UploadImageCarousel imageUrls={imageUrls} setImageUrls={setImageUrls} />
+      <UploadImageCarousel images={images} setImages={setImages} />
 
       {/* 게시글 공개 여부 */}
       <PostVisibility visibility={visibility} setVisibility={setVisibility} />
@@ -112,8 +162,8 @@ const WriteDate = () => {
 
       {/* 태그 입력 */}
       <WriteTag
-        tags={tags}
-        setTags={setTags}
+        tag={tag}
+        setTag={setTag}
         inputValue={inputValue}
         setInputValue={setInputValue}
       />
