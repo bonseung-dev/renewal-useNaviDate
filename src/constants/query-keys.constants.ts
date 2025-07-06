@@ -7,7 +7,9 @@ export const QUERY_KEYS = {
   IMAGES: 'community-post-images',
   LIKES: 'community-likes',
   BOOKMARKS: 'community-bookmarks',
-  DATE: 'date',
+  WRITE_POSTS: 'write-posts',
+  WRITE_IMAGES: 'write-post-images',
+  WRITE_TAGS: 'write-post-tags',
 } as const;
 
 // 쿼리 키 타입 추출 (필요시 사용)
