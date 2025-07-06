@@ -5,8 +5,8 @@ const PostVisibility = ({
   visibility,
   setVisibility,
 }: {
-  visibility: boolean;
-  setVisibility: (visibility: boolean) => void;
+  visibility: 'private' | 'public';
+  setVisibility: (visibility: 'private' | 'public') => void;
 }) => {
   return (
     <section className="flex justify-end items-center gap-[2px] mt-1 ml-auto mr-5">
