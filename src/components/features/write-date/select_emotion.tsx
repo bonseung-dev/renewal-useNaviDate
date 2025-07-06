@@ -1,21 +1,22 @@
+import { Emotion } from '@/types/post.type';
 import Image from 'next/image';
 
 const emotions = [
-  { key: 'happy', src: '/emotions/emotion_happy.png' },
-  { key: 'excited', src: '/emotions/emotion_excited.png' },
-  { key: 'usual', src: '/emotions/emotion_usual.png' },
-  { key: 'sad', src: '/emotions/emotion_sad.png' },
-  { key: 'angry', src: '/emotions/emotion_angry.png' },
+  { key: 'Joy' as Emotion, src: '/emotions/emotion_happy.png' },
+  { key: 'Fun' as Emotion, src: '/emotions/emotion_excited.png' },
+  { key: 'SoSo' as Emotion, src: '/emotions/emotion_usual.png' },
+  { key: 'Sad' as Emotion, src: '/emotions/emotion_sad.png' },
+  { key: 'Mad' as Emotion, src: '/emotions/emotion_angry.png' },
 ];
 
 const SelectEmotion = ({
   emotion,
   setEmotion,
 }: {
-  emotion: string;
-  setEmotion: (emotion: string) => void;
+  emotion: Emotion;
+  setEmotion: (emotion: Emotion) => void;
 }) => {
-  const handleEmotionClick = (emotion: string) => {
+  const handleEmotionClick = (emotion: Emotion) => {
     setEmotion(emotion);
   };
 
