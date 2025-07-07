@@ -6,19 +6,21 @@ import {
   setServerCookies,
 } from '@/lib/services/auth.services';
 import { AUTH_ERRORS } from '@/constants/auth.constants';
+import { User } from '@/types/user.type';
+import { Couple } from '@/types/couple.type';
 
 export const useLoginMutation = () => {
   return useMutation({
     mutationFn: ({ email, password }: LoginFormData) =>
       loginUser(email, password),
-    onSuccess: async (user) => {
+    onSuccess: async (user: User) => {
       try {
-        const couple = await fetchCouple(user.id);
+        const couple: Couple | null = await fetchCouple(user.id);
 
-        // 로컬 스토리지 저장
-        localStorage.setItem('userId', user.id);
+        // 로컬 스토리지 저장 (number → string 변환)
+        localStorage.setItem('userId', user.id.toString());
         if (couple) {
-          localStorage.setItem('coupleId', couple.id);
+          localStorage.setItem('coupleId', couple.id.toString());
           localStorage.setItem('anniversary', couple.anniversary);
         }
 
@@ -33,8 +35,13 @@ export const useLoginMutation = () => {
         window.location.href = `/date-calendar/${couple?.id}?userId=${user.id}`;
       } catch (error) {
         console.error('Login Error:', error);
-        throw new Error(AUTH_ERRORS.LOGIN_FAILED);
+        throw new Error(
+          error instanceof Error ? error.message : AUTH_ERRORS.LOGIN_FAILED,
+        );
       }
+    },
+    onError: (error: Error) => {
+      throw new Error(error.message || AUTH_ERRORS.LOGIN_FAILED);
     },
   });
 };
