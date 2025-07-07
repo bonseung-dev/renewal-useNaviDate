@@ -1,8 +1,6 @@
-import { Image } from './image.type';
-
 export type Anniversary = {
-  id: number;
-  coupleId: number;
+  id: string;
+  coupleId: string;
   title: string;
   date: string;
   repeat: RepeatOption;
@@ -13,17 +11,17 @@ export type Anniversary = {
 export type RepeatOption = 'NONE' | 'YEARLY';
 
 export type PartnerInfo = {
-  id: number;
-  profileImage: Image;
+  id: string;
+  profileImage: string;
   nickname: string;
 };
 
 export type CoupleResponse = {
-  userAId: number;
-  userBId: number;
+  userAId: string;
+  userBId: string;
 };
 
 export type UserResponse = {
-  profileImage?: Image;
+  profileImage?: string;
   nickname?: string;
 };

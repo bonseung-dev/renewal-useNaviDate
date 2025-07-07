@@ -1,12 +1,9 @@
 export type Couple = {
-  id: number; // 커플 고유 ID
-  userAId: number; // 초대하는 유저
-  userBId: number | null; // 초대받는 유저
+  id: string; // 커플 고유 ID
+  userAId: string; // 초대하는 유저
+  userBId: string | null; // 초대받는 유저
   anniversary: string;
   name: string;
-  status: CoupleStatus;
+  status: 'pending' | 'confirm' | 'delete';
   createdAt: string;
 };
-
-// 커플의 상태를 나타내는 타입 ////방금예시로 만듦
-export type CoupleStatus = 'pending' | 'confirm' | 'delete';

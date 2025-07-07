@@ -1,10 +1,8 @@
 export type Notification = {
-  id: number;
-  userId: number;
-  type: NotificationType;
+  id: string;
+  userId: string;
+  type: 'like' | 'event' | 'anniversary';
   message: string;
   isRead: boolean;
   createdAt: Date;
 };
-
-export type NotificationType = 'like' | 'event' | 'anniversary';
