@@ -15,7 +15,7 @@ export const useLoginMutation = () => {
       loginUser(email, password),
     onSuccess: async (user: User) => {
       try {
-        const couple: Couple | null = await fetchCouple(user.id);
+        const couple: Couple | undefined = await fetchCouple(user.id);
 
         // 로컬 스토리지 저장 (number → string 변환)
         localStorage.setItem('userId', user.id.toString());
@@ -32,7 +32,12 @@ export const useLoginMutation = () => {
         });
 
         // 페이지 리다이렉트
-        window.location.href = `/date-calendar/${couple?.id}?userId=${user.id}`;
+        if (couple?.id) {
+          window.location.href = `/date-calendar/${couple.id}?userId=${user.id}`;
+        } else {
+          // 커플이 없는 경우 처리
+          window.location.href = '/couple-connect';
+        }
       } catch (error) {
         console.error('Login Error:', error);
         throw new Error(

@@ -7,7 +7,7 @@ import {
   updateAnniversaryById,
 } from '@/lib/services/anniversary.services';
 
-export const useAnniversaries = (coupleId: string, startDate: string) => {
+export const useAnniversaries = (coupleId: number, startDate: number) => {
   const [anniversaries, setAnniversaries] = useState<Anniversary[]>([]);
 
   // 초기 데이터 로딩

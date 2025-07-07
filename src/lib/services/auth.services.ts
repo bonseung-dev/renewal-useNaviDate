@@ -7,44 +7,29 @@ export const loginUser = async (
   email: string,
   password: string,
 ): Promise<User> => {
-  try {
-    const response = await fetch(`${BASE_URL}/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
+  const response = await fetch(
+    `${BASE_URL}/users?email=${encodeURIComponent(email)}`,
+  );
+  if (!response.ok) throw new Error('서버 오류가 발생했습니다.');
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || '로그인에 실패했습니다.');
-    }
+  const users: User[] = await response.json();
+  if (users.length === 0) throw new Error('등록된 이메일이 없습니다.');
 
-    const user: User = await response.json();
-    return user;
-  } catch (error) {
-    throw new Error(
-      error instanceof Error ? error.message : '알 수 없는 오류 발생',
-    );
+  const user = users[0];
+  if (user.password !== password) {
+    throw new Error('비밀번호가 일치하지 않습니다.');
   }
+
+  return user;
 };
 
 // 커플 정보 조회 함수
-export const fetchCouple = async (userId: number): Promise<Couple | null> => {
-  try {
-    const response = await fetch(`${BASE_URL}/couples?userId=${userId}`);
-    if (!response.ok) throw new Error('커플 정보 조회 실패');
-
-    const couples: Couple[] = await response.json();
-    const couple = couples.find(
-      (c) =>
-        c.userAId === userId || (c.userBId !== null && c.userBId === userId),
-    );
-
-    return couple || null;
-  } catch (error) {
-    console.error('Fetch couple error:', error);
-    return null;
-  }
+export const fetchCouple = async (
+  userId: number,
+): Promise<Couple | undefined> => {
+  const response = await fetch(`${BASE_URL}/couples`);
+  const couples: Couple[] = await response.json();
+  return couples.find((c) => c.userAId === userId || c.userBId === userId);
 };
 
 // 서버 쿠키 설정 함수
@@ -52,25 +37,12 @@ export const setServerCookies = async (data: {
   userId: number;
   coupleId?: number;
   anniversary?: string;
-}): Promise<void> => {
-  try {
-    const res = await fetch('/api/auth/set-cookies', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...data,
-        userId: data.userId.toString(),
-        coupleId: data.coupleId?.toString(),
-      }),
-    });
-
-    if (!res.ok) {
-      const errorData = await res.json();
-      throw new Error(errorData.message || '쿠키 설정 실패');
-    }
-  } catch (error) {
-    throw new Error(
-      error instanceof Error ? error.message : '쿠키 설정 중 오류 발생',
-    );
-  }
+}) => {
+  const res = await fetch('/api/auth/set-cookies', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error('쿠키 설정 실패');
+  return res;
 };

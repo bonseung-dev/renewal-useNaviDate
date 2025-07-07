@@ -8,9 +8,9 @@ import { useAnniversaryActions } from '@/lib/hooks/date-calendar/use-anniversary
 import AnniversaryEditor from './anniversary-form/anniversary-editor';
 
 type AnniversaryTabProps = {
-  coupleId: string;
+  coupleId: number;
   startDate: string;
-  userId: string;
+  userId: number;
 };
 
 const AnniversaryTab = ({

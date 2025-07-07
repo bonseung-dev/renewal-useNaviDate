@@ -5,9 +5,9 @@ import AnniversaryTab from './anniversary/anniversary-tab';
 import { useState } from 'react';
 
 type CalendarTabsProps = {
-  coupleId: string;
+  coupleId: number;
   startDate: string;
-  userId: string;
+  userId: number;
 };
 
 const CalendarTabs = ({ coupleId, startDate, userId }: CalendarTabsProps) => {

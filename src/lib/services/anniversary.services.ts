@@ -6,7 +6,7 @@ import { BASE_URL } from '@/constants/url.constants';
 
 // couples.services.ts로 분리 예정
 export const getCoupleById = async (
-  coupleId: string,
+  coupleId: number,
 ): Promise<CoupleResponse> => {
   const res = await fetch(`${BASE_URL}/couples/${coupleId}`);
   if (!res.ok) throw new Error('커플 정보를 불러오는데 실패했습니다');
@@ -14,14 +14,14 @@ export const getCoupleById = async (
 };
 
 // users.services.ts로 분리 예정
-export const getUserById = async (userId: string): Promise<UserResponse> => {
+export const getUserById = async (userId: number): Promise<UserResponse> => {
   const res = await fetch(`${BASE_URL}/users/${userId}`);
   if (!res.ok) throw new Error('사용자 정보를 불러오는데 실패했습니다');
   return res.json();
 };
 
 export const getAllAnniversariesByCoupleId = async (
-  coupleId: string,
+  coupleId: number,
   startDate: string,
 ): Promise<Anniversary[]> => {
   try {
@@ -44,9 +44,9 @@ export const getAllAnniversariesByCoupleId = async (
 };
 
 export const createAnniversary = async (
-  coupleId: string,
+  coupleId: number,
   data: Omit<Anniversary, 'id'>,
-  userId: string,
+  userId: number,
 ): Promise<Anniversary> => {
   try {
     const newAnniversary = {
@@ -72,7 +72,7 @@ export const createAnniversary = async (
 };
 
 export const updateAnniversaryById = async (
-  id: string,
+  id: number,
   data: Anniversary,
 ): Promise<Anniversary> => {
   try {
@@ -92,7 +92,7 @@ export const updateAnniversaryById = async (
   }
 };
 
-export const deleteAnniversaryById = async (id: string): Promise<void> => {
+export const deleteAnniversaryById = async (id: number): Promise<void> => {
   try {
     const response = await fetch(`${BASE_URL}/anniversaries/${id}`, {
       method: 'DELETE',

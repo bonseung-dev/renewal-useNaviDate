@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 // 자동 생성 기념일 (클라이언트 측에서 생성)
 export const generateAutoAnniversaries = (
   startDate: string,
-  coupleId: string,
+  coupleId: number,
 ): Anniversary[] => {
   const days = [100, 200, 300, 365, 500];
   let idCounter = 0;
