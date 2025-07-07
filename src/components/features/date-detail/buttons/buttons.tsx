@@ -7,7 +7,7 @@ const Buttons = ({ post }: { post: Post }) => {
   return (
     <section className="flex justify-between items-center w-full h-full py-3 px-5 gap-3">
       <LikeButton post={post} />
-      <BookmarkButton />
+      <BookmarkButton post={post} />
       <ShareButton />
     </section>
   );
