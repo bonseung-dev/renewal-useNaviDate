@@ -30,6 +30,7 @@ const AnniversaryEditor = ({
     title: string;
     date: string;
     repeat: RepeatOption;
+    memo?: string;
   }) => {
     if (initialData) {
       onUpdate({
@@ -39,7 +40,15 @@ const AnniversaryEditor = ({
         createdBy: initialData.createdBy,
       });
     } else {
-      onAdd({ ...data, createdBy: new Date(userId), coupleId }, userId);
+      onAdd(
+        {
+          ...data,
+          createdBy: new Date(),
+          coupleId,
+          memo: data.memo || '',
+        },
+        userId,
+      );
     }
     onSubmitSuccess?.();
   };

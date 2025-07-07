@@ -53,16 +53,18 @@ export const getAllAnniversariesByCoupleId = async (
   }
 };
 
+// 현재 json-server에서는 id를 string으로 자동생성하므로,
+// id를 number로 변경한 시점에서 제대로 작동하지 않을 수 있습니다.
+
 export const createAnniversary = async (
   coupleId: number,
   data: Omit<Anniversary, 'id'>,
-  userId: number,
 ): Promise<Anniversary> => {
   try {
     const newAnniversary = {
       ...data,
       coupleId,
-      createdBy: userId,
+      createdBy: new Date(),
     };
 
     const response = await fetch(`${BASE_URL}/anniversaries`, {
@@ -86,7 +88,7 @@ export const updateAnniversaryById = async (
   data: Anniversary,
 ): Promise<Anniversary> => {
   try {
-    const response = await fetch(`${BASE_URL}/anniversaries?id=${id}`, {
+    const response = await fetch(`${BASE_URL}/anniversaries/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -104,7 +106,7 @@ export const updateAnniversaryById = async (
 
 export const deleteAnniversaryById = async (id: number): Promise<void> => {
   try {
-    const response = await fetch(`${BASE_URL}/anniversaries?id=${id}`, {
+    const response = await fetch(`${BASE_URL}/anniversaries/${id}`, {
       method: 'DELETE',
     });
 
