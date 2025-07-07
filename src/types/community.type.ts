@@ -16,5 +16,3 @@ export type CommunityPost = Omit<Post, 'createdAt' | 'deletedAt'> & {
   likes: Like[]; // 현재 사용자의 좋아요 상태 확인을 위해 추가
   bookmarks: Bookmark[]; // 현재 사용자의 북마크 상태 확인을 위해 추가
 };
-
-export type StatusType = 'loading' | 'no-posts' | 'no-search-results';

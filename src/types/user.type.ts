@@ -1,9 +1,11 @@
+import { Image } from './image.type';
+
 export type User = {
-  id: string;
+  id: number;
   email: string;
   password: string;
   nickname: string;
-  profileImage: string;
+  profileImage: Image;
   createdAt: string;
   tempToken?: string;
 };
