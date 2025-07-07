@@ -9,7 +9,7 @@ type PostFooterProps = {
   bookmarks: CommunityPost['bookmarks'];
   likesCount: number;
   bookmarksCount: number;
-  postId: string;
+  postId: number;
 };
 
 const PostFooter = (props: PostFooterProps) => (

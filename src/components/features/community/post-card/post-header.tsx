@@ -3,7 +3,7 @@ import { CommunityPost } from '@/types/post.type';
 type PostHeaderProps = {
   title: string;
   tags: CommunityPost['tags'];
-  id: string;
+  id: number;
 };
 
 const PostHeader = ({ title, tags, id }: PostHeaderProps) => (

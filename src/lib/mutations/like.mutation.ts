@@ -10,7 +10,7 @@ export const useUpdateLikeMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ postId, userId }: { postId: string; userId: string }) =>
+    mutationFn: ({ postId, userId }: { postId: number; userId: number }) =>
       updateLike(postId, userId),
 
     onMutate: async ({ postId, userId }) => {
@@ -39,10 +39,10 @@ export const useUpdateLikeMutation = () => {
                   : [
                       ...(post.likes || []),
                       {
-                        id: 'temp',
+                        id: -1, // 임시 ID
                         postId,
                         userId,
-                        createdAt: new Date().toISOString(),
+                        createdAt: new Date(),
                       },
                     ],
                 likesCount: isLiked ? post.likesCount - 1 : post.likesCount + 1,
@@ -63,10 +63,10 @@ export const useUpdateLikeMutation = () => {
           : [
               ...(old || []),
               {
-                id: 'temp',
+                id: -1,
                 postId,
                 userId,
-                createdAt: new Date().toISOString(),
+                createdAt: new Date(),
               },
             ];
       });
