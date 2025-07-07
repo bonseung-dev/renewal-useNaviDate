@@ -1,13 +1,13 @@
 export type Like = {
-  id: string;
-  postId: string;
-  userId: string;
+  id: number;
+  postId: number;
+  userId: number;
   createdAt: string;
 };
 
 export type Bookmark = {
-  id: string;
-  postId: string;
-  userId: string;
+  id: number;
+  postId: number;
+  userId: number;
   createdAt: string;
 };
