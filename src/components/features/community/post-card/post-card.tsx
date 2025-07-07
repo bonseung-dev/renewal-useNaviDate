@@ -1,4 +1,4 @@
-import { CommunityPost } from '@/types/community.type';
+import { CommunityPost } from '@/types/post.type';
 import PostImage from './post-image';
 import PostHeader from './post-header';
 import PostFooter from './post-footer';

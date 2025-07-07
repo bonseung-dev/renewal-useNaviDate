@@ -1,5 +1,6 @@
 import { SORT_OPTIONS } from '@/constants/community.constants';
-import { CommunityPost, SortOption } from '@/types/community.type';
+import { SortOption } from '@/types/community.type';
+import { CommunityPost } from '@/types/post.type';
 import { debounce } from 'lodash';
 
 // 정렬 함수

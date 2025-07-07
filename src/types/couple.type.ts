@@ -5,8 +5,8 @@ export type Couple = {
   anniversary: string;
   name: string;
   status: CoupleStatus;
-  createdAt: string;
+  createdAt: Date;
 };
 
-// 커플의 상태를 나타내는 타입 ////방금예시로 만듦
+// 커플의 상태를 나타내는 타입
 export type CoupleStatus = 'pending' | 'confirm' | 'delete';

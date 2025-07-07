@@ -1,5 +1,5 @@
 import { formatDate } from '@/lib/utils/coomunity.utils';
-import { CommunityPost } from '@/types/community.type';
+import { CommunityPost } from '@/types/post.type';
 import Image from 'next/image';
 
 type PostAuthorInfoProps = {

@@ -6,6 +6,6 @@ export type User = {
   password: string;
   nickname: string;
   profileImage: Image;
-  createdAt: string;
+  createdAt: Date;
   tempToken?: string;
 };
