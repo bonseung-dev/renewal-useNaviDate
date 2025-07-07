@@ -32,8 +32,6 @@ const LikeButton = ({ post }: { post: Post }) => {
     queryFn: getLike,
   });
 
-  console.log('like', like);
-
   return (
     <>
       {like && like.length > 0 ? (
