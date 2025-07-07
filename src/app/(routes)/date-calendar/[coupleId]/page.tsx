@@ -40,25 +40,24 @@ const Page = async ({ params, searchParams }: Props) => {
 
   // 2. 필수 값 검증
   if (!userId || !coupleId) {
-    console.error('Missing required parameters:', { userId, coupleId });
+    console.error('파라미터 검증:', { userId, coupleId });
     return <LoginPrompt />;
   }
 
   // 3. coupleId 일치 여부 확인
   if (coupleId !== params.coupleId.toString()) {
-    console.error('Couple ID mismatch:', {
+    console.error('커플 아이디 불일치:', {
       paramCoupleId: params.coupleId,
       storedCoupleId: coupleId,
     });
     return <LoginPrompt />;
   }
 
-  // 4. anniversary 날짜 포맷팅
+  // 4. 시작 날짜 설정
   const startDate = anniversary
     ? new Date(anniversary).toISOString().split('T')[0]
     : '';
 
-  // 5. CalendarTabs에 필요한 props 전달
   return (
     <section aria-labelledby="calendar-heading">
       <h1 id="calendar-heading" className="sr-only">

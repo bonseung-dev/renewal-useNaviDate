@@ -8,9 +8,9 @@ import { useState } from 'react';
 import AnniversaryForm from './anniversary-form';
 
 type AnniversaryEditorProps = {
-  coupleId: string;
-  userId: string;
-  onAdd: (data: Omit<Anniversary, 'id'>, userId: string) => void;
+  coupleId: number;
+  userId: number;
+  onAdd: (data: Omit<Anniversary, 'id'>, userId: number) => void;
   onUpdate: (data: Anniversary) => void;
   initialData?: Anniversary | null;
   onSubmitSuccess?: () => void;
@@ -39,7 +39,7 @@ const AnniversaryEditor = ({
         createdBy: initialData.createdBy,
       });
     } else {
-      onAdd({ ...data, createdBy: userId, coupleId }, userId);
+      onAdd({ ...data, createdBy: new Date(userId), coupleId }, userId);
     }
     onSubmitSuccess?.();
   };
