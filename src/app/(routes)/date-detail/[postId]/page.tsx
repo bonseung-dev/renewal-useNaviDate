@@ -75,7 +75,7 @@ const DateDetail = ({ params }: PageProps) => {
   if (isError) return <div>오류 발생!!!</div>;
 
   return (
-    <form className="flex flex-col justify-center items-center px-1">
+    <div className="flex flex-col justify-center items-center px-1">
       {/* 캐러셀 이미지 출력 */}
       {images && <UploadedImagesCarousel images={images} />}
 
@@ -101,8 +101,8 @@ const DateDetail = ({ params }: PageProps) => {
       {tags && <WrittenTags tags={tags} />}
 
       {/* 좋아요, 북마크, 공유 버튼 */}
-      <Buttons />
-    </form>
+      <Buttons post={post} />
+    </div>
   );
 };
 
