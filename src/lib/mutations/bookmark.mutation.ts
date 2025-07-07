@@ -3,7 +3,7 @@ import { updateBookmark } from '../services/community.services';
 import { QUERY_KEYS } from '@/constants/query-keys.constants';
 import { Post } from '@/types/post.type';
 import { Bookmark } from '@/types/like-bookmark.type';
-import { CommunityPost } from '@/types/community.type';
+import { CommunityPost } from '@/types/post.type';
 
 // 북마크 업데이트 뮤테이션 훅
 export const useUpdateBookmarkMutation = () => {

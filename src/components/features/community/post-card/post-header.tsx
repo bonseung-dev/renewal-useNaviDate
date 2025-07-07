@@ -1,4 +1,4 @@
-import { CommunityPost } from '@/types/community.type';
+import { CommunityPost } from '@/types/post.type';
 
 type PostHeaderProps = {
   title: string;

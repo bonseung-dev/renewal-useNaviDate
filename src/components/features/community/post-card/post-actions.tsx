@@ -1,7 +1,7 @@
 import Tooltip from '@/components/ui/tooltip';
 import { useUpdateBookmarkMutation } from '@/lib/mutations/bookmark.mutation';
 import { useUpdateLikeMutation } from '@/lib/mutations/like.mutation';
-import { CommunityPost } from '@/types/community.type';
+import { CommunityPost } from '@/types/post.type';
 import { Bookmark, Heart } from 'lucide-react';
 import { useState } from 'react';
 

@@ -1,6 +1,6 @@
 import PostAuthorInfo from './post-author-info';
 import PostActions from './post-actions';
-import { CommunityPost } from '@/types/community.type';
+import { CommunityPost } from '@/types/post.type';
 
 type PostFooterProps = {
   author: CommunityPost['author'];

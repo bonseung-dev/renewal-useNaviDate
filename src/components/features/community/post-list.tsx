@@ -1,4 +1,4 @@
-import { CommunityPost } from '@/types/community.type';
+import { CommunityPost } from '@/types/post.type';
 import CommunityStatus from './community-status';
 import PostCard from './post-card/post-card';
 

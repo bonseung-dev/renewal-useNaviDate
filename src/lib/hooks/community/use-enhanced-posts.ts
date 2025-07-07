@@ -1,6 +1,5 @@
-import { CommunityPost } from '@/types/community.type';
 import { Bookmark, Like } from '@/types/like-bookmark.type';
-import { Post, PostImage, PostTag } from '@/types/post.type';
+import { CommunityPost, Post, PostImage, PostTag } from '@/types/post.type';
 import { User } from '@/types/user.type';
 import { useMemo } from 'react';
 
