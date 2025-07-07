@@ -1,6 +1,6 @@
 'use client';
+
 import { useRouter } from 'next/navigation';
-import { deleteAllCookies } from '@/lib/utils/client-cookies.utils';
 import { useEffect, useState } from 'react';
 
 const LogoutButton = () => {
@@ -12,12 +12,15 @@ const LogoutButton = () => {
     setIsLoggedIn(!!userId);
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     localStorage.removeItem('userId');
     localStorage.removeItem('coupleId');
     localStorage.removeItem('anniversary');
 
-    deleteAllCookies();
+    // 서버 쿠키 삭제 요청
+    await fetch('/api/auth/delete-cookies', {
+      method: 'POST',
+    });
 
     router.push('/sign-in');
   };

@@ -1,20 +1,11 @@
-'use client';
-
-import { useState, useEffect, useCallback } from 'react';
-import { useAnniversaries } from '@/lib/hooks/use-anniversaries';
+import { useEffect } from 'react';
 import AnniversaryHeader from './anniversary-header';
 import AnniversaryList from './anniversary-list';
-import AnniversaryEditor from './anniversary-editor';
-import { Anniversary, PartnerInfo } from '@/types/anniversary.type';
 import { Dialog } from '@/components/ui/dialog';
-import {
-  fetchCoupleData,
-  fetchUserData,
-} from '@/lib/services/anniversary.services';
-import {
-  DEFAULT_NICKNAME,
-  PLACEHOLDER_IMAGE,
-} from '@/constants/anniversary.constants';
+import { useAnniversaries } from '@/lib/hooks/date-calendar/use-anniversaries';
+import { usePartnerInfo } from '@/lib/hooks/date-calendar/use-partner-infor';
+import { useAnniversaryActions } from '@/lib/hooks/date-calendar/use-anniversary-actions';
+import AnniversaryEditor from './anniversary-form/anniversary-editor';
 
 type AnniversaryTabProps = {
   coupleId: string;
@@ -30,92 +21,51 @@ const AnniversaryTab = ({
   const {
     anniversaries,
     loadAnniversaries,
-    addAnniversary: add,
+    createAnniversary: add,
     updateAnniversary: update,
     deleteAnniversary: remove,
   } = useAnniversaries(coupleId, startDate);
 
-  const [isEditorOpen, setIsEditorOpen] = useState(false);
-  const [editingAnniversary, setEditingAnniversary] =
-    useState<Anniversary | null>(null);
-  const [partner, setPartner] = useState<PartnerInfo | null>(null);
-
-  const fetchPartnerInfo = useCallback(async () => {
-    try {
-      const couple = await fetchCoupleData(coupleId);
-
-      const partnerId =
-        couple.userAId === userId ? couple.userBId : couple.userAId;
-
-      const partnerData = await fetchUserData(partnerId);
-
-      setPartner({
-        id: partnerId,
-        profileImage: partnerData.profileImage || PLACEHOLDER_IMAGE,
-        nickname: partnerData.nickname || DEFAULT_NICKNAME,
-      });
-    } catch (error) {
-      console.error('Error fetching partner info:', error);
-      setPartner(null);
-    }
-  }, [coupleId, userId]);
+  const { partner, fetchPartnerInfo } = usePartnerInfo(coupleId, userId);
+  const {
+    editingAnniversary,
+    isEditorOpen,
+    setIsEditorOpen,
+    handleEdit,
+    handleDelete,
+    handleUpdate,
+    handleAddClick,
+    handleSubmitSuccess,
+  } = useAnniversaryActions(update, remove);
 
   useEffect(() => {
     const loadData = async () => {
       try {
         await Promise.all([loadAnniversaries(), fetchPartnerInfo()]);
       } catch (error) {
-        console.error('Error loading initial data:', error);
+        console.error('초기 데이터 로딩 실패했습니다.:', error);
       }
     };
 
     loadData();
   }, [loadAnniversaries, fetchPartnerInfo]);
 
-  const handleAddClick = () => {
-    setEditingAnniversary(null);
-    setIsEditorOpen(true);
-  };
-
-  const handleEdit = (id: string) => {
-    const anniversaryToEdit = anniversaries.find((a) => a.id === id);
-    setEditingAnniversary(anniversaryToEdit || null);
-    setIsEditorOpen(true);
-  };
-
-  const handleDelete = async (id: string) => {
-    try {
-      await remove(id);
-    } catch (error) {
-      console.error('Error deleting anniversary:', error);
-      alert('기념일 삭제에 실패했습니다.');
-    }
-  };
-
-  const handleUpdate = async (data: Anniversary) => {
-    try {
-      await update(data);
-      handleSubmitSuccess();
-    } catch (error) {
-      console.error('Error updating anniversary:', error);
-      alert('기념일 수정에 실패했습니다.');
-    }
-  };
-
-  const handleSubmitSuccess = () => {
-    setIsEditorOpen(false);
-    setEditingAnniversary(null);
-  };
-
   return (
     <Dialog open={isEditorOpen} onOpenChange={setIsEditorOpen}>
-      <div className="flex items-center justify-center flex-col">
+      <section
+        className="flex items-center justify-center flex-col"
+        aria-labelledby="anniversary-section"
+      >
+        <h1 id="anniversary-section" className="sr-only">
+          기념일 관리
+        </h1>
+
         <AnniversaryHeader partner={partner} onAddClick={handleAddClick} />
 
         <AnniversaryList
           anniversaries={anniversaries}
           onDelete={handleDelete}
-          onEdit={handleEdit}
+          onEdit={(id) => handleEdit(id, anniversaries)}
         />
 
         <AnniversaryEditor
@@ -126,7 +76,7 @@ const AnniversaryTab = ({
           initialData={editingAnniversary}
           onSubmitSuccess={handleSubmitSuccess}
         />
-      </div>
+      </section>
     </Dialog>
   );
 };

@@ -1,5 +1,3 @@
-'use client';
-
 import AnalysisIcon from './analysis-icon';
 
 type Props = {
@@ -11,6 +9,7 @@ const AnalysisButton = ({ onClick }: Props) => {
     <button
       onClick={onClick}
       className="mt-6 w-[280px] h-[80px] rounded-[20px] bg-skin6 flex items-center px-4"
+      aria-label="데이트 분석 리포트 보기"
     >
       <AnalysisIcon />
 

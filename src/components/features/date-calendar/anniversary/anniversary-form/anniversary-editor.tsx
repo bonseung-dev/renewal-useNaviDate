@@ -1,13 +1,11 @@
-'use client';
-
 import { Anniversary, RepeatOption } from '@/types/anniversary.type';
-import AnniversaryForm from './anniversary-form';
 import {
   DialogContent,
   DialogDescription,
   DialogTitle,
 } from '@/components/ui/dialog';
 import { useState } from 'react';
+import AnniversaryForm from './anniversary-form';
 
 type AnniversaryEditorProps = {
   coupleId: string;
@@ -47,7 +45,7 @@ const AnniversaryEditor = ({
   };
 
   return (
-    <DialogContent className="bg-skin5 p-1 shadow-shadow1 rounded-xl w-[320px] h-[330px]">
+    <DialogContent className="bg-skin5 p-1 shadow-shadow1 rounded-xl w-[320px] h-[280px]">
       <DialogTitle className="sr-only">
         {initialData ? '기념일 수정' : '기념일 추가'}
       </DialogTitle>

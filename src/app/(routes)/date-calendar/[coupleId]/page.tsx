@@ -1,7 +1,6 @@
 import CalendarTabs from '@/components/features/date-calendar/calendar-tabs';
 import LoginPrompt from '@/components/features/date-calendar/login-prompt';
 import { getServerCookie } from '@/lib/utils/cookes.utils';
-
 import { Metadata } from 'next';
 
 export async function generateMetadata({
@@ -54,11 +53,16 @@ const Page = async ({ params, searchParams }: Props) => {
     : '';
 
   return (
-    <CalendarTabs
-      coupleId={params.coupleId}
-      startDate={startDate}
-      userId={finalUserId}
-    />
+    <section aria-labelledby="calendar-heading">
+      <h1 id="calendar-heading" className="sr-only">
+        커플 캘린더
+      </h1>
+      <CalendarTabs
+        coupleId={params.coupleId}
+        startDate={startDate}
+        userId={finalUserId}
+      />
+    </section>
   );
 };
 
