@@ -1,7 +1,7 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { CarouselItem } from '@/components/ui/carousel';
 import Image from 'next/image';
-import { Date } from '@/app/(routes)/date-detail/[id]/page';
+import { Date } from '@/app/(routes)/date-detail/[dateId]/page';
 
 const UploadedImageItems = ({ date }: { date: Date }) => {
   return (

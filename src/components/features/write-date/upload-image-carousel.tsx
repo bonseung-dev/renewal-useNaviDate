@@ -9,41 +9,43 @@ import {
 import ImageItems from './image-items';
 
 const UploadImageCarousel = ({
-  imageUrls,
-  setImageUrls,
+  images,
+  setImages,
 }: {
-  imageUrls: string[];
-  setImageUrls: React.Dispatch<React.SetStateAction<string[]>>;
+  images: string[];
+  setImages: React.Dispatch<React.SetStateAction<string[]>>;
 }) => {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
+    const files = e.target.files;
 
-    // 새로 추가된 파일만 URL 생성
-    const newUrls = files.map((file) => URL.createObjectURL(file));
-    setImageUrls((prev) => [...prev, ...newUrls]);
+    if (files) {
+      const tempUrls = Array.from(files).map((file) =>
+        URL.createObjectURL(file),
+      );
+      setImages((prev) => [...prev, ...tempUrls]);
+    }
   };
 
   return (
-    <section className="flex justify-center items-center w-80 h-[179px] rounded-[10px] border border-skin3">
+    <section className="flex justify-center items-center w-80 h-44 rounded-[10px] border border-skin3">
       <Carousel
         opts={{
           align: 'start',
           loop: true,
         }}
-        className=""
+        className="w-44 h-44"
       >
         <CarouselContent>
-          <ImageItems imageUrls={imageUrls} />
+          <ImageItems images={images} setImages={setImages} />
           <CarouselItem>
             <Card className="w-44 h-44 bg-font5 rounded-none">
               <CardContent className="w-full h-full flex justify-center items-center p-0">
-                <label htmlFor="image-upload" className="text-3xl text-skin5">
+                <label className="text-3xl text-skin5">
                   +
                   <input
                     type="file"
-                    id="image-upload"
-                    multiple
                     accept="image/*"
+                    multiple
                     onChange={handleImageUpload}
                     className="hidden"
                   />
@@ -52,8 +54,8 @@ const UploadImageCarousel = ({
             </Card>
           </CarouselItem>
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        <CarouselPrevious type="button" />
+        <CarouselNext type="button" />
       </Carousel>
     </section>
   );
