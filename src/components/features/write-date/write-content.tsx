@@ -1,4 +1,14 @@
-const WriteContent = () => {
+const WriteContent = ({
+  content,
+  setContent,
+  title,
+  setTitle,
+}: {
+  content: string;
+  setContent: (content: string) => void;
+  title: string;
+  setTitle: (title: string) => void;
+}) => {
   return (
     <section className="w-full flex flex-col justify-center items-center gap-2 mt-2">
       <div className="flex items-center justify-between w-full px-5 gap-1">
@@ -8,12 +18,16 @@ const WriteContent = () => {
         <input
           type="text"
           placeholder="제목을 입력해주세요."
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
           className="w-full text-left placeholder:text-center placeholder:text-skin2 text-sm font-extralight"
         />
       </div>
       <div className="w-full px-5">
         <textarea
           placeholder="내용을 입력해주세요."
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
           className="w-full placeholder:text-center placeholder:text-skin2 text-sm font-extralight resize-none"
         />
       </div>

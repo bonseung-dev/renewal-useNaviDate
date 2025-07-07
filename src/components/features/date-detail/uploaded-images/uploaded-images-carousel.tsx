@@ -5,7 +5,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import UploadedImageItems from './uploaded-image-items';
-import { Date } from '@/app/(routes)/date-detail/[id]/page';
+import { Date } from '@/app/(routes)/date-detail/[dateId]/page';
 
 export type UploadedImagesCarouselProps = {
   date: Date;
