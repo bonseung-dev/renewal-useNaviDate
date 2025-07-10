@@ -18,7 +18,7 @@ import { Emotion, Post, PostImage, PostTag } from '@/types/post.type';
 
 const WriteDate = () => {
   const [images, setImages] = useState<string[]>([]);
-  const [visibility, setVisibility] = useState<'private' | 'public'>('private');
+  const [visibility, setVisibility] = useState<boolean>(false);
   const [emotion, setEmotion] = useState<Emotion>('Soso');
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
@@ -58,7 +58,7 @@ const WriteDate = () => {
   };
 
   const resetForm = () => {
-    setVisibility('private');
+    setVisibility(false);
     setEmotion('Soso');
     setTitle('');
     setContent('');
