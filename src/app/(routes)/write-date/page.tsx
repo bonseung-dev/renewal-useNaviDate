@@ -106,7 +106,7 @@ const WriteDate = () => {
       date: '2025-01-01',
       title,
       content,
-      createdAt: new Date().toISOString(),
+      createdAt: new Date(),
       deletedAt: null,
     };
 
