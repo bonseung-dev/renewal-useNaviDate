@@ -38,10 +38,10 @@ export type CalendarPost = Post & {
 // Community용 post + author + tags + images + likes + bookmarks
 export type CommunityPost = Post & {
   author?: User;
-  tags: PostTag[];
+  tags?: PostTag[];
   images: PostImage[];
   likesCount: number;
   bookmarksCount: number;
-  likes: Like[];
-  bookmarks: Bookmark[];
+  likes?: Like[];
+  bookmarks?: Bookmark[];
 };
