@@ -99,8 +99,8 @@ const WriteDate = () => {
     e.preventDefault();
 
     const newPost: Post = {
-      id: crypto.randomUUID(),
-      userId: crypto.randomUUID(),
+      id: 1, //임시 postId
+      userId: 2, //임시 userId
       visibility,
       emotion,
       date: '2025-01-01',
@@ -113,7 +113,7 @@ const WriteDate = () => {
     createPostMutate(newPost);
     images.forEach((image) => {
       createImageMutate({
-        id: crypto.randomUUID(),
+        id: 3, //임시 postImageId
         postId: newPost.id,
         imageUrl: image,
         address: '서울특별시 송파구 잠실 어쩌구 56-1',
@@ -122,7 +122,7 @@ const WriteDate = () => {
     });
     tag.forEach((tag) => {
       createTagMutate({
-        id: crypto.randomUUID(),
+        id: 4, //임시 tagId
         postId: newPost.id,
         name: tag,
       });
