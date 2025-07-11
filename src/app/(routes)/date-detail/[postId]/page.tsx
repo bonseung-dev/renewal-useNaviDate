@@ -10,7 +10,11 @@ import { useQuery } from '@tanstack/react-query';
 import Buttons from '@/components/features/date-detail/buttons/buttons';
 import { QUERY_KEYS } from '@/constants/query-keys.constants';
 import { Post, PostImage, PostTag } from '@/types/post.type';
-import { BASE_URL } from '@/constants/url.constants';
+import {
+  fetchImages,
+  fetchPost,
+  fetchTags,
+} from '@/lib/services/date-detail.services';
 
 type PageProps = {
   params: { postId: string };
@@ -19,56 +23,23 @@ type PageProps = {
 const DateDetail = ({ params }: PageProps) => {
   const { postId } = params;
 
-  const fetchPost = async () => {
-    const response = await fetch(`${BASE_URL}/posts/${postId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    const data = await response.json();
-    return data;
-  };
-
-  const fetchImages = async () => {
-    const response = await fetch(`${BASE_URL}/postImages?postId=${postId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    const data = await response.json();
-    return data;
-  };
-
-  const fetchTags = async () => {
-    const response = await fetch(`${BASE_URL}/postTags?postId=${postId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    const data = await response.json();
-    return data;
-  };
-
   const {
     data: post,
     isPending,
     isError,
   } = useQuery<Post>({
     queryKey: [QUERY_KEYS.WRITE_POSTS, postId],
-    queryFn: fetchPost,
+    queryFn: () => fetchPost(postId),
   });
 
   const { data: images } = useQuery<PostImage[]>({
     queryKey: [QUERY_KEYS.WRITE_IMAGES, postId],
-    queryFn: fetchImages,
+    queryFn: () => fetchImages(postId),
   });
 
   const { data: tags } = useQuery<PostTag[]>({
     queryKey: [QUERY_KEYS.WRITE_TAGS, postId],
-    queryFn: fetchTags,
+    queryFn: () => fetchTags(postId),
   });
 
   if (isPending) return <div>로딩중...</div>;
