@@ -36,7 +36,7 @@ export const useLoginMutation = () => {
           window.location.href = `/date-calendar/${couple.id}?userId=${user.id}`;
         } else {
           // 커플이 없는 경우 처리
-          window.location.href = '/couple-connect';
+          window.location.href = '/couple-space';
         }
       } catch (error) {
         console.error('Login Error:', error);
