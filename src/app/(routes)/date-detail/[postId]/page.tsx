@@ -6,15 +6,13 @@ import PlaceName from '@/components/features/date-detail/place-name';
 import SearchedAddress from '@/components/features/date-detail/searched-address';
 import WrittenContent from '@/components/features/date-detail/written-content';
 import WrittenTags from '@/components/features/date-detail/written-tags';
-import { useQuery } from '@tanstack/react-query';
 import Buttons from '@/components/features/date-detail/buttons/buttons';
-import { QUERY_KEYS } from '@/constants/query-keys.constants';
-import { Post, PostImage, PostTag } from '@/types/post.type';
+
 import {
-  fetchImages,
-  fetchPost,
-  fetchTags,
-} from '@/lib/services/date-detail.services';
+  usePostByPostIdQuery,
+  usePostImagesByPostIdQuery,
+  usePostTagsByPostIdQuery,
+} from '@/lib/queries/write-date.queries';
 
 type PageProps = {
   params: { postId: string };
@@ -23,24 +21,9 @@ type PageProps = {
 const DateDetail = ({ params }: PageProps) => {
   const { postId } = params;
 
-  const {
-    data: post,
-    isPending,
-    isError,
-  } = useQuery<Post>({
-    queryKey: [QUERY_KEYS.WRITE_POSTS, postId],
-    queryFn: () => fetchPost(postId),
-  });
-
-  const { data: images } = useQuery<PostImage[]>({
-    queryKey: [QUERY_KEYS.WRITE_IMAGES, postId],
-    queryFn: () => fetchImages(postId),
-  });
-
-  const { data: tags } = useQuery<PostTag[]>({
-    queryKey: [QUERY_KEYS.WRITE_TAGS, postId],
-    queryFn: () => fetchTags(postId),
-  });
+  const { data: post, isPending, isError } = usePostByPostIdQuery(postId);
+  const { data: images } = usePostImagesByPostIdQuery(postId);
+  const { data: tags } = usePostTagsByPostIdQuery(postId);
 
   if (isPending) return <div>로딩중...</div>;
   if (isError) return <div>오류 발생!!!</div>;
