@@ -867,16 +867,6 @@
       "postId": 9,
       "userId": 5,
       "createdAt": "2025-06-15T00:00:00.000Z"
-    },
-    {
-      "id": "ff65",
-      "postId": 20,
-      "userId": 1
-    },
-    {
-      "id": "5d7e",
-      "postId": 8,
-      "userId": 1
     }
   ],
   "likes": [
