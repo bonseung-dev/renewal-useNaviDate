@@ -12,10 +12,14 @@ import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { QUERY_KEYS } from '@/constants/query-keys.constants';
-import { BASE_URL } from '@/constants/url.constants';
 import { PATH } from '@/constants/path';
-import { Emotion, Post, PostImage, PostTag } from '@/types/post.type';
+import { Emotion, Post } from '@/types/post.type';
 import { Image } from '@/types/image.type';
+import {
+  createImage,
+  createPost,
+  createTag,
+} from '@/lib/services/write-date.services';
 
 const WriteDate = () => {
   const [images, setImages] = useState<Image[]>([]);
@@ -28,35 +32,6 @@ const WriteDate = () => {
 
   const queryClient = useQueryClient();
   const router = useRouter();
-
-  const createPost = async (newPost: Post) => {
-    await fetch(`${BASE_URL}/posts`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newPost),
-    });
-  };
-  const createImage = async (newImage: PostImage) => {
-    await fetch(`${BASE_URL}/postImages`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newImage),
-    });
-  };
-
-  const createTag = async (newTag: PostTag) => {
-    await fetch(`${BASE_URL}/postTags`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newTag),
-    });
-  };
 
   const resetForm = () => {
     setVisibility(false);
