@@ -12,7 +12,7 @@ import {
   usePostByPostIdQuery,
   usePostImagesByPostIdQuery,
   usePostTagsByPostIdQuery,
-} from '@/lib/queries/write-date.queries';
+} from '@/lib/queries/date-detail.queries';
 
 type PageProps = {
   params: { postId: string };
