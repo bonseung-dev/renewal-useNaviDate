@@ -15,9 +15,10 @@ import { QUERY_KEYS } from '@/constants/query-keys.constants';
 import { BASE_URL } from '@/constants/url.constants';
 import { PATH } from '@/constants/path';
 import { Emotion, Post, PostImage, PostTag } from '@/types/post.type';
+import { Image } from '@/types/image.type';
 
 const WriteDate = () => {
-  const [images, setImages] = useState<string[]>([]);
+  const [images, setImages] = useState<Image[]>([]);
   const [visibility, setVisibility] = useState<boolean>(false);
   const [emotion, setEmotion] = useState<Emotion>('Soso');
   const [title, setTitle] = useState<string>('');
@@ -115,7 +116,7 @@ const WriteDate = () => {
       createImageMutate({
         id: 3, //임시 postImageId
         postId: newPost.id,
-        imageUrl: image,
+        postImage: image,
         address: '서울특별시 송파구 잠실 어쩌구 56-1',
         isRepresentative: true,
       });

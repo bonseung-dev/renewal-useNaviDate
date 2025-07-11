@@ -7,22 +7,32 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import ImageItems from './image-items';
+import { Image } from '@/types/image.type';
 
 const UploadImageCarousel = ({
   images,
   setImages,
 }: {
-  images: string[];
-  setImages: React.Dispatch<React.SetStateAction<string[]>>;
+  images: Image[];
+  setImages: React.Dispatch<React.SetStateAction<Image[]>>;
 }) => {
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
 
     if (files) {
-      const tempUrls = Array.from(files).map((file) =>
-        URL.createObjectURL(file),
-      );
-      setImages((prev) => [...prev, ...tempUrls]);
+      const imageFiles = Array.from(files).map((file) => ({
+        id: 1, // 임시 Id
+        filename: file.name,
+        originalName: file.name,
+        mimeType: file.type,
+        size: file.size,
+        path: file.webkitRelativePath || '',
+        url: URL.createObjectURL(file),
+        userId: 2, // 임시 Id
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }));
+      setImages((prev) => [...prev, ...imageFiles]);
     }
   };
 
