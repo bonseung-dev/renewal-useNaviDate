@@ -1,63 +1,25 @@
-'use client';
+import DateDetail from '@/components/features/date-detail/date-detail';
+import { Metadata } from 'next';
 
-import UploadedImagesCarousel from '@/components/features/date-detail/uploaded-images/uploaded-images-carousel';
-import Divider from '@/components/features/write-date/divider';
-import PlaceName from '@/components/features/date-detail/place-name';
-import SearchedAddress from '@/components/features/date-detail/searched-address';
-import WrittenContent from '@/components/features/date-detail/written-content';
-import WrittenTags from '@/components/features/date-detail/written-tags';
-import Buttons from '@/components/features/date-detail/buttons/buttons';
+export const metadata: Metadata = {
+  title: 'DateDetail || useNavidate( )',
+  description: '다른 커플들의 특별한 순간을 공유하고 소통해보세요',
+  robots: {
+    index: false,
+  },
+  openGraph: {
+    title: 'useNavidate( ) - DateDetail',
+    description: '사랑의 순간 상세정보',
+    images: '/navidate-logo_blue.png',
+  },
+};
 
-import {
-  usePostByPostIdQuery,
-  usePostImagesByPostIdQuery,
-  usePostTagsByPostIdQuery,
-} from '@/lib/queries/date-detail.queries';
-
-type PageProps = {
+export type PageProps = {
   params: { postId: string };
 };
 
-const DateDetail = ({ params }: PageProps) => {
-  const { postId } = params;
-
-  const { data: post, isPending, isError } = usePostByPostIdQuery(postId);
-  const { data: images } = usePostImagesByPostIdQuery(postId);
-  const { data: tags } = usePostTagsByPostIdQuery(postId);
-
-  if (isPending) return <div>로딩중...</div>;
-  if (isError) return <div>오류 발생!!!</div>;
-
-  return (
-    <div className="flex flex-col justify-center items-center px-1">
-      {/* 캐러셀 이미지 출력 */}
-      {images && <UploadedImagesCarousel images={images} />}
-
-      {/* 주소 출력 */}
-      {images && <SearchedAddress images={images} />}
-
-      {/* 구분선 */}
-      <Divider />
-
-      {/* 장소 이름 출력 */}
-      <PlaceName post={post} />
-
-      {/* 구분선 */}
-      <Divider />
-
-      {/* 게시글 제목 및 내용 출력 */}
-      <WrittenContent post={post} />
-
-      {/* 구분선 */}
-      <Divider />
-
-      {/* 태그 출력 */}
-      {tags && <WrittenTags tags={tags} />}
-
-      {/* 좋아요, 북마크, 공유 버튼 */}
-      <Buttons post={post} />
-    </div>
-  );
+const DateDetailPage = ({ params }: PageProps) => {
+  return <DateDetail params={params} />;
 };
 
-export default DateDetail;
+export default DateDetailPage;
