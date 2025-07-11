@@ -9,17 +9,13 @@ import WriteTag from '@/components/features/write-date/write-tag';
 import UploadImageCarousel from '@/components/features/write-date/upload-image-carousel';
 import WriteContent from '@/components/features/write-date/write-content';
 import { useState } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
-import { QUERY_KEYS } from '@/constants/query-keys.constants';
-import { PATH } from '@/constants/path';
 import { Emotion, Post } from '@/types/post.type';
 import { Image } from '@/types/image.type';
 import {
-  createImage,
-  createPost,
-  createTag,
-} from '@/lib/services/write-date.services';
+  useCreatePostImagesMutation,
+  useCreatePostMutation,
+  useCreatePostTagsMutation,
+} from '@/lib/mutations/write-date.mutation';
 
 const WriteDate = () => {
   const [images, setImages] = useState<Image[]>([]);
@@ -29,9 +25,6 @@ const WriteDate = () => {
   const [content, setContent] = useState<string>('');
   const [tag, setTag] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>('');
-
-  const queryClient = useQueryClient();
-  const router = useRouter();
 
   const resetForm = () => {
     setVisibility(false);
@@ -43,33 +36,9 @@ const WriteDate = () => {
     setTag([]);
   };
 
-  const { mutate: createPostMutate } = useMutation({
-    mutationFn: createPost,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.WRITE_POSTS] });
-      resetForm();
-      alert('게시글이 성공적으로 등록되었습니다!');
-      router.push(PATH.COMMUNITY);
-    },
-    onError: (error) => {
-      console.error('게시글 등록 실패:', error);
-      alert('게시글 등록에 실패했습니다. 다시 시도해주세요.');
-    },
-  });
-
-  const { mutate: createImageMutate } = useMutation({
-    mutationFn: createImage,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.WRITE_IMAGES] });
-    },
-  });
-
-  const { mutate: createTagMutate } = useMutation({
-    mutationFn: createTag,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.WRITE_TAGS] });
-    },
-  });
+  const { mutate: createPostMutate } = useCreatePostMutation(resetForm);
+  const { mutate: createImageMutate } = useCreatePostImagesMutation();
+  const { mutate: createTagMutate } = useCreatePostTagsMutation();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
