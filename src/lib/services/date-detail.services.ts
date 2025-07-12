@@ -1,6 +1,6 @@
 import { BASE_URL } from '@/constants/url.constants';
 
-export const fetchPost = async (postId: string) => {
+export const fetchPost = async (postId: number) => {
   const response = await fetch(`${BASE_URL}/posts/${postId}`, {
     method: 'GET',
     headers: {
@@ -11,7 +11,7 @@ export const fetchPost = async (postId: string) => {
   return data;
 };
 
-export const fetchImages = async (postId: string) => {
+export const fetchImages = async (postId: number) => {
   const response = await fetch(`${BASE_URL}/postImages?postId=${postId}`, {
     method: 'GET',
     headers: {
@@ -22,7 +22,7 @@ export const fetchImages = async (postId: string) => {
   return data;
 };
 
-export const fetchTags = async (postId: string) => {
+export const fetchTags = async (postId: number) => {
   const response = await fetch(`${BASE_URL}/postTags?postId=${postId}`, {
     method: 'GET',
     headers: {
