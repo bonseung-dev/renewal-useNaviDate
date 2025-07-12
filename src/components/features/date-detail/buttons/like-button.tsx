@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 
 const LikeButton = ({ post }: { post: Post }) => {
   /* userId 불러오는 로직 추가 필요 (현재 임시 값) */
-  const userId = '123';
+  const userId = 12;
 
   const { mutate: toggleLike } = useUpdateLikeMutation();
 
