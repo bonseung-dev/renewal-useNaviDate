@@ -13,11 +13,11 @@ import PostList from './post-list';
 
 const Community = () => {
   const [sortOption, setSortOption] = useState<SortOption>(SORT_OPTIONS.LATEST);
-  const [, setUserId] = useState<string | null>(null);
+  const [, setUserId] = useState<number | null>(null);
 
   useEffect(() => {
     const stored = localStorage.getItem('userId');
-    setUserId(stored);
+    setUserId(stored ? parseInt(stored, 10) : null); // number 변환
   }, []);
 
   const {

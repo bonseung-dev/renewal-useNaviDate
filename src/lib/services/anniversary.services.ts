@@ -6,22 +6,32 @@ import { BASE_URL } from '@/constants/url.constants';
 
 // couples.services.ts로 분리 예정
 export const getCoupleById = async (
-  coupleId: string,
+  coupleId: number,
 ): Promise<CoupleResponse> => {
-  const res = await fetch(`${BASE_URL}/couples/${coupleId}`);
+  const res = await fetch(`${BASE_URL}/couples?id=${coupleId}`);
   if (!res.ok) throw new Error('커플 정보를 불러오는데 실패했습니다');
-  return res.json();
+
+  const data = await res.json();
+
+  if (Array.isArray(data)) return data[0];
+
+  return data;
 };
 
 // users.services.ts로 분리 예정
-export const getUserById = async (userId: string): Promise<UserResponse> => {
-  const res = await fetch(`${BASE_URL}/users/${userId}`);
+export const getUserById = async (userId: number): Promise<UserResponse> => {
+  const res = await fetch(`${BASE_URL}/users?id=${userId}`);
   if (!res.ok) throw new Error('사용자 정보를 불러오는데 실패했습니다');
-  return res.json();
+
+  const data = await res.json();
+
+  if (Array.isArray(data)) return data[0];
+
+  return data;
 };
 
 export const getAllAnniversariesByCoupleId = async (
-  coupleId: string,
+  coupleId: number,
   startDate: string,
 ): Promise<Anniversary[]> => {
   try {
@@ -43,16 +53,18 @@ export const getAllAnniversariesByCoupleId = async (
   }
 };
 
+// 현재 json-server에서는 id를 string으로 자동생성하므로,
+// id를 number로 변경한 시점에서 제대로 작동하지 않을 수 있습니다.
+
 export const createAnniversary = async (
-  coupleId: string,
+  coupleId: number,
   data: Omit<Anniversary, 'id'>,
-  userId: string,
 ): Promise<Anniversary> => {
   try {
     const newAnniversary = {
       ...data,
       coupleId,
-      createdBy: userId,
+      createdBy: new Date(),
     };
 
     const response = await fetch(`${BASE_URL}/anniversaries`, {
@@ -72,7 +84,7 @@ export const createAnniversary = async (
 };
 
 export const updateAnniversaryById = async (
-  id: string,
+  id: number,
   data: Anniversary,
 ): Promise<Anniversary> => {
   try {
@@ -92,7 +104,7 @@ export const updateAnniversaryById = async (
   }
 };
 
-export const deleteAnniversaryById = async (id: string): Promise<void> => {
+export const deleteAnniversaryById = async (id: number): Promise<void> => {
   try {
     const response = await fetch(`${BASE_URL}/anniversaries/${id}`, {
       method: 'DELETE',

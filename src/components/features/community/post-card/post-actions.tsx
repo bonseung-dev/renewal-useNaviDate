@@ -6,7 +6,7 @@ import { Bookmark, Heart } from 'lucide-react';
 import { useState } from 'react';
 
 type PostActionsProps = {
-  postId: string;
+  postId: number;
   likes: CommunityPost['likes'];
   bookmarks: CommunityPost['bookmarks'];
   likesCount: number;
@@ -26,7 +26,10 @@ const PostActions = ({
   const { mutate: toggleBookmark } = useUpdateBookmarkMutation();
 
   const userId =
-    typeof window !== 'undefined' ? localStorage.getItem('userId') : null;
+    typeof window !== 'undefined'
+      ? Number(localStorage.getItem('userId'))
+      : null;
+
   const isLiked = likes.some((like) => like.userId === userId);
   const isBookmarked = bookmarks.some((bookmark) => bookmark.userId === userId);
 

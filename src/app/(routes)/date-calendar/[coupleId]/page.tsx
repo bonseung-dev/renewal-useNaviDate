@@ -6,7 +6,7 @@ import { Metadata } from 'next';
 export async function generateMetadata({
   params,
 }: {
-  params: { coupleId: string };
+  params: { coupleId: number };
 }): Promise<Metadata> {
   const coupleName = await getServerCookie('coupleName');
 
@@ -23,31 +23,37 @@ export async function generateMetadata({
 }
 
 type Props = {
-  params: { coupleId: string };
+  params: { coupleId: number };
   searchParams: { [key: string]: string | undefined };
 };
 
 const Page = async ({ params, searchParams }: Props) => {
-  const [userId, coupleId, anniversary] = await Promise.all([
+  // 1. 쿠키 및 URL 파라미터에서 값 가져오기
+  const [userIdCookie, coupleIdCookie, anniversary] = await Promise.all([
     getServerCookie('userId'),
     getServerCookie('coupleId'),
     getServerCookie('anniversary'),
   ]);
 
-  const finalUserId = userId || searchParams.userId;
-  const finalCoupleId = coupleId;
+  const userId = userIdCookie || searchParams.userId;
+  const coupleId = coupleIdCookie || params.coupleId.toString();
 
-  if (!finalUserId || !finalCoupleId || finalCoupleId !== params.coupleId) {
-    console.error('데이터 로딩 실패:', {
-      condition: !finalUserId
-        ? 'No UserID'
-        : !finalCoupleId
-          ? 'No CoupleID'
-          : 'ID Mismatch',
+  // 2. 필수 값 검증
+  if (!userId || !coupleId) {
+    console.error('파라미터 검증:', { userId, coupleId });
+    return <LoginPrompt />;
+  }
+
+  // 3. coupleId 일치 여부 확인
+  if (coupleId !== params.coupleId.toString()) {
+    console.error('커플 아이디 불일치:', {
+      paramCoupleId: params.coupleId,
+      storedCoupleId: coupleId,
     });
     return <LoginPrompt />;
   }
 
+  // 4. 시작 날짜 설정
   const startDate = anniversary
     ? new Date(anniversary).toISOString().split('T')[0]
     : '';
@@ -58,9 +64,9 @@ const Page = async ({ params, searchParams }: Props) => {
         커플 캘린더
       </h1>
       <CalendarTabs
-        coupleId={params.coupleId}
+        coupleId={Number(coupleId)}
         startDate={startDate}
-        userId={finalUserId}
+        userId={Number(userId)}
       />
     </section>
   );

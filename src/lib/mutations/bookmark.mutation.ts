@@ -10,7 +10,7 @@ export const useUpdateBookmarkMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ postId, userId }: { postId: string; userId: string }) =>
+    mutationFn: ({ postId, userId }: { postId: number; userId: number }) =>
       updateBookmark(postId, userId),
 
     onMutate: async ({ postId, userId }) => {
@@ -40,10 +40,10 @@ export const useUpdateBookmarkMutation = () => {
                   : [
                       ...(post.bookmarks || []),
                       {
-                        id: 'temp',
+                        id: -1, // 임시 ID
                         postId,
                         userId,
-                        createdAt: new Date().toISOString(),
+                        createdAt: new Date(),
                       },
                     ],
                 bookmarksCount: isBookmarked
@@ -65,10 +65,10 @@ export const useUpdateBookmarkMutation = () => {
           : [
               ...(old || []),
               {
-                id: 'temp',
+                id: -1, // 임시 ID
                 postId,
                 userId,
-                createdAt: new Date().toISOString(),
+                createdAt: new Date(),
               },
             ];
       });
