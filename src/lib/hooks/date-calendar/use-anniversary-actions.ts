@@ -3,19 +3,19 @@ import { Anniversary } from '@/types/anniversary.type';
 
 export const useAnniversaryActions = (
   updateAnniversary: (data: Anniversary) => Promise<Anniversary>,
-  deleteAnniversary: (id: string) => Promise<void>,
+  deleteAnniversary: (id: number) => Promise<void>,
 ) => {
   const [editingAnniversary, setEditingAnniversary] =
     useState<Anniversary | null>(null);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
 
-  const handleEdit = (id: string, anniversaries: Anniversary[]) => {
+  const handleEdit = (id: number, anniversaries: Anniversary[]) => {
     const anniversaryToEdit = anniversaries.find((a) => a.id === id);
     setEditingAnniversary(anniversaryToEdit || null);
     setIsEditorOpen(true);
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: number) => {
     try {
       await deleteAnniversary(id);
     } catch (error) {

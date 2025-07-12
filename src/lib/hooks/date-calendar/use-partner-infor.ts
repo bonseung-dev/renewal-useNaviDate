@@ -9,7 +9,7 @@ import {
 import { PartnerInfo } from '@/types/anniversary.type';
 import { useCallback, useState } from 'react';
 
-export const usePartnerInfo = (coupleId: string, userId: string) => {
+export const usePartnerInfo = (coupleId: number, userId: number) => {
   const [partner, setPartner] = useState<PartnerInfo | null>(null);
 
   const fetchPartnerInfo = useCallback(async () => {
@@ -19,9 +19,14 @@ export const usePartnerInfo = (coupleId: string, userId: string) => {
         couple.userAId === userId ? couple.userBId : couple.userAId;
       const partnerData = await getUserById(partnerId);
 
+      // 프로필 이미지가 없는 경우 PLACEHOLDER_IMAGE를 전체 Image 객체로 제공
+      const profileImage = partnerData.profileImage || {
+        ...PLACEHOLDER_IMAGE,
+      };
+
       setPartner({
         id: partnerId,
-        profileImage: partnerData.profileImage || PLACEHOLDER_IMAGE,
+        profileImage: profileImage, // 전체 Image 객체 할당
         nickname: partnerData.nickname || DEFAULT_NICKNAME,
       });
     } catch (error) {

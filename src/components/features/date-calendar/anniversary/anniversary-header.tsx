@@ -12,7 +12,7 @@ const AnniversaryHeader = ({ partner, onAddClick }: AnniversaryHeaderProps) => {
       <div className="flex items-center gap-2">
         <figure className="relative h-9 w-9 rounded-full overflow-hidden">
           <Image
-            src={partner?.profileImage || '/placeholder-image.png'}
+            src={partner?.profileImage.url || '/placeholder-image.png'}
             alt={
               partner?.nickname
                 ? `${partner.nickname}의 프로필 이미지`

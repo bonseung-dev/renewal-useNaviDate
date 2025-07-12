@@ -9,7 +9,7 @@ import { CalendarPost } from '@/types/post.type';
 import CalendarCard from './date/calendar/calendar-card';
 
 type DateTabProps = {
-  coupleId: string;
+  coupleId: number;
 };
 
 const DateTab = ({ coupleId }: DateTabProps) => {

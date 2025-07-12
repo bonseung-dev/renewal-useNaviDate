@@ -77,7 +77,7 @@ const Page = () => {
 
       {/* 에러 메시지 */}
       {loginError && (
-        <p className="text-m-h4 text-red-500 mt-2 h-[14px]">{loginError}</p>
+        <p className="text-m-h4 text-skin7 mt-2 h-[14px]">{loginError}</p>
       )}
 
       {/* 로그인 버튼 */}

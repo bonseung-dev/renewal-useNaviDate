@@ -52,8 +52,8 @@ const CalendarDayCell = ({
                 <div className="relative aspect-square w-full overflow-hidden rounded-full">
                   <Image
                     src={
-                      post.images.find((img) => img.isRepresentative)
-                        ?.imageUrl || EMOTION_IMAGES[post.emotion]
+                      post.images?.find((img) => img.isRepresentative)
+                        ?.postImage?.url || EMOTION_IMAGES[post.emotion]
                     }
                     alt={`${post.title} 대표 이미지`}
                     width={32}

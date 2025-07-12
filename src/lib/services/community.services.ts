@@ -95,8 +95,8 @@ export const getAllBookmarks = async (): Promise<Bookmark[]> => {
 
 // 좋아요 추가/삭제 함수
 export const updateLike = async (
-  postId: string,
-  userId: string,
+  postId: number,
+  userId: number,
 ): Promise<Like | { message: string }> => {
   // 먼저 기존 좋아요 여부 확인
   const checkResponse = await fetch(
@@ -130,8 +130,8 @@ export const updateLike = async (
 
 // 북마크 추가/삭제 함수
 export const updateBookmark = async (
-  postId: string,
-  userId: string,
+  postId: number,
+  userId: number,
 ): Promise<Bookmark | { message: string }> => {
   // 먼저 기존 북마크 여부 확인
   const checkResponse = await fetch(

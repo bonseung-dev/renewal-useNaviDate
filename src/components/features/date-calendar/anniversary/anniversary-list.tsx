@@ -4,8 +4,8 @@ import { useSortedAnniversaries } from '@/lib/hooks/date-calendar/use-sorted-ann
 
 type AnniversaryListProps = {
   anniversaries: Anniversary[];
-  onDelete: (id: string) => void;
-  onEdit: (id: string) => void;
+  onDelete: (id: number) => void;
+  onEdit: (id: number) => void;
 };
 
 const AnniversaryList = ({

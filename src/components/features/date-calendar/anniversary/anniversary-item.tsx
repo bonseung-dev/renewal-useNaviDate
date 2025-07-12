@@ -2,7 +2,10 @@ import AnniversaryActions from './anniversary-actions';
 import { Heart } from 'lucide-react';
 import { Anniversary } from '@/types/anniversary.type';
 import TruncatedTextWithTooltip from './truncated-text-with-tooltip';
-import { calculateDDay } from '@/lib/utils/anniversary.utils';
+import {
+  calculateDDay,
+  isSystemAnniversary,
+} from '@/lib/utils/anniversary.utils';
 
 type AnniversaryItemProps = {
   anniversary: Anniversary;
@@ -15,7 +18,7 @@ const AnniversaryItem = ({
   onEdit,
   onDelete,
 }: AnniversaryItemProps) => {
-  const isUserCreated = anniversary.createdBy !== 'system';
+  const isUserCreated = !isSystemAnniversary(anniversary);
 
   return (
     <li className="w-[320px] h-[80px] relative flex items-center justify-between bg-white px-4">
