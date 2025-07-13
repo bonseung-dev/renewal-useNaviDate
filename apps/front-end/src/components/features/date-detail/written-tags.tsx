@@ -1,17 +1,14 @@
-import { CalendarPost } from '@/types/post.type';
+import { PostTag } from '@/types/post.type';
 
-const WrittenTags = ({ date }: { date: CalendarPost }) => {
-  // CalendarPost 타입에는 tags 필드가 없으므로 임시로 빈 배열 사용
-  const tags: string[] = [];
-  
+const WrittenTags = ({ tags }: { tags: PostTag[] }) => {
   return (
     <section className="flex flex-wrap justify-start items-center w-full py-3 px-5 gap-3">
-      {tags.map((tag, index) => (
+      {tags.map((tag) => (
         <p
-          key={tag + index}
+          key={tag.id}
           className="flex justify-center items-center w-fit h-6 p-1 rounded-[50px] border border-skin1 text-skin1 text-[10px] font-extralight whitespace-nowrap"
         >
-          #{tag}
+          #{tag.name}
         </p>
       ))}
     </section>
