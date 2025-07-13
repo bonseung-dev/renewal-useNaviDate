@@ -10,7 +10,7 @@ import UploadImageCarousel from '@/components/features/write-date/upload-image-c
 import WriteContent from '@/components/features/write-date/write-content';
 import { useState } from 'react';
 import { Emotion, Post } from '@/types/post.type';
-import { Image } from '@/types/image.type';
+import { Image } from '@use-navi-date/shared';
 import {
   useCreatePostImagesMutation,
   useCreatePostMutation,
@@ -52,7 +52,7 @@ const WriteDate = () => {
       title,
       content,
       createdAt: new Date(),
-      deletedAt: null,
+      deletedAt: new Date(),
     };
 
     createPostMutate(newPost);

@@ -7,13 +7,12 @@ import SearchedAddress from '@/components/features/date-detail/searched-address'
 import WrittenContent from '@/components/features/date-detail/written-content';
 import WrittenTags from '@/components/features/date-detail/written-tags';
 import Buttons from '@/components/features/date-detail/buttons/buttons';
-
+import { PageProps } from '@/app/(routes)/date-detail/[postId]/page';
 import {
   usePostByPostIdQuery,
   usePostImagesByPostIdQuery,
   usePostTagsByPostIdQuery,
 } from '@/lib/queries/date-detail.queries';
-import { PageProps } from '@/app/(routes)/date-detail/[postId]/page';
 
 const DateDetail = ({ params }: PageProps) => {
   const { postId } = params;
