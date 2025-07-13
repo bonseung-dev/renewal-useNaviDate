@@ -1,14 +1,15 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { CarouselItem } from '@/components/ui/carousel';
-import Image from 'next/image';
+import { Image } from '@/types/image.type';
+import NextImage from 'next/image';
 import React from 'react';
 
 const ImageItems = ({
   images,
   setImages,
 }: {
-  images: string[];
-  setImages: React.Dispatch<React.SetStateAction<string[]>>;
+  images: Image[];
+  setImages: React.Dispatch<React.SetStateAction<Image[]>>;
 }) => {
   const deleteImage = (index: number) => {
     setImages(images.filter((_, i) => i !== index));
@@ -17,14 +18,11 @@ const ImageItems = ({
   return (
     <>
       {images.map((image, index) => (
-        <CarouselItem key={image + index} className="w-44 h-44">
-          <Card
-            key={image + index}
-            className="w-full h-full flex justify-center items-center rounded-none"
-          >
+        <CarouselItem key={image.id + index} className="w-44 h-44">
+          <Card className="w-full h-full flex justify-center items-center rounded-none">
             <CardContent className="w-full h-full p-0">
-              <Image
-                src={image}
+              <NextImage
+                src={image.url}
                 alt={`업로드 이미지`}
                 width={100}
                 height={100}

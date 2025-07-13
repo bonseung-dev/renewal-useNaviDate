@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 
 const BookmarkButton = ({ post }: { post: Post }) => {
   /* userId 불러오는 로직 추가 필요 (현재 임시 값) */
-  const userId = '123';
+  const userId = 123;
 
   const { mutate: toggleBookmark } = useUpdateBookmarkMutation();
 

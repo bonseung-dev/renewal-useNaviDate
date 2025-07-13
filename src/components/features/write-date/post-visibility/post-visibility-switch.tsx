@@ -4,11 +4,11 @@ const PostVisibilitySwitch = ({
   visibility,
   setVisibility,
 }: {
-  visibility: 'private' | 'public';
-  setVisibility: (visibility: 'private' | 'public') => void;
+  visibility: boolean;
+  setVisibility: (visibility: boolean) => void;
 }) => {
   const handleVisibilityChange = () => {
-    setVisibility(visibility === 'private' ? 'public' : 'private');
+    setVisibility(!visibility);
   };
 
   return (
@@ -21,7 +21,7 @@ const PostVisibilitySwitch = ({
         id="public"
         className="w-6 h-3 data-[state=checked]:bg-skin2"
         thumbClassName="w-2 h-2 data-[state=checked]:translate-x-3"
-        checked={visibility === 'public'}
+        checked={visibility}
         onCheckedChange={handleVisibilityChange}
       />
     </label>
