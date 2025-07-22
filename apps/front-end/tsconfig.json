@@ -20,8 +20,8 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@your-org/shared": ["packages/shared/src"],
-      "@your-org/shared/*": ["packages/shared/src/*"]
+      "@use-navi-date/shared": ["../../packages/shared/src"],
+      "@use-navi-date/shared/*": ["../../packages/shared/src/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
