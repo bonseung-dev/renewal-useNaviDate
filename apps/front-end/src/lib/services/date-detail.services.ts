@@ -1,6 +1,7 @@
 import { BASE_URL } from '@/constants/url.constants';
+import { Post } from '@use-navi-date/shared';
 
-export const fetchPost = async (postId: number) => {
+export const fetchPost = async (postId: Post['id']) => {
   const response = await fetch(`${BASE_URL}/posts/${postId}`, {
     method: 'GET',
     headers: {
@@ -11,7 +12,7 @@ export const fetchPost = async (postId: number) => {
   return data;
 };
 
-export const fetchImages = async (postId: number) => {
+export const fetchImages = async (postId: Post['id']) => {
   const response = await fetch(`${BASE_URL}/postImages?postId=${postId}`, {
     method: 'GET',
     headers: {
@@ -22,7 +23,7 @@ export const fetchImages = async (postId: number) => {
   return data;
 };
 
-export const fetchTags = async (postId: number) => {
+export const fetchTags = async (postId: Post['id']) => {
   const response = await fetch(`${BASE_URL}/postTags?postId=${postId}`, {
     method: 'GET',
     headers: {

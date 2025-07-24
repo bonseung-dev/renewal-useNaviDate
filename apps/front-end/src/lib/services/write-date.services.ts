@@ -1,5 +1,5 @@
 import { BASE_URL } from '@/constants/url.constants';
-import { Post, PostImage, PostTag } from '@/types/post.type';
+import { Post, PostImage, PostTag } from '@use-navi-date/shared';
 
 // 포스트 게시
 export const createPost = async (newPost: Post) => {
