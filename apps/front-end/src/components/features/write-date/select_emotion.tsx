@@ -1,4 +1,4 @@
-import { Emotion } from '@/types/post.type';
+import { Emotion } from '@use-navi-date/shared';
 import Image from 'next/image';
 
 const emotions = [

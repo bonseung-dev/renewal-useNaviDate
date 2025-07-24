@@ -5,7 +5,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import UploadedImageItems from './uploaded-image-items';
-import { PostImage } from '@/types/post.type';
+import { PostImage } from '@use-navi-date/shared';
 
 const UploadedImagesCarousel = ({ images }: { images: PostImage[] }) => {
   return (

@@ -1,11 +1,12 @@
 import { QUERY_KEYS } from '@/constants/query-keys.constants';
-import { Post, PostImage, PostTag } from '@/types/post.type';
+import { PostImage, PostTag } from '@/types/post.type';
 import {
   fetchImages,
   fetchPost,
   fetchTags,
 } from '../services/date-detail.services';
 import { useQuery } from '@tanstack/react-query';
+import { Post } from '@use-navi-date/shared';
 
 export const usePostByPostIdQuery = (postId: number) => {
   return useQuery<Post>({

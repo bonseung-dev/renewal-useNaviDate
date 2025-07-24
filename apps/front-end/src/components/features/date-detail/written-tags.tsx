@@ -1,4 +1,4 @@
-import { PostTag } from '@/types/post.type';
+import { PostTag } from '@use-navi-date/shared';
 
 const WrittenTags = ({ tags }: { tags: PostTag[] }) => {
   return (

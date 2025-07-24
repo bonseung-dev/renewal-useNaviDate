@@ -1,29 +1,27 @@
+import { PostTag } from '@use-navi-date/shared';
 import Image from 'next/image';
 
 const WriteTag = ({
-  tag,
-  setTag,
+  tags,
+  setTags,
   inputValue,
   setInputValue,
 }: {
-  tag: string[];
-  setTag: (tags: string[]) => void;
-  inputValue: string;
-  setInputValue: (inputValue: string) => void;
+  tags: PostTag[];
+  setTags: (tags: PostTag[]) => void;
+  inputValue: PostTag['name'];
+  setInputValue: (inputValue: PostTag['name']) => void;
 }) => {
   const deleteTag = (index: number) => {
-    setTag(tag.filter((_, i) => i !== index));
+    setTags(tags.filter((_, i) => i !== index));
   };
 
   return (
     <section className="flex justify-between items-center gap-1 my-3">
-      {tag.map((tag, index) => (
-        <div
-          key={tag + index}
-          className="flex justify-center items-center gap-1"
-        >
+      {tags.map((tag, index) => (
+        <div key={tag.id} className="flex justify-center items-center gap-1">
           <div className="flex items-center justify-center w-auto min-w-14 h-6 px-1 rounded-[50px] border border-skin1 text-skin1 text-[10px] font-extralight overflow-hidden">
-            #{tag}
+            #{tag.name}
           </div>
           <button type="button" onClick={() => deleteTag(index)}>
             <Image
@@ -46,7 +44,7 @@ const WriteTag = ({
 
             if (!inputValue.trim()) return;
 
-            setTag([...tag, inputValue]);
+            setTags([...tags, { id: '4', postId: '4', name: inputValue }]);
             setInputValue('');
           }
         }}

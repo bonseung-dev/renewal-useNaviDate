@@ -9,8 +9,7 @@ import WriteTag from '@/components/features/write-date/write-tag';
 import UploadImageCarousel from '@/components/features/write-date/upload-image-carousel';
 import WriteContent from '@/components/features/write-date/write-content';
 import { useState } from 'react';
-import { Emotion, Post } from '@/types/post.type';
-import { Image } from '@use-navi-date/shared';
+import { Emotion, Image, Post, PostTag } from '@use-navi-date/shared';
 import {
   useCreatePostImagesMutation,
   useCreatePostMutation,
@@ -19,21 +18,21 @@ import {
 
 const WriteDate = () => {
   const [images, setImages] = useState<Image[]>([]);
-  const [visibility, setVisibility] = useState<boolean>(false);
+  const [visibility, setVisibility] = useState<Post['visibility']>('private');
   const [emotion, setEmotion] = useState<Emotion>('Soso');
-  const [title, setTitle] = useState<string>('');
-  const [content, setContent] = useState<string>('');
-  const [tag, setTag] = useState<string[]>([]);
-  const [inputValue, setInputValue] = useState<string>('');
+  const [title, setTitle] = useState<Post['title']>('');
+  const [content, setContent] = useState<Post['content']>('');
+  const [tags, setTags] = useState<PostTag[]>([]);
+  const [inputValue, setInputValue] = useState<PostTag['name']>('');
 
   const resetForm = () => {
-    setVisibility(false);
+    setVisibility('private');
     setEmotion('Soso');
     setTitle('');
     setContent('');
     setInputValue('');
     setImages([]);
-    setTag([]);
+    setTags([]);
   };
 
   const { mutate: createPostMutate } = useCreatePostMutation(resetForm);
@@ -44,32 +43,33 @@ const WriteDate = () => {
     e.preventDefault();
 
     const newPost: Post = {
-      id: 1, //임시 postId
-      userId: 2, //임시 userId
+      id: '1', //임시 postId
+      userId: '2', //임시 userId
       visibility,
       emotion,
       date: '2025-01-01',
       title,
       content,
-      createdAt: new Date(),
-      deletedAt: new Date(),
+      createdAt: new Date().toISOString(),
+      deletedAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
 
     createPostMutate(newPost);
     images.forEach((image) => {
       createImageMutate({
-        id: 3, //임시 postImageId
+        id: '3', //임시 postImageId
         postId: newPost.id,
-        postImage: image,
+        imageUrl: image.url,
         address: '서울특별시 송파구 잠실 어쩌구 56-1',
         isRepresentative: true,
       });
     });
-    tag.forEach((tag) => {
+    tags.forEach((tag) => {
       createTagMutate({
-        id: 4, //임시 tagId
+        id: '4', //임시 tagId
         postId: newPost.id,
-        name: tag,
+        name: tag.name,
       });
     });
   };
@@ -107,8 +107,8 @@ const WriteDate = () => {
 
       {/* 태그 입력 */}
       <WriteTag
-        tag={tag}
-        setTag={setTag}
+        tags={tags}
+        setTags={setTags}
         inputValue={inputValue}
         setInputValue={setInputValue}
       />

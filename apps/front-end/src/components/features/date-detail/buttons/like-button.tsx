@@ -2,12 +2,12 @@ import { QUERY_KEYS } from '@/constants/query-keys.constants';
 import { BASE_URL } from '@/constants/url.constants';
 import { useUpdateLikeMutation } from '@/lib/mutations/like.mutation';
 import { Like } from '@/types/like-bookmark.type';
-import { Post } from '@/types/post.type';
+import { Post } from '@use-navi-date/shared';
 import { useQuery } from '@tanstack/react-query';
 
 const LikeButton = ({ post }: { post: Post }) => {
   /* userId 불러오는 로직 추가 필요 (현재 임시 값) */
-  const userId = 12;
+  const userId = '12';
 
   const { mutate: toggleLike } = useUpdateLikeMutation();
 

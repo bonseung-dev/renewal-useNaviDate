@@ -7,7 +7,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import ImageItems from './image-items';
-import { Image } from '@/types/image.type';
+import { Image } from '@use-navi-date/shared';
 
 const UploadImageCarousel = ({
   images,
@@ -21,14 +21,14 @@ const UploadImageCarousel = ({
 
     if (files) {
       const imageFiles = Array.from(files).map((file) => ({
-        id: 1, // 임시 Id
+        id: '1', // 임시 Id
         filename: file.name,
         originalName: file.name,
         mimeType: file.type,
         size: file.size,
         path: file.webkitRelativePath || '',
         url: URL.createObjectURL(file),
-        userId: 2, // 임시 Id
+        userId: '2', // 임시 Id
         createdAt: new Date(),
         updatedAt: new Date(),
       }));

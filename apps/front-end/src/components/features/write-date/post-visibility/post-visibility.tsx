@@ -1,3 +1,4 @@
+import { Post } from '@use-navi-date/shared';
 import PostVisibilitySwitch from './post-visibility-switch';
 import PostVisibilityTooltip from './post-visibility-tooltip';
 
@@ -5,8 +6,8 @@ const PostVisibility = ({
   visibility,
   setVisibility,
 }: {
-  visibility: boolean;
-  setVisibility: (visibility: boolean) => void;
+  visibility: Post['visibility'];
+  setVisibility: (visibility: Post['visibility']) => void;
 }) => {
   return (
     <section className="flex justify-end items-center gap-[2px] mt-1 ml-auto mr-5">

@@ -2,12 +2,12 @@ import { QUERY_KEYS } from '@/constants/query-keys.constants';
 import { BASE_URL } from '@/constants/url.constants';
 import { useUpdateBookmarkMutation } from '@/lib/mutations/bookmark.mutation';
 import { Bookmark } from '@/types/like-bookmark.type';
-import { Post } from '@/types/post.type';
 import { useQuery } from '@tanstack/react-query';
+import { Post } from '@use-navi-date/shared';
 
 const BookmarkButton = ({ post }: { post: Post }) => {
   /* userId 불러오는 로직 추가 필요 (현재 임시 값) */
-  const userId = 123;
+  const userId = '123';
 
   const { mutate: toggleBookmark } = useUpdateBookmarkMutation();
 

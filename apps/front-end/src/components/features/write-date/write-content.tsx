@@ -1,13 +1,15 @@
+import { Post } from '@use-navi-date/shared';
+
 const WriteContent = ({
   content,
   setContent,
   title,
   setTitle,
 }: {
-  content: string;
-  setContent: (content: string) => void;
-  title: string;
-  setTitle: (title: string) => void;
+  content: Post['content'];
+  setContent: (content: Post['content']) => void;
+  title: Post['title'];
+  setTitle: (title: Post['title']) => void;
 }) => {
   return (
     <section className="w-full flex flex-col justify-center items-center gap-2 mt-2">
