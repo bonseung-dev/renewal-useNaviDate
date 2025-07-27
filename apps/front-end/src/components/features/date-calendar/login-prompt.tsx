@@ -39,7 +39,7 @@ const LoginPrompt = () => {
     unauthenticated: {
       title: '로그인 필요',
       description: '해당 기능을 보려면 로그인이 필요합니다.',
-      buttonText: '로그인하기',
+      buttonText: '로그인 하러가기',
       link: '/sign-in',
     },
     'no-couple': {
@@ -53,14 +53,16 @@ const LoginPrompt = () => {
   const currentPrompt = promptConfig[authState];
 
   return (
-    <div className="w-full flex flex-col items-center p-4">
-      <h2 className="text-b-h2 text-font3 font-bold mb-4">
+    <div className="w-full min-h-full flex flex-col items-center justify-center p-3">
+      <h2 className="text-b-h0 font-bold text-skin1 mb-3">
         {currentPrompt.title}
       </h2>
-      <p className="text-m-h4 text-font2 mb-4">{currentPrompt.description}</p>
+      <p className="text-l-title3 text-font2 mb-[52px]">
+        {currentPrompt.description}
+      </p>
       <Link
         href={currentPrompt.link}
-        className="py-2 px-8 text-skin1 text-L-title3 border-2 border-skin1 rounded hover:bg-skin1 hover:text-white transition"
+        className="w-[260px] h-[40px] py-2 text-skin5 text-b-h3 font-bold text-center bg-skin1 rounded-[8px] hover:bg-skin1/80 transition"
       >
         {currentPrompt.buttonText}
       </Link>

@@ -1,18 +1,16 @@
-'use client';
-
 import { Anniversary, RepeatOption } from '@/types/anniversary.type';
-import AnniversaryForm from './anniversary-form';
 import {
   DialogContent,
   DialogDescription,
   DialogTitle,
 } from '@/components/ui/dialog';
 import { useState } from 'react';
+import AnniversaryForm from './anniversary-form';
 
 type AnniversaryEditorProps = {
-  coupleId: string;
-  userId: string;
-  onAdd: (data: Omit<Anniversary, 'id'>, userId: string) => void;
+  coupleId: number;
+  userId: number;
+  onAdd: (data: Omit<Anniversary, 'id'>, userId: number) => void;
   onUpdate: (data: Anniversary) => void;
   initialData?: Anniversary | null;
   onSubmitSuccess?: () => void;
@@ -32,6 +30,7 @@ const AnniversaryEditor = ({
     title: string;
     date: string;
     repeat: RepeatOption;
+    memo?: string;
   }) => {
     if (initialData) {
       onUpdate({
@@ -41,13 +40,21 @@ const AnniversaryEditor = ({
         createdBy: initialData.createdBy,
       });
     } else {
-      onAdd({ ...data, createdBy: userId, coupleId }, userId);
+      onAdd(
+        {
+          ...data,
+          createdBy: new Date(),
+          coupleId,
+          memo: data.memo || '',
+        },
+        userId,
+      );
     }
     onSubmitSuccess?.();
   };
 
   return (
-    <DialogContent className="bg-skin5 p-1 shadow-shadow1 rounded-xl w-[320px] h-[330px]">
+    <DialogContent className="bg-skin5 p-1 shadow-shadow1 rounded-xl w-[320px] h-[280px]">
       <DialogTitle className="sr-only">
         {initialData ? '기념일 수정' : '기념일 추가'}
       </DialogTitle>

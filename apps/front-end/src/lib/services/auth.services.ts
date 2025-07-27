@@ -25,7 +25,7 @@ export const loginUser = async (
 
 // 커플 정보 조회 함수
 export const fetchCouple = async (
-  userId: string,
+  userId: number,
 ): Promise<Couple | undefined> => {
   const response = await fetch(`${BASE_URL}/couples`);
   const couples: Couple[] = await response.json();
@@ -34,8 +34,8 @@ export const fetchCouple = async (
 
 // 서버 쿠키 설정 함수
 export const setServerCookies = async (data: {
-  userId: string;
-  coupleId?: string;
+  userId: number;
+  coupleId?: number;
   anniversary?: string;
 }) => {
   const res = await fetch('/api/auth/set-cookies', {

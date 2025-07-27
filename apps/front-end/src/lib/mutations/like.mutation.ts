@@ -3,14 +3,14 @@ import { updateLike } from '../services/community.services';
 import { QUERY_KEYS } from '@/constants/query-keys.constants';
 import { Post } from '@/types/post.type';
 import { Like } from '@/types/like-bookmark.type';
-import { CommunityPost } from '@/types/community.type';
+import { CommunityPost } from '@/types/post.type';
 
 // 좋아요 업데이트 뮤테이션 훅
 export const useUpdateLikeMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ postId, userId }: { postId: string; userId: string }) =>
+    mutationFn: ({ postId, userId }: { postId: number; userId: number }) =>
       updateLike(postId, userId),
 
     onMutate: async ({ postId, userId }) => {
@@ -39,10 +39,10 @@ export const useUpdateLikeMutation = () => {
                   : [
                       ...(post.likes || []),
                       {
-                        id: 'temp',
+                        id: -1, // 임시 ID
                         postId,
                         userId,
-                        createdAt: new Date().toISOString(),
+                        createdAt: new Date(),
                       },
                     ],
                 likesCount: isLiked ? post.likesCount - 1 : post.likesCount + 1,
@@ -63,10 +63,10 @@ export const useUpdateLikeMutation = () => {
           : [
               ...(old || []),
               {
-                id: 'temp',
+                id: -1,
                 postId,
                 userId,
-                createdAt: new Date().toISOString(),
+                createdAt: new Date(),
               },
             ];
       });
