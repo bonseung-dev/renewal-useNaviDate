@@ -23,6 +23,12 @@ const Page = () => {
     console.log('회원가입 요청:', data);
   };
 
+  // monorepo 이전하고 추가
+  const handleGoogleSignUp = () => {
+    // 새로운 API 라우트 사용
+    window.location.href = '/api/auth/google';
+  };
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -107,12 +113,15 @@ const Page = () => {
         <div className="flex-1 h-px bg-skin1" />
       </div>
 
-      {/* 소셜 로그인 */}
+      {/* 소셜  */}
       <div className="flex gap-[22px] mt-[16px]">
-        <button className="rounded-full p-2 bg-skin2">
+        <button
+          className="rounded-full p-2 bg-skin2"
+          onClick={handleGoogleSignUp}
+        >
           <Image src="/icons/google.png" alt="google" width={24} height={24} />
         </button>
-        <button className="rounded-full p-2 bg-skin2">
+        <button className="rounded-full p-2 bg-skin2 cursor-not-allowed">
           <Image
             src="/icons/kakao-talk.png"
             alt="kakao"

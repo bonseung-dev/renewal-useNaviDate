@@ -29,6 +29,11 @@ const Page = () => {
     });
   };
 
+  // monorepo 이전하고 추가
+  const handleGoogleLogin = () => {
+    window.location.href = '/api/auth/google';
+  };
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -101,7 +106,7 @@ const Page = () => {
         <button
           type="button"
           className="rounded-full p-2 bg-skin2"
-          onClick={() => console.log('Google 로그인')}
+          onClick={handleGoogleLogin}
         >
           <Image src="/icons/google.png" alt="google" width={24} height={24} />
         </button>
