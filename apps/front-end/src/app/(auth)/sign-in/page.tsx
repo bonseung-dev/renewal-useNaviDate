@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { LoginFormData, loginSchema } from '@/lib/zod/auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useLoginMutation } from '@/lib/mutations/auth.mutations';
+import Link from 'next/link';
 
 const Page = () => {
   const {
@@ -122,6 +123,17 @@ const Page = () => {
             height={24}
           />
         </button>
+      </div>
+
+      {/* 회원가입 링크 - 임시로 추가*/}
+      <div className="mt-6 text-center">
+        <span className="text-b-h4 text-skin2">계정이 없으신가요? </span>
+        <Link
+          href="/sign-up"
+          className="text-b-h4 font-bold text-skin1 hover:underline"
+        >
+          회원가입
+        </Link>
       </div>
     </form>
   );
