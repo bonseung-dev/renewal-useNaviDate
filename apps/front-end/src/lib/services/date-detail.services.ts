@@ -1,5 +1,5 @@
 import { BASE_URL } from '@/constants/url.constants';
-import { Post } from '@use-navi-date/shared';
+import { Post } from '@/types/post.type';
 
 export const fetchPost = async (postId: Post['id']) => {
   const response = await fetch(`${BASE_URL}/posts/${postId}`, {

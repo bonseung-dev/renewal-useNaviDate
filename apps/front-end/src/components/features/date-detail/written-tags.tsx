@@ -1,6 +1,6 @@
-import { PostTag } from '@use-navi-date/shared';
+import { PostTag } from '@/types/post.type';
 
-const WrittenTags = ({ tags }: { tags: PostTag[] }) => {
+const WrittenTags = ({ tags }: { tags: Pick<PostTag, 'id' | 'name'>[] }) => {
   return (
     <section className="flex flex-wrap justify-start items-center w-full py-3 px-5 gap-3">
       {tags.map((tag) => (

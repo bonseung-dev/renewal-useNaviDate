@@ -1,4 +1,4 @@
-import { Post } from '@use-navi-date/shared';
+import { Post } from '@/types/post.type';
 import BookmarkButton from './bookmark-button';
 import LikeButton from './like-button';
 import ShareButton from './share-button';

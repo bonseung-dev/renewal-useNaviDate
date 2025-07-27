@@ -1,4 +1,4 @@
-import { PostImage } from '@use-navi-date/shared';
+import { PostImage } from '@/types/post.type';
 
 const SearchedAddress = ({ images }: { images: PostImage[] }) => {
   return (

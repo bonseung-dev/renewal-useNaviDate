@@ -5,7 +5,7 @@ import {
   fetchTags,
 } from '../services/date-detail.services';
 import { useQuery } from '@tanstack/react-query';
-import { Post, PostImage, PostTag } from '@use-navi-date/shared';
+import { Post, PostImage, PostTag } from '@/types/post.type';
 
 export const usePostByPostIdQuery = (postId: Post['id']) => {
   return useQuery<Post>({

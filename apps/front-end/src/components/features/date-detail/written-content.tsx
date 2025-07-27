@@ -1,6 +1,10 @@
-import { Post } from '@use-navi-date/shared';
+import { Post } from '@/types/post.type';
 
-const WrittenContent = ({ post }: { post: Post }) => {
+const WrittenContent = ({
+  post,
+}: {
+  post: Pick<Post, 'title' | 'content'>;
+}) => {
   return (
     <section className="flex flex-col justify-center items-start w-full h-full pt-3 pb-6 px-5 gap-3">
       <h3 className="text-font2 text-sm font-extralight">{post.title}</h3>

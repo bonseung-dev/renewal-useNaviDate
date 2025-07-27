@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 };
 
 export type PageProps = {
-  params: { postId: number };
+  params: { postId: string };
 };
 
 const DateDetailPage = ({ params }: PageProps) => {

@@ -2,7 +2,7 @@ import { QUERY_KEYS } from '@/constants/query-keys.constants';
 import { BASE_URL } from '@/constants/url.constants';
 import { useUpdateLikeMutation } from '@/lib/mutations/like.mutation';
 import { Like } from '@/types/like-bookmark.type';
-import { Post } from '@use-navi-date/shared';
+import { Post } from '@/types/post.type';
 import { useQuery } from '@tanstack/react-query';
 
 const LikeButton = ({ post }: { post: Post }) => {
