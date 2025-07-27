@@ -7,32 +7,27 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import ImageItems from './image-items';
-import { Image } from '@use-navi-date/shared';
+import { PostImage } from '@/types/post.type';
 
 const UploadImageCarousel = ({
   images,
   setImages,
 }: {
-  images: Image[];
-  setImages: React.Dispatch<React.SetStateAction<Image[]>>;
+  images: PostImage[];
+  setImages: (images: PostImage[]) => void;
 }) => {
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
 
     if (files) {
       const imageFiles = Array.from(files).map((file) => ({
-        id: '1', // 임시 Id
-        filename: file.name,
-        originalName: file.name,
-        mimeType: file.type,
-        size: file.size,
-        path: file.webkitRelativePath || '',
-        url: URL.createObjectURL(file),
-        userId: '2', // 임시 Id
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        id: 'aaa', // 임시 Id
+        postId: 'bbb', // 임시 Id
+        imageUrl: URL.createObjectURL(file),
+        address: '서울특별시 송파구 잠실 어쩌구 56-1',
+        isRepresentative: true,
       }));
-      setImages((prev) => [...prev, ...imageFiles]);
+      setImages([...images, ...imageFiles]);
     }
   };
 

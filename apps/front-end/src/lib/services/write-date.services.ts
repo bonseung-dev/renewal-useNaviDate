@@ -1,6 +1,6 @@
 import { BASE_URL } from '@/constants/url.constants';
 import { fetchWithAuth } from '@/lib/utils/api';
-import { Post, PostImage, PostTag } from '@use-navi-date/shared';
+import { Post, PostImage, PostTag } from '@/types/post.type';
 
 // 포스트 게시
 export const createPost = async (newPost: Post) => {

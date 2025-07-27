@@ -1,12 +1,12 @@
-import { Emotion } from '@use-navi-date/shared';
+import { Emotion } from '@/types/post.type';
 import Image from 'next/image';
 
-const emotions = [
-  { key: 'Joy' as Emotion, src: '/emotions/emotion_happy.png' },
-  { key: 'Fun' as Emotion, src: '/emotions/emotion_excited.png' },
-  { key: 'SoSo' as Emotion, src: '/emotions/emotion_usual.png' },
-  { key: 'Sad' as Emotion, src: '/emotions/emotion_sad.png' },
-  { key: 'Mad' as Emotion, src: '/emotions/emotion_angry.png' },
+const emotions: { key: Emotion; src: string }[] = [
+  { key: 'Joy', src: '/emotions/emotion_happy.png' },
+  { key: 'Fun', src: '/emotions/emotion_excited.png' },
+  { key: 'Soso', src: '/emotions/emotion_usual.png' },
+  { key: 'Sad', src: '/emotions/emotion_sad.png' },
+  { key: 'Mad', src: '/emotions/emotion_angry.png' },
 ];
 
 const SelectEmotion = ({

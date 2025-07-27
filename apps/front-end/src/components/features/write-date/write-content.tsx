@@ -1,4 +1,4 @@
-import { Post } from '@use-navi-date/shared';
+import { Post } from '@/types/post.type';
 
 const WriteContent = ({
   content,

@@ -8,7 +8,7 @@ const SearchAddress = () => {
       </h3>
       <div className="w-72 h-6 bg-skin2 rounded-full">
         <div className="flex items-center pl-3 py-1 w-full h-full text-skin5 text-xs font-extralight whitespace-nowrap">
-          테스트
+          기능 준비중...
         </div>
         <SearchAddressButton />
       </div>

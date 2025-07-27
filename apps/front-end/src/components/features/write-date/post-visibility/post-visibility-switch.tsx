@@ -1,5 +1,5 @@
 import { Switch } from '@/components/ui/switch';
-import { Post } from '@use-navi-date/shared';
+import { Post } from '@/types/post.type';
 
 const PostVisibilitySwitch = ({
   visibility,

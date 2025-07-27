@@ -9,15 +9,15 @@ import WriteTag from '@/components/features/write-date/write-tag';
 import UploadImageCarousel from '@/components/features/write-date/upload-image-carousel';
 import WriteContent from '@/components/features/write-date/write-content';
 import { useState } from 'react';
-import { Emotion, Image, Post, PostTag } from '@use-navi-date/shared';
 import {
   useCreatePostImagesMutation,
   useCreatePostMutation,
   useCreatePostTagsMutation,
 } from '@/lib/mutations/write-date.mutation';
+import { Emotion, Post, PostImage, PostTag } from '@/types/post.type';
 
 const WriteDate = () => {
-  const [images, setImages] = useState<Image[]>([]);
+  const [images, setImages] = useState<PostImage[]>([]);
   const [visibility, setVisibility] = useState<Post['visibility']>('private');
   const [emotion, setEmotion] = useState<Emotion>('Soso');
   const [title, setTitle] = useState<Post['title']>('');
@@ -39,38 +39,27 @@ const WriteDate = () => {
   const { mutate: createImageMutate } = useCreatePostImagesMutation();
   const { mutate: createTagMutate } = useCreatePostTagsMutation();
 
+  const newPost: Post = {
+    id: 'bbb', //임시 Id
+    userId: 'ccc', //임시 Id
+    visibility,
+    emotion,
+    date: '2025-01-01',
+    title,
+    content,
+    createdAt: new Date().toISOString(),
+    deletedAt: new Date().toISOString(),
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const newPost: Post = {
-      id: '1', //임시 postId
-      userId: '2', //임시 userId
-      visibility,
-      emotion,
-      date: '2025-01-01',
-      title,
-      content,
-      createdAt: new Date().toISOString(),
-      deletedAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-
     createPostMutate(newPost);
     images.forEach((image) => {
-      createImageMutate({
-        id: '3', //임시 postImageId
-        postId: newPost.id,
-        imageUrl: image.url,
-        address: '서울특별시 송파구 잠실 어쩌구 56-1',
-        isRepresentative: true,
-      });
+      createImageMutate(image);
     });
     tags.forEach((tag) => {
-      createTagMutate({
-        id: '4', //임시 tagId
-        postId: newPost.id,
-        name: tag.name,
-      });
+      createTagMutate(tag);
     });
   };
 

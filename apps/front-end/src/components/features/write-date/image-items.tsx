@@ -1,6 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { CarouselItem } from '@/components/ui/carousel';
-import { Image } from '@/types/image.type';
+import { PostImage } from '@/types/post.type';
 import NextImage from 'next/image';
 import React from 'react';
 
@@ -8,8 +8,8 @@ const ImageItems = ({
   images,
   setImages,
 }: {
-  images: Image[];
-  setImages: React.Dispatch<React.SetStateAction<Image[]>>;
+  images: PostImage[];
+  setImages: (images: PostImage[]) => void;
 }) => {
   const deleteImage = (index: number) => {
     setImages(images.filter((_, i) => i !== index));
@@ -22,7 +22,7 @@ const ImageItems = ({
           <Card className="w-full h-full flex justify-center items-center rounded-none">
             <CardContent className="w-full h-full p-0">
               <NextImage
-                src={image.url}
+                src={image.imageUrl}
                 alt={`업로드 이미지`}
                 width={100}
                 height={100}
