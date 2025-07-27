@@ -1,7 +1,11 @@
 import { redirect } from 'next/navigation';
 import LoginPrompt from '@/components/features/date-calendar/login-prompt';
+import {
+  getServerCookie,
+  getUserIdFromToken,
+  getCoupleIdFromToken,
+} from '@/lib/utils/cookes.utils';
 import { Metadata } from 'next';
-import { getServerCookie } from '@/lib/utils/cookes.utils';
 
 export const metadata: Metadata = {
   title: '커플 캘린더 시작하기 || useNavidate( )',
@@ -21,19 +25,27 @@ type Props = {
 };
 
 const Page = async ({ searchParams }: Props) => {
-  const userId = (await getServerCookie('userId')) || searchParams.userId;
-  const coupleId = await getServerCookie('coupleId');
+  const token = getServerCookie('access_token');
 
-  if (!userId || !coupleId) {
-    console.error('데이터 로딩 실패:', { userId, coupleId });
-    return <LoginPrompt />;
+  if (!token) {
+    return <LoginPrompt authStatus="unauthenticated" />;
   }
 
-  // URL 인코딩 처리
-  const encodedCoupleId = encodeURIComponent(coupleId);
-  const encodedUserId = encodeURIComponent(userId);
+  try {
+    const userId = await getUserIdFromToken();
+    if (!userId) {
+      return <LoginPrompt authStatus="unauthenticated" />;
+    }
 
-  redirect(`/date-calendar/${encodedCoupleId}?userId=${encodedUserId}`);
+    const coupleId = await getCoupleIdFromToken();
+    if (coupleId) {
+      redirect(`/date-calendar/${coupleId}`);
+    }
+
+    return <LoginPrompt authStatus="no-couple" userId={userId} />;
+  } catch (error) {
+    return <LoginPrompt authStatus="error" />;
+  }
 };
 
 export default Page;

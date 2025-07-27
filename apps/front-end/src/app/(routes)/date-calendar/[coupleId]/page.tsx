@@ -1,6 +1,10 @@
 import CalendarTabs from '@/components/features/date-calendar/calendar-tabs';
 import LoginPrompt from '@/components/features/date-calendar/login-prompt';
-import { getServerCookie } from '@/lib/utils/cookes.utils';
+import {
+  getServerCookie,
+  getUserIdFromToken,
+  getCoupleIdFromToken,
+} from '@/lib/utils/cookes.utils';
 import { Metadata } from 'next';
 
 export async function generateMetadata({
@@ -8,11 +12,9 @@ export async function generateMetadata({
 }: {
   params: { coupleId: number };
 }): Promise<Metadata> {
-  const coupleName = await getServerCookie('coupleName');
-
   return {
-    title: `${coupleName || '커플'}의 캘린더 | useNavidate( )`,
-    description: `${coupleName || '우리'}만의 특별한 날짜를 기록하는 공간`,
+    title: `커플 캘린더 | useNavidate( )`,
+    description: `우리만의 특별한 날짜를 기록하는 공간`,
     openGraph: {
       images: ['/navidate-logo_blue.png'],
     },
@@ -28,48 +30,65 @@ type Props = {
 };
 
 const Page = async ({ params, searchParams }: Props) => {
-  // 1. 쿠키 및 URL 파라미터에서 값 가져오기
-  const [userIdCookie, coupleIdCookie, anniversary] = await Promise.all([
-    getServerCookie('userId'),
-    getServerCookie('coupleId'),
-    getServerCookie('anniversary'),
-  ]);
+  const token = getServerCookie('access_token');
 
-  const userId = userIdCookie || searchParams.userId;
-  const coupleId = coupleIdCookie || params.coupleId.toString();
-
-  // 2. 필수 값 검증
-  if (!userId || !coupleId) {
-    console.error('파라미터 검증:', { userId, coupleId });
-    return <LoginPrompt />;
+  if (!token) {
+    return <LoginPrompt authStatus="unauthenticated" />;
   }
 
-  // 3. coupleId 일치 여부 확인
-  if (coupleId !== params.coupleId.toString()) {
-    console.error('커플 아이디 불일치:', {
-      paramCoupleId: params.coupleId,
-      storedCoupleId: coupleId,
-    });
-    return <LoginPrompt />;
+  try {
+    const userId = await getUserIdFromToken();
+    if (!userId) {
+      return <LoginPrompt authStatus="unauthenticated" />;
+    }
+
+    const coupleId = await getCoupleIdFromToken();
+
+    // 커플이 없거나 URL과 불일치하는 경우
+    if (!coupleId) {
+      return <LoginPrompt authStatus="no-couple" userId={userId} />;
+    }
+    if (coupleId !== params.coupleId.toString()) {
+      return <LoginPrompt authStatus="invalid-couple" userId={userId} />;
+    }
+
+    // 기념일 정보 조회
+    let startDate = '';
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/couples/${coupleId}/anniversary`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        startDate = data.anniversary
+          ? new Date(data.anniversary).toISOString().split('T')[0]
+          : '';
+      }
+    } catch (error) {
+      console.error('Failed to get anniversary:', error);
+    }
+
+    return (
+      <section aria-labelledby="calendar-heading">
+        <h1 id="calendar-heading" className="sr-only">
+          커플 캘린더
+        </h1>
+        <CalendarTabs
+          coupleId={Number(coupleId)}
+          startDate={startDate}
+          userId={Number(userId)}
+        />
+      </section>
+    );
+  } catch (error) {
+    return <LoginPrompt authStatus="error" />;
   }
-
-  // 4. 시작 날짜 설정
-  const startDate = anniversary
-    ? new Date(anniversary).toISOString().split('T')[0]
-    : '';
-
-  return (
-    <section aria-labelledby="calendar-heading">
-      <h1 id="calendar-heading" className="sr-only">
-        커플 캘린더
-      </h1>
-      <CalendarTabs
-        coupleId={Number(coupleId)}
-        startDate={startDate}
-        userId={Number(userId)}
-      />
-    </section>
-  );
 };
 
 export default Page;
