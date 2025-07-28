@@ -21,9 +21,20 @@ const UploadImageCarousel = ({
 
     if (files) {
       const imageFiles = Array.from(files).map((file) => ({
-        id: 'aaa', // 임시 Id
-        postId: 'bbb', // 임시 Id
-        imageUrl: URL.createObjectURL(file),
+        id: 4,
+        postId: 5,
+        postImage: {
+          id: 9,
+          filename: file.name,
+          originalName: file.name,
+          mimeType: file.type,
+          size: file.size,
+          path: file.name,
+          url: URL.createObjectURL(file),
+          userId: 7,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
         address: '서울특별시 송파구 잠실 어쩌구 56-1',
         isRepresentative: true,
       }));

@@ -11,7 +11,7 @@ const UploadedImageItems = ({ images }: { images: PostImage[] }) => {
           <Card className="w-full h-full">
             <CardContent className="w-full h-full p-0">
               <Image
-                src={image.imageUrl}
+                src={image.postImage.url}
                 alt={`${index + 1}번째 이미지`}
                 width={100}
                 height={100}

@@ -18,7 +18,7 @@ import { Emotion, Post, PostImage, PostTag } from '@/types/post.type';
 
 const WriteDate = () => {
   const [images, setImages] = useState<PostImage[]>([]);
-  const [visibility, setVisibility] = useState<Post['visibility']>('private');
+  const [visibility, setVisibility] = useState<Post['visibility']>(false);
   const [emotion, setEmotion] = useState<Emotion>('Soso');
   const [title, setTitle] = useState<Post['title']>('');
   const [content, setContent] = useState<Post['content']>('');
@@ -26,7 +26,7 @@ const WriteDate = () => {
   const [inputValue, setInputValue] = useState<PostTag['name']>('');
 
   const resetForm = () => {
-    setVisibility('private');
+    setVisibility(false);
     setEmotion('Soso');
     setTitle('');
     setContent('');
@@ -40,15 +40,15 @@ const WriteDate = () => {
   const { mutate: createTagMutate } = useCreatePostTagsMutation();
 
   const newPost: Post = {
-    id: 'bbb', //임시 Id
-    userId: 'ccc', //임시 Id
+    id: 1, //임시 Id
+    userId: 2, //임시 Id
     visibility,
     emotion,
     date: '2025-01-01',
     title,
     content,
-    createdAt: new Date().toISOString(),
-    deletedAt: new Date().toISOString(),
+    createdAt: new Date(),
+    deletedAt: new Date(),
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
