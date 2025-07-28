@@ -22,7 +22,7 @@ const UnconnectedCouplePage = () => {
       router.push('/sign-in');
       return;
     }
-
+    // d
     createCouple(
       {
         userAId: userId,
