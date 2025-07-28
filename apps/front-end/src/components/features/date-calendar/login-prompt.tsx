@@ -10,7 +10,6 @@ type LoginPromptProps = {
 };
 
 const LoginPrompt = ({ authStatus, userId }: LoginPromptProps) => {
-  // 로딩 상태 제거 (서버에서 이미 상태 결정)
   const promptConfig = {
     unauthenticated: {
       title: '로그인 필요',
@@ -34,7 +33,7 @@ const LoginPrompt = ({ authStatus, userId }: LoginPromptProps) => {
       title: '오류 발생',
       description: '처리 중 오류가 발생했습니다. 다시 시도해주세요.',
       buttonText: '새로고침',
-      link: '', // 빈 링크 (onClick에서 처리)
+      link: '',
     },
   };
 

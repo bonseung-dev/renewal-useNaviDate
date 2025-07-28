@@ -12,9 +12,7 @@ const PostHeader = ({ title, tags, id }: PostHeaderProps) => (
       {title}
     </h3>
     <div className="mt-1 text-skin5 text-m-h4">
-      {tags.map((tag) => (
-        <span key={tag.id}>#{tag.name} </span>
-      ))}
+      {tags?.map((tag) => <span key={tag.id}>#{tag.name} </span>)}
     </div>
   </header>
 );

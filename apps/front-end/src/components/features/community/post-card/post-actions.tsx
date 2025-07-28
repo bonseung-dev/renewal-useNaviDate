@@ -30,8 +30,10 @@ const PostActions = ({
       ? Number(localStorage.getItem('userId'))
       : null;
 
-  const isLiked = likes.some((like) => like.userId === userId);
-  const isBookmarked = bookmarks.some((bookmark) => bookmark.userId === userId);
+  const isLiked = likes?.some((like) => like.userId === userId);
+  const isBookmarked = bookmarks?.some(
+    (bookmark) => bookmark.userId === userId,
+  );
 
   const handleLike = () => {
     if (!userId) return;
