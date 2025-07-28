@@ -1,6 +1,6 @@
 export type Notification = {
-  id: string;
-  userId: string;
+  id: number;
+  userId: number;
   type: NotificationType;
   message: string;
   isRead: boolean;

@@ -7,7 +7,7 @@ export type Anniversary = {
   date: string;
   repeat: RepeatOption;
   memo?: string;
-  createdBy: string;
+  createdBy: Date;
 };
 
 export type RepeatOption = 'NONE' | 'YEARLY';

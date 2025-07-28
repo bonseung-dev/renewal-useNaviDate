@@ -3,10 +3,17 @@ import { Bookmark, Like } from '@/types/like-bookmark.type';
 import { CalendarPost, Post, PostImage, PostTag } from '@/types/post.type';
 
 export const fetchPostsByCouple = async (
-  coupleId: string,
-): Promise<CalendarPost[]> => {
+  coupleId: number,
+): Promise<
+  (CalendarPost & {
+    imageUrl?: string;
+    likesCount: number;
+    bookmarksCount: number;
+    tags: PostTag[];
+  })[]
+> => {
   try {
-    const coupleRes = await fetch(`${BASE_URL}/couples/${coupleId}`);
+    const coupleRes = await fetch(`${BASE_URL}/couples?id=${coupleId}`);
     const couple = await coupleRes.json();
 
     const postsRes = await fetch(
@@ -14,7 +21,7 @@ export const fetchPostsByCouple = async (
     );
     const posts: Post[] = await postsRes.json();
 
-    const calendarPosts: CalendarPost[] = await Promise.all(
+    const calendarPosts = await Promise.all(
       posts.map(async (post) => {
         const [imagesRes, tagsRes, likesRes, bookmarksRes] = await Promise.all([
           fetch(`${BASE_URL}/postImages?postId=${post.id}`),
@@ -30,13 +37,7 @@ export const fetchPostsByCouple = async (
 
         return {
           ...post,
-          createdAt: post.createdAt
-            ? post.createdAt.toString()
-            : post.createdAt,
-          deletedAt: post.deletedAt
-            ? post.deletedAt.toString()
-            : post.deletedAt,
-          imageUrl: images.find((img) => img.isRepresentative)?.imageUrl,
+          imageUrl: images.find((img) => img.isRepresentative)?.postImage.url,
           likesCount: likes.length,
           bookmarksCount: bookmarks.length,
           images,

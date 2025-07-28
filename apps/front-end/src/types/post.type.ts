@@ -12,8 +12,8 @@ export type Post = {
   visibility: boolean; // true: 공개, false: 비공개, default: false
   date: string;
   emotion: Emotion;
-  createdAt: string;
-  deletedAt: string | null;
+  createdAt: Date;
+  deletedAt: Date | null;
 };
 
 export type PostTag = {
@@ -31,27 +31,17 @@ export type PostImage = {
 };
 
 //Calendar용 post + 이미지
-export type CalendarPost = {
-  id: number;
-  userId: number;
-  title: string;
-  content: string;
-  visibility: boolean;
-  date: string;
-  emotion: Emotion;
-  createdAt: string;
-  deletedAt: string | null;
+export type CalendarPost = Post & {
   images: PostImage[];
 };
 
-export type CommunityPost = Omit<Post, 'createdAt' | 'deletedAt'> & {
-  createdAt: Date;
-  deletedAt: Date | null;
+// Community용 post + author + tags + images + likes + bookmarks
+export type CommunityPost = Post & {
   author?: User;
-  tags: PostTag[];
+  tags?: PostTag[];
   images: PostImage[];
   likesCount: number;
   bookmarksCount: number;
-  likes: Like[]; // 현재 사용자의 좋아요 상태 확인을 위해 추가
-  bookmarks: Bookmark[]; // 현재 사용자의 북마크 상태 확인을 위해 추가
+  likes?: Like[];
+  bookmarks?: Bookmark[];
 };
