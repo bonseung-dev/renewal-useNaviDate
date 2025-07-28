@@ -1,32 +1,30 @@
 'use client';
+
 import { useRouter } from 'next/navigation';
-import { deleteAllCookies } from '@/lib/utils/client-cookies.utils';
-import { useEffect, useState } from 'react';
 
-const LogoutButton = () => {
+const LogoutButton = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const router = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(() => {
-    const userId = localStorage.getItem('userId');
-    setIsLoggedIn(!!userId);
-  }, []);
+  const handleLogout = async () => {
+    try {
+      // 1. API Route 호출
+      await fetch('/api/auth/logout', { method: 'POST' });
 
-  const handleLogout = () => {
-    localStorage.removeItem('userId');
-    localStorage.removeItem('coupleId');
-    localStorage.removeItem('anniversary');
+      // 2. 클라이언트 정리
+      localStorage.clear();
+      sessionStorage.clear();
 
-    deleteAllCookies();
-
-    router.push('/sign-in');
+      // 3. 강제 페이지 리로드
+      window.location.href = '/sign-in';
+    } catch (error) {
+      window.location.href = '/sign-in';
+    }
   };
 
   if (!isLoggedIn) return null;
 
   return (
     <button
-      type="button"
       onClick={handleLogout}
       className="fixed bottom-[82px] mx-auto z-20 rounded bg-skin7 px-2 py-1 text-white text-b-h5 font-semibold shadow-lg hover:bg-skin7/55 transition"
     >

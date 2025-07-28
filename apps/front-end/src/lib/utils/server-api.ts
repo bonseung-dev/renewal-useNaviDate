@@ -12,7 +12,7 @@ export class ApiError extends Error {
   constructor(
     public status: number,
     public message: string,
-    public data?: any
+    public data?: any,
   ) {
     super(message);
     this.name = 'ApiError';
@@ -31,10 +31,10 @@ export async function getServerAuthToken(): Promise<string | null> {
 
 export async function fetchWithServerAuth(
   url: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
 ): Promise<Response> {
   const token = await getServerAuthToken();
-  
+
   if (!token) {
     throw new ApiError(401, '인증 토큰이 필요합니다.');
   }
@@ -42,7 +42,7 @@ export async function fetchWithServerAuth(
   const response = await fetch(url, {
     ...options,
     headers: {
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
       ...options.headers,
     },
@@ -53,7 +53,7 @@ export async function fetchWithServerAuth(
     throw new ApiError(
       response.status,
       errorData.message || `HTTP ${response.status} 오류가 발생했습니다.`,
-      errorData
+      errorData,
     );
   }
 
@@ -61,7 +61,7 @@ export async function fetchWithServerAuth(
 }
 
 export function getBackendUrl(): string {
-  return process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+  return process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000';
 }
 
 export function extractTokenFromRequest(request: NextRequest): string | null {
@@ -74,4 +74,4 @@ export function extractTokenFromRequest(request: NextRequest): string | null {
 
 export function validateToken(token: string | null): boolean {
   return token !== null && token.length > 0;
-} 
+}
