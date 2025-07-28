@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "@types/bcrypt": "^5.0.2",
-    "bcrypt": "^6.0.0"
+    "bcrypt": "^6.0.0",
+    "jwt-decode": "^4.0.0"
   }
 }

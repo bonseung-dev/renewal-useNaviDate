@@ -2,7 +2,8 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { useCreateCouple } from '@/lib/queries/coupleQueries';
+import { useAcceptCoupleInvite } from '@/lib/queries/coupleQueries';
+import { getClientAuthToken } from '@/lib/utils/api';
 
 type InviteAcceptPageProps = {
   params: { coupleId: string };
@@ -10,24 +11,30 @@ type InviteAcceptPageProps = {
 
 const InviteAcceptPage = ({ params }: InviteAcceptPageProps) => {
   const router = useRouter();
-  const { mutate: createCouple, isPending, isError, error } = useCreateCouple();
-  const userBId = 'userB';
-  const userAId = 'userA';
+  const {
+    mutate: acceptInvite,
+    isPending,
+    isError,
+    error,
+  } = useAcceptCoupleInvite();
+
+  const token = getClientAuthToken();
+  const userBId = Number(localStorage.getItem('userId'));
 
   const handleAcceptInvite = () => {
-    createCouple(
+    if (!token || !userBId) {
+      alert('로그인이 필요합니다.');
+      router.push('/sign-in');
+      return;
+    }
+
+    acceptInvite(
       {
-        userAId: userAId,
-        userBId: userBId,
-        anniversary: '2024-01-01', // TODO: 실제 값으로 교체
-        name: '커플 이름', // TODO: 실제 값으로 교체
+        coupleId: String(params.coupleId),
+        userBId: String(userBId),
       },
       {
-        onSuccess: (data) => {
-          if (typeof window !== 'undefined') {
-            localStorage.setItem('coupleId', data.id);
-            localStorage.setItem('isCoupleConnected', 'true');
-          }
+        onSuccess: () => {
           router.push('/couple-space');
         },
         onError: (error: Error) => {

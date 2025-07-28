@@ -11,7 +11,7 @@ export class ApiError extends Error {
   constructor(
     public status: number,
     public message: string,
-    public data?: any
+    public data?: any,
   ) {
     super(message);
     this.name = 'ApiError';
@@ -20,10 +20,10 @@ export class ApiError extends Error {
 
 export async function fetchWithAuth(
   url: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
 ): Promise<Response> {
   const token = await getAuthToken();
-  
+
   if (!token) {
     throw new ApiError(401, '인증 토큰이 필요합니다.');
   }
@@ -31,7 +31,7 @@ export async function fetchWithAuth(
   const response = await fetch(url, {
     ...options,
     headers: {
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
       ...options.headers,
     },
@@ -42,7 +42,7 @@ export async function fetchWithAuth(
     throw new ApiError(
       response.status,
       errorData.message || `HTTP ${response.status} 오류가 발생했습니다.`,
-      errorData
+      errorData,
     );
   }
 
@@ -61,10 +61,12 @@ export async function getAuthToken(): Promise<string | null> {
   } catch (error) {
     // 서버 사이드에서 cookies() 사용할 수 없는 경우
   }
-  
+
   // 클라이언트 사이드에서는 localStorage 사용
   if (typeof window !== 'undefined') {
-    return localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+    return (
+      localStorage.getItem('authToken') || sessionStorage.getItem('authToken')
+    );
   }
   return null;
 }
@@ -72,7 +74,9 @@ export async function getAuthToken(): Promise<string | null> {
 // 클라이언트 사이드에서 토큰 가져오기
 export function getClientAuthToken(): string | null {
   if (typeof window !== 'undefined') {
-    return localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+    return (
+      localStorage.getItem('authToken') || sessionStorage.getItem('authToken')
+    );
   }
   return null;
 }
@@ -114,10 +118,12 @@ export function validateToken(token: string | null): boolean {
 export function getTokenFromCookie(): string | null {
   if (typeof document !== 'undefined') {
     const cookies = document.cookie.split(';');
-    const authCookie = cookies.find(cookie => cookie.trim().startsWith('authToken='));
+    const authCookie = cookies.find((cookie) =>
+      cookie.trim().startsWith('authToken='),
+    );
     if (authCookie) {
       return authCookie.split('=')[1];
     }
   }
   return null;
-} 
+}
