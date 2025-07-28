@@ -1,26 +1,41 @@
+import { Emotion } from '@/types/post.type';
 import Image from 'next/image';
 
-const emotions = [
-  { key: 'happy', src: '/emotions/emotion_happy.png' },
-  { key: 'excited', src: '/emotions/emotion_excited.png' },
-  { key: 'usual', src: '/emotions/emotion_usual.png' },
-  { key: 'sad', src: '/emotions/emotion_sad.png' },
-  { key: 'angry', src: '/emotions/emotion_angry.png' },
+const emotions: { key: Emotion; src: string }[] = [
+  { key: 'Joy', src: '/emotions/emotion_happy.png' },
+  { key: 'Fun', src: '/emotions/emotion_excited.png' },
+  { key: 'Soso', src: '/emotions/emotion_usual.png' },
+  { key: 'Sad', src: '/emotions/emotion_sad.png' },
+  { key: 'Mad', src: '/emotions/emotion_angry.png' },
 ];
 
-const SelectEmotion = () => {
+const SelectEmotion = ({
+  emotion,
+  setEmotion,
+}: {
+  emotion: Emotion;
+  setEmotion: (emotion: Emotion) => void;
+}) => {
+  const handleEmotionClick = (emotion: Emotion) => {
+    setEmotion(emotion);
+  };
+
   return (
     <section className="flex gap-5 items-center justify-center my-2">
-      {emotions.map((emotion) => {
+      {emotions.map((emotionItem) => {
         return (
-          <button key={emotion.key}>
+          <button
+            type="button"
+            key={emotionItem.key}
+            onClick={() => handleEmotionClick(emotionItem.key)}
+          >
             <Image
-              src={emotion.src}
-              alt={emotion.key}
+              src={emotionItem.src}
+              alt={emotionItem.key}
               unoptimized
               width={40}
               height={40}
-              className="rounded border border-skin2"
+              className={`rounded  ${emotionItem.key === emotion ? 'border-4 border-skin3' : 'border border-skin2'}`}
             />
           </button>
         );

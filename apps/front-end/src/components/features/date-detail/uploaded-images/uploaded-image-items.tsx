@@ -1,20 +1,21 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { CarouselItem } from '@/components/ui/carousel';
+import { PostImage } from '@/types/post.type';
 import Image from 'next/image';
-import { CalendarPost } from '@/types/post.type';
 
-const UploadedImageItems = ({ date }: { date: CalendarPost }) => {
+const UploadedImageItems = ({ images }: { images: PostImage[] }) => {
   return (
     <>
-      {date.images.map((image, index) => (
-        <CarouselItem key={image.id} className="w-full h-full">
+      {images.map((image, index) => (
+        <CarouselItem key={image.id + index} className="w-full h-full">
           <Card className="w-full h-full">
             <CardContent className="w-full h-full p-0">
               <Image
-                src={image.imageUrl}
-                alt={`업로드 이미지${index + 1}`}
+                src={image.postImage.url}
+                alt={`${index + 1}번째 이미지`}
                 width={100}
                 height={100}
+                priority
                 className="w-full h-full object-cover"
               />
             </CardContent>

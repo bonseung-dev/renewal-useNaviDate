@@ -7,43 +7,61 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import ImageItems from './image-items';
+import { PostImage } from '@/types/post.type';
 
 const UploadImageCarousel = ({
-  imageUrls,
-  setImageUrls,
+  images,
+  setImages,
 }: {
-  imageUrls: string[];
-  setImageUrls: React.Dispatch<React.SetStateAction<string[]>>;
+  images: PostImage[];
+  setImages: (images: PostImage[]) => void;
 }) => {
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
 
-    // 새로 추가된 파일만 URL 생성
-    const newUrls = files.map((file) => URL.createObjectURL(file));
-    setImageUrls((prev) => [...prev, ...newUrls]);
+    if (files) {
+      const imageFiles = Array.from(files).map((file) => ({
+        id: 4,
+        postId: 5,
+        postImage: {
+          id: 9,
+          filename: file.name,
+          originalName: file.name,
+          mimeType: file.type,
+          size: file.size,
+          path: file.name,
+          url: URL.createObjectURL(file),
+          userId: 7,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        address: '서울특별시 송파구 잠실 어쩌구 56-1',
+        isRepresentative: true,
+      }));
+      setImages([...images, ...imageFiles]);
+    }
   };
 
   return (
-    <section className="flex justify-center items-center w-80 h-[179px] rounded-[10px] border border-skin3">
+    <section className="flex justify-center items-center w-80 h-44 rounded-[10px] border border-skin3">
       <Carousel
         opts={{
           align: 'start',
           loop: true,
         }}
-        className=""
+        className="w-44 h-44"
       >
         <CarouselContent>
-          <ImageItems imageUrls={imageUrls} />
+          <ImageItems images={images} setImages={setImages} />
           <CarouselItem>
             <Card className="w-44 h-44 bg-font5 rounded-none">
               <CardContent className="w-full h-full flex justify-center items-center p-0">
-                <label htmlFor="image-upload" className="text-3xl text-skin5">
+                <label className="text-3xl text-skin5">
                   +
                   <input
                     type="file"
-                    id="image-upload"
-                    multiple
                     accept="image/*"
+                    multiple
                     onChange={handleImageUpload}
                     className="hidden"
                   />
@@ -52,8 +70,8 @@ const UploadImageCarousel = ({
             </Card>
           </CarouselItem>
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        <CarouselPrevious type="button" />
+        <CarouselNext type="button" />
       </Carousel>
     </section>
   );

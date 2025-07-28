@@ -5,13 +5,9 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import UploadedImageItems from './uploaded-image-items';
-import { CalendarPost } from '@/types/post.type';
+import { PostImage } from '@/types/post.type';
 
-export type UploadedImagesCarouselProps = {
-  date: CalendarPost;
-};
-
-const UploadedImagesCarousel = ({ date }: UploadedImagesCarouselProps) => {
+const UploadedImagesCarousel = ({ images }: { images: PostImage[] }) => {
   return (
     <section className="flex justify-center items-center w-80 h-44 rounded-[10px] border border-skin3">
       <Carousel
@@ -21,10 +17,10 @@ const UploadedImagesCarousel = ({ date }: UploadedImagesCarouselProps) => {
         }}
       >
         <CarouselContent className="w-44 h-44">
-          <UploadedImageItems date={date} />
+          <UploadedImageItems images={images} />
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        <CarouselPrevious type="button" />
+        <CarouselNext type="button" />
       </Carousel>
     </section>
   );
