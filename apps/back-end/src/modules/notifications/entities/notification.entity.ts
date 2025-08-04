@@ -4,19 +4,16 @@ import { User } from '../../users/entities/user.entity';
 
 @Entity('notifications')
 export class Notification implements SharedNotification {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column()
-  userId: string;
+  userId: number;
 
   @Column({ type: 'enum', enum: ['like', 'event', 'anniversary'] })
   type: 'like' | 'event' | 'anniversary';
 
   @Column()
-  title: string;
-
-  @Column('text')
   message: string;
 
   @Column({ default: false })
@@ -26,7 +23,10 @@ export class Notification implements SharedNotification {
   createdAt: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt?: Date;
+
+  @Column({ default: false })
+  isDeleted?: boolean;
 
   @ManyToOne(() => User, { nullable: true })
   @JoinColumn({ name: 'userId' })

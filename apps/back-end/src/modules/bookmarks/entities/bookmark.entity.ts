@@ -1,23 +1,27 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { Post } from '../../posts/entities/post.entity';
+import { Bookmark as BookmarkInterface } from '@use-navi-date/shared';
 
 @Entity('bookmarks')
-export class Bookmark {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+export class Bookmark implements BookmarkInterface {
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column()
-  userId: string;
+  userId: number;
 
   @Column()
-  postId: string;
+  postId: number;
 
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt?: Date;
+
+  @Column({ default: false })
+  isDeleted?: boolean;
 
   @ManyToOne(() => User, { nullable: true })
   @JoinColumn({ name: 'userId' })

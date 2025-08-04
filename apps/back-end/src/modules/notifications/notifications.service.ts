@@ -11,17 +11,6 @@ export class NotificationsService {
     private notificationsRepository: Repository<NotificationEntity>,
   ) {}
 
-  private convertToSharedType(entity: NotificationEntity): Notification {
-    return {
-      id: entity.id,
-      userId: entity.userId,
-      type: entity.type,
-      message: entity.message,
-      isRead: entity.isRead,
-      createdAt: entity.createdAt,
-    };
-  }
-
   async create(createNotificationDto: CreateNotificationDto): Promise<ApiResponse<Notification>> {
     try {
       const notification = this.notificationsRepository.create({
@@ -35,7 +24,7 @@ export class NotificationsService {
       
       return {
         success: true,
-        data: this.convertToSharedType(savedNotification),
+        data: savedNotification,
         message: '알림이 성공적으로 생성되었습니다.',
       };
     } catch (error) {
@@ -54,7 +43,7 @@ export class NotificationsService {
       });
       return {
         success: true,
-        data: notifications.map(entity => this.convertToSharedType(entity)),
+        data: notifications,
         message: '알림 목록을 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -66,7 +55,7 @@ export class NotificationsService {
     }
   }
 
-  async findOne(id: string): Promise<ApiResponse<Notification>> {
+  async findOne(id: number): Promise<ApiResponse<Notification>> {
     try {
       const notification = await this.notificationsRepository.findOne({
         where: { id },
@@ -80,7 +69,7 @@ export class NotificationsService {
       }
       return {
         success: true,
-        data: this.convertToSharedType(notification),
+        data: notification,
         message: '알림을 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -92,7 +81,7 @@ export class NotificationsService {
     }
   }
 
-  async update(id: string, updateNotificationDto: Partial<CreateNotificationDto>): Promise<ApiResponse<Notification>> {
+  async update(id: number, updateNotificationDto: Partial<CreateNotificationDto>): Promise<ApiResponse<Notification>> {
     try {
       const notification = await this.notificationsRepository.findOne({ where: { id } });
       if (!notification) {
@@ -107,7 +96,7 @@ export class NotificationsService {
       
       return {
         success: true,
-        data: this.convertToSharedType(updatedNotification),
+        data: updatedNotification,
         message: '알림이 성공적으로 업데이트되었습니다.',
       };
     } catch (error) {
@@ -119,7 +108,7 @@ export class NotificationsService {
     }
   }
 
-  async markAsRead(id: string): Promise<ApiResponse<Notification>> {
+  async markAsRead(id: number): Promise<ApiResponse<Notification>> {
     try {
       const notification = await this.notificationsRepository.findOne({ where: { id } });
       if (!notification) {
@@ -134,19 +123,19 @@ export class NotificationsService {
       
       return {
         success: true,
-        data: this.convertToSharedType(updatedNotification),
+        data: updatedNotification,
         message: '알림이 읽음으로 표시되었습니다.',
       };
     } catch (error) {
       return {
         success: false,
         error: error.message,
-        message: '알림 상태 업데이트에 실패했습니다.',
+        message: '알림 상태 변경에 실패했습니다.',
       };
     }
   }
 
-  async remove(id: string): Promise<ApiResponse<void>> {
+  async remove(id: number): Promise<ApiResponse<void>> {
     try {
       const notification = await this.notificationsRepository.findOne({ where: { id } });
       if (!notification) {

@@ -1,13 +1,14 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { Couple } from '../../couples/entities/couple.entity';
+import { Anniversary as AnniversaryInterface } from '@use-navi-date/shared';
 
 @Entity('anniversaries')
-export class Anniversary {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+export class Anniversary implements AnniversaryInterface {
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column()
-  coupleId: string;
+  coupleId: number;
 
   @Column()
   title: string;
@@ -15,14 +16,14 @@ export class Anniversary {
   @Column('date')
   date: Date;
 
-  @Column({ type: 'enum', enum: ['NONE', 'YEARLY'] })
+  @Column({ type: 'enum', enum: ['NONE', 'YEARLY'], default: 'NONE' })
   repeat: 'NONE' | 'YEARLY';
 
   @Column({ nullable: true })
   memo?: string;
 
   @Column()
-  createdBy: string;
+  createdBy: number;
 
   @CreateDateColumn()
   createdAt: Date;

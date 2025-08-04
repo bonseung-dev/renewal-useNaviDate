@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request, ParseIntPipe } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto, ApiResponse, User } from '@use-navi-date/shared';
 
@@ -17,17 +17,17 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<ApiResponse<User>> {
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<ApiResponse<User>> {
     return this.usersService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: Partial<CreateUserDto>): Promise<ApiResponse<User>> {
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: Partial<CreateUserDto>): Promise<ApiResponse<User>> {
     return this.usersService.update(id, updateUserDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): Promise<ApiResponse<void>> {
+  remove(@Param('id', ParseIntPipe) id: number): Promise<ApiResponse<void>> {
     return this.usersService.remove(id);
   }
 

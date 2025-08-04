@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, Delete, Request } from '@nestjs/common';
+import { Controller, Get, Post, Param, Delete, Request, ParseIntPipe } from '@nestjs/common';
 import { LikesService } from './likes.service';
 import { ApiResponse, Like } from '@use-navi-date/shared';
 
@@ -7,7 +7,7 @@ export class LikesController {
   constructor(private readonly likesService: LikesService) {}
 
   @Post(':postId')
-  create(@Param('postId') postId: string, @Request() req): Promise<ApiResponse<Like>> {
+  create(@Param('postId', ParseIntPipe) postId: number, @Request() req): Promise<ApiResponse<Like>> {
     const userId = req.user?.id;
     return this.likesService.create(userId, postId);
   }
@@ -18,12 +18,12 @@ export class LikesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<ApiResponse<Like>> {
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<ApiResponse<Like>> {
     return this.likesService.findOne(id);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): Promise<ApiResponse<void>> {
+  remove(@Param('id', ParseIntPipe) id: number): Promise<ApiResponse<void>> {
     return this.likesService.remove(id);
   }
 } 

@@ -11,16 +11,7 @@ export class BookmarksService {
     private bookmarksRepository: Repository<BookmarkEntity>,
   ) {}
 
-  private convertToSharedType(entity: BookmarkEntity): Bookmark {
-    return {
-      id: entity.id,
-      postId: entity.postId,
-      userId: entity.userId,
-      createdAt: entity.createdAt.toISOString(),
-    };
-  }
-
-  async create(userId: string, postId: string): Promise<ApiResponse<Bookmark>> {
+  async create(userId: number, postId: number): Promise<ApiResponse<Bookmark>> {
     try {
       const bookmark = this.bookmarksRepository.create({
         userId,
@@ -31,7 +22,7 @@ export class BookmarksService {
       
       return {
         success: true,
-        data: this.convertToSharedType(savedBookmark),
+        data: savedBookmark,
         message: '북마크가 성공적으로 생성되었습니다.',
       };
     } catch (error) {
@@ -50,7 +41,7 @@ export class BookmarksService {
       });
       return {
         success: true,
-        data: bookmarks.map(entity => this.convertToSharedType(entity)),
+        data: bookmarks,
         message: '북마크 목록을 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -62,7 +53,7 @@ export class BookmarksService {
     }
   }
 
-  async findOne(id: string): Promise<ApiResponse<Bookmark>> {
+  async findOne(id: number): Promise<ApiResponse<Bookmark>> {
     try {
       const bookmark = await this.bookmarksRepository.findOne({
         where: { id },
@@ -76,7 +67,7 @@ export class BookmarksService {
       }
       return {
         success: true,
-        data: this.convertToSharedType(bookmark),
+        data: bookmark,
         message: '북마크를 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -88,7 +79,7 @@ export class BookmarksService {
     }
   }
 
-  async remove(id: string): Promise<ApiResponse<void>> {
+  async remove(id: number): Promise<ApiResponse<void>> {
     try {
       const bookmark = await this.bookmarksRepository.findOne({ where: { id } });
       if (!bookmark) {

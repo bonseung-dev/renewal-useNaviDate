@@ -97,7 +97,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     // 메시지 저장
     const savedMessage = await this.chatsService.createMessage(
-      roomId,
+      parseInt(roomId),
       userId,
       message,
     );

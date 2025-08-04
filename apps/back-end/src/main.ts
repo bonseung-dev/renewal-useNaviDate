@@ -30,7 +30,7 @@ async function bootstrap() {
   app.use(passport.session());
 
   app.useGlobalInterceptors(new DateToISOStringInterceptor());
-
-  await app.listen(process.env.PORT ?? 3001);
+  console.log('PORT:', process.env.PORT);
+  await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

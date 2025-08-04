@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request, ParseIntPipe } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto, ApiResponse, Post as SharedPost } from '@use-navi-date/shared';
 
@@ -17,17 +17,17 @@ export class PostsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<ApiResponse<SharedPost>> {
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<ApiResponse<SharedPost>> {
     return this.postsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePostDto: Partial<CreatePostDto>): Promise<ApiResponse<SharedPost>> {
+  update(@Param('id', ParseIntPipe) id: number, @Body() updatePostDto: Partial<CreatePostDto>): Promise<ApiResponse<SharedPost>> {
     return this.postsService.update(id, updatePostDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): Promise<ApiResponse<void>> {
+  remove(@Param('id', ParseIntPipe) id: number): Promise<ApiResponse<void>> {
     return this.postsService.remove(id);
   }
-} 
+}

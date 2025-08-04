@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, Delete, Request } from '@nestjs/common';
+import { Controller, Get, Post, Param, Delete, Request, ParseIntPipe } from '@nestjs/common';
 import { BookmarksService } from './bookmarks.service';
 import { ApiResponse, Bookmark } from '@use-navi-date/shared';
 
@@ -7,7 +7,7 @@ export class BookmarksController {
   constructor(private readonly bookmarksService: BookmarksService) {}
 
   @Post(':postId')
-  create(@Param('postId') postId: string, @Request() req): Promise<ApiResponse<Bookmark>> {
+  create(@Param('postId', ParseIntPipe) postId: number, @Request() req): Promise<ApiResponse<Bookmark>> {
     const userId = req.user?.id;
     return this.bookmarksService.create(userId, postId);
   }
@@ -18,12 +18,12 @@ export class BookmarksController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<ApiResponse<Bookmark>> {
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<ApiResponse<Bookmark>> {
     return this.bookmarksService.findOne(id);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): Promise<ApiResponse<void>> {
+  remove(@Param('id', ParseIntPipe) id: number): Promise<ApiResponse<void>> {
     return this.bookmarksService.remove(id);
   }
 } 

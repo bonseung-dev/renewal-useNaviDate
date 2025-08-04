@@ -1,31 +1,37 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { User as UserInterface } from '@use-navi-date/shared';
 
 @Entity('users')
-export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+export class User implements UserInterface {
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column({ unique: true })
   email: string;
 
   @Column({ nullable: true })
-  password: string;
+  password?: string;
 
   @Column({ nullable: true })
   nickname: string;
 
   @Column({ nullable: true })
-  profileImage: string;
+  profileImage?: string;
 
   @Column({ nullable: true })
-  googleId: string;
+  googleId?: string;
 
   @Column({ default: false })
-  isVerified: boolean;
+  isVerified?: boolean;
 
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt?: Date;
+
+  @Column({ default: false })
+  isDeleted?: boolean;
+
+  tempToken?: string;
 } 

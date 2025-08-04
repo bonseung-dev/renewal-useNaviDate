@@ -11,25 +11,13 @@ export class CouplesService {
     private couplesRepository: Repository<CoupleEntity>,
   ) {}
 
-  private convertToSharedType(entity: CoupleEntity): Couple {
-    return {
-      id: entity.id,
-      userAId: entity.userAId,
-      userBId: entity.userBId,
-      anniversary: entity.anniversary,
-      name: entity.name,
-      status: entity.status,
-      createdAt: entity.createdAt.toISOString(),
-    };
-  }
-
   async create(createCoupleDto: CreateCoupleDto): Promise<ApiResponse<Couple>> {
     try {
       const couple = this.couplesRepository.create({
-        userAId: createCoupleDto.user2Id, // 임시로 user2Id를 userAId로 설정
+        userAId: createCoupleDto.user2Id,
         userBId: null,
-        anniversary: new Date().toISOString().split('T')[0], // 임시로 오늘 날짜 설정
-        name: '새로운 커플', // 임시 이름
+        anniversary: new Date().toISOString().split('T')[0],
+        name: 'New Couple',
         status: 'pending',
       });
       
@@ -37,7 +25,7 @@ export class CouplesService {
       
       return {
         success: true,
-        data: this.convertToSharedType(savedCouple),
+        data: savedCouple,
         message: '커플이 성공적으로 생성되었습니다.',
       };
     } catch (error) {
@@ -52,11 +40,11 @@ export class CouplesService {
   async findAll(): Promise<ApiResponse<Couple[]>> {
     try {
       const couples = await this.couplesRepository.find({
-        relations: ['user1', 'user2'],
+        relations: ['userA', 'userB'],
       });
       return {
         success: true,
-        data: couples.map(entity => this.convertToSharedType(entity)),
+        data: couples,
         message: '커플 목록을 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -68,11 +56,11 @@ export class CouplesService {
     }
   }
 
-  async findOne(id: string): Promise<ApiResponse<Couple>> {
+  async findOne(id: number): Promise<ApiResponse<Couple>> {
     try {
-      const couple = await this.couplesRepository.findOne({
+      const couple = await this.couplesRepository.findOne({ 
         where: { id },
-        relations: ['user1', 'user2'],
+        relations: ['userA', 'userB'],
       });
       if (!couple) {
         return {
@@ -82,7 +70,7 @@ export class CouplesService {
       }
       return {
         success: true,
-        data: this.convertToSharedType(couple),
+        data: couple,
         message: '커플을 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -94,7 +82,7 @@ export class CouplesService {
     }
   }
 
-  async update(id: string, updateCoupleDto: Partial<CreateCoupleDto>): Promise<ApiResponse<Couple>> {
+  async update(id: number, updateCoupleDto: Partial<CreateCoupleDto>): Promise<ApiResponse<Couple>> {
     try {
       const couple = await this.couplesRepository.findOne({ where: { id } });
       if (!couple) {
@@ -109,7 +97,7 @@ export class CouplesService {
       
       return {
         success: true,
-        data: this.convertToSharedType(updatedCouple),
+        data: updatedCouple,
         message: '커플이 성공적으로 업데이트되었습니다.',
       };
     } catch (error) {
@@ -121,7 +109,7 @@ export class CouplesService {
     }
   }
 
-  async remove(id: string): Promise<ApiResponse<void>> {
+  async remove(id: number): Promise<ApiResponse<void>> {
     try {
       const couple = await this.couplesRepository.findOne({ where: { id } });
       if (!couple) {

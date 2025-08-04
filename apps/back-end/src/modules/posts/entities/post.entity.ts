@@ -3,14 +3,15 @@ import { User } from '../../users/entities/user.entity';
 import { Couple } from '../../couples/entities/couple.entity';
 import { PostImage } from './post-image.entity';
 import { PostTag } from './post-tag.entity';
+import { Post as PostInterface } from '@use-navi-date/shared';
 
 @Entity('posts')
-export class Post {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+export class Post implements PostInterface {
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column()
-  userId: string;
+  userId: number;
 
   @Column()
   title: string;
@@ -31,7 +32,7 @@ export class Post {
   createdAt: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt?: Date;
 
   @Column({ type: 'timestamp', nullable: true })
   deletedAt: Date | null;

@@ -11,34 +11,22 @@ export class AnniversariesService {
     private anniversariesRepository: Repository<AnniversaryEntity>,
   ) {}
 
-  private convertToSharedType(entity: AnniversaryEntity): Anniversary {
-    return {
-      id: entity.id,
-      coupleId: entity.coupleId,
-      title: entity.title,
-      date: entity.date.toISOString(),
-      repeat: entity.repeat,
-      memo: entity.memo,
-      createdBy: entity.createdBy,
-    };
-  }
-
   async create(createAnniversaryDto: CreateAnniversaryDto): Promise<ApiResponse<Anniversary>> {
     try {
       const anniversary = this.anniversariesRepository.create({
         coupleId: createAnniversaryDto.coupleId,
         title: createAnniversaryDto.title,
         date: createAnniversaryDto.date,
-        repeat: 'NONE',
-        memo: createAnniversaryDto.description,
-        createdBy: '', // 임시로 빈 문자열 설정
+        repeat: createAnniversaryDto.repeat,
+        memo: createAnniversaryDto.memo,
+        createdBy: createAnniversaryDto.createdBy || 0,
       });
       
       const savedAnniversary = await this.anniversariesRepository.save(anniversary);
       
       return {
         success: true,
-        data: this.convertToSharedType(savedAnniversary),
+        data: savedAnniversary,
         message: '기념일이 성공적으로 생성되었습니다.',
       };
     } catch (error) {
@@ -57,7 +45,7 @@ export class AnniversariesService {
       });
       return {
         success: true,
-        data: anniversaries.map(entity => this.convertToSharedType(entity)),
+        data: anniversaries,
         message: '기념일 목록을 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -69,9 +57,9 @@ export class AnniversariesService {
     }
   }
 
-  async findOne(id: string): Promise<ApiResponse<Anniversary>> {
+  async findOne(id: number): Promise<ApiResponse<Anniversary>> {
     try {
-      const anniversary = await this.anniversariesRepository.findOne({
+      const anniversary = await this.anniversariesRepository.findOne({ 
         where: { id },
         relations: ['couple'],
       });
@@ -83,7 +71,7 @@ export class AnniversariesService {
       }
       return {
         success: true,
-        data: this.convertToSharedType(anniversary),
+        data: anniversary,
         message: '기념일을 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -95,7 +83,7 @@ export class AnniversariesService {
     }
   }
 
-  async update(id: string, updateAnniversaryDto: Partial<CreateAnniversaryDto>): Promise<ApiResponse<Anniversary>> {
+  async update(id: number, updateAnniversaryDto: Partial<CreateAnniversaryDto>): Promise<ApiResponse<Anniversary>> {
     try {
       const anniversary = await this.anniversariesRepository.findOne({ where: { id } });
       if (!anniversary) {
@@ -110,7 +98,7 @@ export class AnniversariesService {
       
       return {
         success: true,
-        data: this.convertToSharedType(updatedAnniversary),
+        data: updatedAnniversary,
         message: '기념일이 성공적으로 업데이트되었습니다.',
       };
     } catch (error) {
@@ -122,7 +110,7 @@ export class AnniversariesService {
     }
   }
 
-  async remove(id: string): Promise<ApiResponse<void>> {
+  async remove(id: number): Promise<ApiResponse<void>> {
     try {
       const anniversary = await this.anniversariesRepository.findOne({ where: { id } });
       if (!anniversary) {

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request, ParseIntPipe } from '@nestjs/common';
 import { SettingsService } from './settings.service';
 import { UpdateSettingDto, ApiResponse, Setting } from '@use-navi-date/shared';
 
@@ -18,17 +18,17 @@ export class SettingsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<ApiResponse<Setting>> {
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<ApiResponse<Setting>> {
     return this.settingsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSettingDto: UpdateSettingDto): Promise<ApiResponse<Setting>> {
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateSettingDto: UpdateSettingDto): Promise<ApiResponse<Setting>> {
     return this.settingsService.update(id, updateSettingDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): Promise<ApiResponse<void>> {
+  remove(@Param('id', ParseIntPipe) id: number): Promise<ApiResponse<void>> {
     return this.settingsService.remove(id);
   }
 } 

@@ -14,21 +14,6 @@ export class ImagesService {
     private imagesRepository: Repository<ImageEntity>,
   ) {}
 
-  private convertToSharedType(entity: ImageEntity): Image {
-    return {
-      id: entity.id,
-      filename: entity.filename,
-      originalName: entity.originalName,
-      mimeType: entity.mimeType,
-      size: entity.size,
-      path: entity.path,
-      url: entity.url,
-      userId: entity.userId,
-      createdAt: entity.createdAt,
-      updatedAt: entity.updatedAt,
-    };
-  }
-
   async create(imageData: Partial<ImageEntity>): Promise<ApiResponse<Image>> {
     try {
       const image = this.imagesRepository.create(imageData);
@@ -36,7 +21,7 @@ export class ImagesService {
       
       return {
         success: true,
-        data: this.convertToSharedType(savedImage),
+        data: savedImage,
         message: '이미지가 성공적으로 업로드되었습니다.',
       };
     } catch (error) {
@@ -48,7 +33,7 @@ export class ImagesService {
     }
   }
 
-  async uploadImage(file: Express.Multer.File, userId?: string): Promise<ApiResponse<Image>> {
+  async uploadImage(file: Express.Multer.File, userId?: number): Promise<ApiResponse<Image>> {
     try {
       if (!file) {
         return {
@@ -116,7 +101,7 @@ export class ImagesService {
       });
       return {
         success: true,
-        data: images.map(entity => this.convertToSharedType(entity)),
+        data: images,
         message: '이미지 목록을 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -128,7 +113,7 @@ export class ImagesService {
     }
   }
 
-  async findOne(id: string): Promise<ApiResponse<Image>> {
+  async findOne(id: number): Promise<ApiResponse<Image>> {
     try {
       const image = await this.imagesRepository.findOne({
         where: { id },
@@ -142,7 +127,7 @@ export class ImagesService {
       }
       return {
         success: true,
-        data: this.convertToSharedType(image),
+        data: image,
         message: '이미지를 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -154,7 +139,7 @@ export class ImagesService {
     }
   }
 
-  async remove(id: string): Promise<ApiResponse<void>> {
+  async remove(id: number): Promise<ApiResponse<void>> {
     try {
       const image = await this.imagesRepository.findOne({ where: { id } });
       if (!image) {
@@ -164,8 +149,8 @@ export class ImagesService {
         };
       }
 
-      // 파일 삭제
-      const filePath = path.join(process.cwd(), 'uploads', image.filename);
+      // 파일 시스템에서 이미지 파일 삭제
+      const filePath = path.join(process.cwd(), image.path);
       if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
       }

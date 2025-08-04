@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request, ParseIntPipe } from '@nestjs/common';
 import { AnniversariesService } from './anniversaries.service';
 import { CreateAnniversaryDto, ApiResponse, Anniversary } from '@use-navi-date/shared';
 
@@ -17,17 +17,17 @@ export class AnniversariesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<ApiResponse<Anniversary>> {
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<ApiResponse<Anniversary>> {
     return this.anniversariesService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAnniversaryDto: Partial<CreateAnniversaryDto>): Promise<ApiResponse<Anniversary>> {
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateAnniversaryDto: Partial<CreateAnniversaryDto>): Promise<ApiResponse<Anniversary>> {
     return this.anniversariesService.update(id, updateAnniversaryDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): Promise<ApiResponse<void>> {
+  remove(@Param('id', ParseIntPipe) id: number): Promise<ApiResponse<void>> {
     return this.anniversariesService.remove(id);
   }
 }

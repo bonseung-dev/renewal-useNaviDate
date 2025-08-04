@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { CouplesService } from './couples.service';
 import { CreateCoupleDto, ApiResponse, Couple } from '@use-navi-date/shared';
 
@@ -17,17 +17,17 @@ export class CouplesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<ApiResponse<Couple>> {
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<ApiResponse<Couple>> {
     return this.couplesService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCoupleDto: Partial<CreateCoupleDto>): Promise<ApiResponse<Couple>> {
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateCoupleDto: Partial<CreateCoupleDto>): Promise<ApiResponse<Couple>> {
     return this.couplesService.update(id, updateCoupleDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): Promise<ApiResponse<void>> {
+  remove(@Param('id', ParseIntPipe) id: number): Promise<ApiResponse<void>> {
     return this.couplesService.remove(id);
   }
 } 

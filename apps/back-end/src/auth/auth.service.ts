@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException, BadRequestException } from '@nestjs/
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from '../users/entities/user.entity';
+import { User } from '../modules/users/entities/user.entity';
 import { LoginDto, CreateUserDto, AuthResponse, User as SharedUser } from '@use-navi-date/shared';
 import * as bcrypt from 'bcrypt';
 
@@ -86,7 +86,7 @@ export class AuthService {
 
       return {
         success: true,
-        user: this.convertToSharedType(user),
+        user: user,
         access_token,
         message: 'Google 로그인이 성공했습니다.',
       };
@@ -143,7 +143,7 @@ export class AuthService {
 
       return {
         success: true,
-        user: this.convertToSharedType(user),
+        user: user,
         access_token,
         message: 'Google 로그인이 성공했습니다.',
       };
@@ -227,7 +227,7 @@ export class AuthService {
 
       return {
         success: true,
-        user: this.convertToSharedType(user),
+        user: user,
         access_token,
         message: '로그인이 성공했습니다.',
       };
@@ -275,7 +275,7 @@ export class AuthService {
 
       return {
         success: true,
-        user: this.convertToSharedType(user),
+        user: user,
         access_token,
         message: '회원가입이 성공했습니다.',
       };
@@ -286,18 +286,5 @@ export class AuthService {
         message: '회원가입 처리 중 오류가 발생했습니다.',
       };
     }
-  }
-
-  private convertToSharedType(user: User): SharedUser {
-    return {
-      id: user.id,
-      email: user.email,
-      nickname: user.nickname,
-      profileImage: user.profileImage,
-      googleId: user.googleId,
-      isVerified: user.isVerified,
-      createdAt: user.createdAt?.toISOString(),
-      updatedAt: user.updatedAt?.toISOString(),
-    };
   }
 }

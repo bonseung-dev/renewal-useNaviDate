@@ -1,10 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
+import { Image as ImageInterface } from '@use-navi-date/shared';
 
 @Entity('images')
-export class Image {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+export class Image implements ImageInterface {
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column()
   filename: string;
@@ -25,13 +26,16 @@ export class Image {
   url: string;
 
   @Column({ nullable: true })
-  userId?: string;
+  userId?: number;
 
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt?: Date;
+
+  @Column({ default: false })
+  isDeleted?: boolean;
 
   @ManyToOne(() => User, { nullable: true })
   @JoinColumn({ name: 'userId' })

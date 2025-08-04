@@ -12,17 +12,6 @@ export class UsersService {
     private usersRepository: Repository<UserEntity>,
   ) {}
 
-  private convertToSharedType(entity: UserEntity): User {
-    return {
-      id: entity.id,
-      email: entity.email,
-      nickname: entity.nickname,
-      profileImage: entity.profileImage,
-      createdAt: entity.createdAt.toISOString(),
-      updatedAt: entity.updatedAt.toISOString(),
-    };
-  }
-
   async create(createUserDto: CreateUserDto): Promise<ApiResponse<User>> {
     try {
       const user = this.usersRepository.create({
@@ -36,7 +25,7 @@ export class UsersService {
       
       return {
         success: true,
-        data: this.convertToSharedType(savedUser),
+        data: savedUser,
         message: '사용자가 성공적으로 생성되었습니다.',
       };
     } catch (error) {
@@ -53,7 +42,7 @@ export class UsersService {
       const users = await this.usersRepository.find();
       return {
         success: true,
-        data: users.map(entity => this.convertToSharedType(entity)),
+        data: users,
         message: '사용자 목록을 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -65,7 +54,7 @@ export class UsersService {
     }
   }
 
-  async findOne(id: string): Promise<ApiResponse<User>> {
+  async findOne(id: number): Promise<ApiResponse<User>> {
     try {
       const user = await this.usersRepository.findOne({ where: { id } });
       if (!user) {
@@ -76,7 +65,7 @@ export class UsersService {
       }
       return {
         success: true,
-        data: this.convertToSharedType(user),
+        data: user,
         message: '사용자를 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -99,7 +88,7 @@ export class UsersService {
       }
       return {
         success: true,
-        data: this.convertToSharedType(user),
+        data: user,
         message: '사용자를 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -111,7 +100,7 @@ export class UsersService {
     }
   }
 
-  async update(id: string, updateUserDto: Partial<CreateUserDto>): Promise<ApiResponse<User>> {
+  async update(id: number, updateUserDto: Partial<CreateUserDto>): Promise<ApiResponse<User>> {
     try {
       const user = await this.usersRepository.findOne({ where: { id } });
       if (!user) {
@@ -126,7 +115,7 @@ export class UsersService {
       
       return {
         success: true,
-        data: this.convertToSharedType(updatedUser),
+        data: updatedUser,
         message: '사용자가 성공적으로 업데이트되었습니다.',
       };
     } catch (error) {
@@ -138,7 +127,7 @@ export class UsersService {
     }
   }
 
-  async updateProfile(id: string, updateData: Partial<CreateUserDto>): Promise<ApiResponse<User>> {
+  async updateProfile(id: number, updateData: Partial<CreateUserDto>): Promise<ApiResponse<User>> {
     try {
       const user = await this.usersRepository.findOne({ where: { id } });
       if (!user) {
@@ -158,7 +147,7 @@ export class UsersService {
       
       return {
         success: true,
-        data: this.convertToSharedType(updatedUser),
+        data: updatedUser,
         message: '사용자가 성공적으로 업데이트되었습니다.',
       };
     } catch (error) {
@@ -170,7 +159,7 @@ export class UsersService {
     }
   }
 
-  async updateProfileImage(id: string, imageId: string): Promise<ApiResponse<User>> {
+  async updateProfileImage(id: number, imageId: string): Promise<ApiResponse<User>> {
     try {
       const user = await this.usersRepository.findOne({ where: { id } });
       if (!user) {
@@ -184,7 +173,7 @@ export class UsersService {
       
       return {
         success: true,
-        data: this.convertToSharedType(updatedUser),
+        data: updatedUser,
         message: '사용자 프로필 이미지가 성공적으로 업데이트되었습니다.',
       };
     } catch (error) {
@@ -196,7 +185,7 @@ export class UsersService {
     }
   }
 
-  async updateNickname(id: string, nickname: string): Promise<ApiResponse<User>> {
+  async updateNickname(id: number, nickname: string): Promise<ApiResponse<User>> {
     try {
       const user = await this.usersRepository.findOne({ where: { id } });
       if (!user) {
@@ -211,7 +200,7 @@ export class UsersService {
       
       return {
         success: true,
-        data: this.convertToSharedType(updatedUser),
+        data: updatedUser,
         message: '닉네임이 성공적으로 업데이트되었습니다.',
       };
     } catch (error) {
@@ -223,7 +212,7 @@ export class UsersService {
     }
   }
 
-  async remove(id: string): Promise<ApiResponse<void>> {
+  async remove(id: number): Promise<ApiResponse<void>> {
     try {
       const user = await this.usersRepository.findOne({ where: { id } });
       if (!user) {

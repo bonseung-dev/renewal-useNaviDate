@@ -1,4 +1,4 @@
-import { Controller, Post, Delete, Get, Param, Body, UseInterceptors, UploadedFile, UseGuards } from '@nestjs/common';
+import { Controller, Post, Delete, Get, Param, Body, UseInterceptors, UploadedFile, UseGuards, ParseIntPipe } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { PostImageService } from './post-image.service';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
@@ -12,25 +12,25 @@ export class PostImageController {
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(
     @UploadedFile() file: Express.Multer.File,
-    @Param('postId') postId: string,
+    @Param('postId', ParseIntPipe) postId: number,
   ) {
     return this.postImageService.uploadFile(file, postId);
   }
 
   @Delete(':id')
-  async deleteFile(@Param('id') id: string) {
+  async deleteFile(@Param('id', ParseIntPipe) id: number) {
     await this.postImageService.deleteFile(id);
     return { message: 'File deleted successfully' };
   }
 
   @Get('post/:postId')
-  async getFilesByPostId(@Param('postId') postId: string) {
+  async getFilesByPostId(@Param('postId', ParseIntPipe) postId: number) {
     return this.postImageService.getFilesByPostId(postId);
   }
 
   @Post(':id/order')
   async updateOrder(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body('order') order: number,
   ) {
     return this.postImageService.updateOrder(id, order);

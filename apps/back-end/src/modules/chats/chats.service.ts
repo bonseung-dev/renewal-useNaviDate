@@ -14,28 +14,7 @@ export class ChatsService {
     private chatMessagesRepository: Repository<ChatMessageEntity>,
   ) {}
 
-  private convertToSharedType(entity: ChatEntity): Chat {
-    return {
-      id: entity.id,
-      userAId: entity.userAId,
-      userBId: entity.userBId,
-      message: entity.message,
-      createdAt: entity.createdAt,
-    };
-  }
-
-  private convertMessageToSharedType(entity: ChatMessageEntity): ChatMessage {
-    return {
-      id: entity.id,
-      chatId: entity.chatId,
-      userId: entity.userId,
-      content: entity.content,
-      createdAt: entity.createdAt,
-      updatedAt: entity.updatedAt,
-    };
-  }
-
-  async create(userAId: string, userBId: string): Promise<ApiResponse<Chat>> {
+  async create(userAId: number, userBId: number): Promise<ApiResponse<Chat>> {
     try {
       const chat = this.chatsRepository.create({
         userAId,
@@ -47,7 +26,7 @@ export class ChatsService {
       
       return {
         success: true,
-        data: this.convertToSharedType(savedChat),
+        data: savedChat,
         message: '채팅이 성공적으로 생성되었습니다.',
       };
     } catch (error) {
@@ -66,7 +45,7 @@ export class ChatsService {
       });
       return {
         success: true,
-        data: chats.map(entity => this.convertToSharedType(entity)),
+        data: chats,
         message: '채팅 목록을 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -78,7 +57,7 @@ export class ChatsService {
     }
   }
 
-  async findOne(id: string): Promise<ApiResponse<Chat>> {
+  async findOne(id: number): Promise<ApiResponse<Chat>> {
     try {
       const chat = await this.chatsRepository.findOne({
         where: { id },
@@ -92,7 +71,7 @@ export class ChatsService {
       }
       return {
         success: true,
-        data: this.convertToSharedType(chat),
+        data: chat,
         message: '채팅을 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -104,7 +83,7 @@ export class ChatsService {
     }
   }
 
-  async createMessage(chatId: string, userId: string, content: string): Promise<ApiResponse<ChatMessage>> {
+  async createMessage(chatId: number, userId: number, content: string): Promise<ApiResponse<ChatMessage>> {
     try {
       const message = this.chatMessagesRepository.create({
         chatId,
@@ -116,7 +95,7 @@ export class ChatsService {
       
       return {
         success: true,
-        data: this.convertMessageToSharedType(savedMessage),
+        data: savedMessage,
         message: '메시지가 성공적으로 전송되었습니다.',
       };
     } catch (error) {
@@ -128,7 +107,7 @@ export class ChatsService {
     }
   }
 
-  async remove(id: string): Promise<ApiResponse<void>> {
+  async remove(id: number): Promise<ApiResponse<void>> {
     try {
       const chat = await this.chatsRepository.findOne({ where: { id } });
       if (!chat) {

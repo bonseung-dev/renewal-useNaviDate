@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Delete, Param, UseInterceptors, UploadedFile, UseGuards, Req } from '@nestjs/common';
+import { Controller, Post, Get, Delete, Param, UseInterceptors, UploadedFile, UseGuards, Req, ParseIntPipe } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ImagesService } from './images.service';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
@@ -22,13 +22,13 @@ export class ImagesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<ApiResponse<Image>> {
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<ApiResponse<Image>> {
     return this.imagesService.findOne(id);
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  remove(@Param('id') id: string): Promise<ApiResponse<void>> {
+  remove(@Param('id', ParseIntPipe) id: number): Promise<ApiResponse<void>> {
     return this.imagesService.remove(id);
   }
 

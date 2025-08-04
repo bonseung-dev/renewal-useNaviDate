@@ -11,17 +11,7 @@ export class SettingsService {
     private settingsRepository: Repository<SettingEntity>,
   ) {}
 
-  private convertToSharedType(entity: SettingEntity): Setting {
-    return {
-      id: entity.id,
-      userId: entity.userId,
-      theme: entity.theme,
-      allowPush: entity.allowPush,
-      createdAt: entity.createdAt,
-    };
-  }
-
-  async create(userId: string): Promise<ApiResponse<Setting>> {
+  async create(userId: number): Promise<ApiResponse<Setting>> {
     try {
       const setting = this.settingsRepository.create({
         userId,
@@ -33,7 +23,7 @@ export class SettingsService {
       
       return {
         success: true,
-        data: this.convertToSharedType(savedSetting),
+        data: savedSetting,
         message: '설정이 성공적으로 생성되었습니다.',
       };
     } catch (error) {
@@ -52,7 +42,7 @@ export class SettingsService {
       });
       return {
         success: true,
-        data: settings.map(this.convertToSharedType),
+        data: settings,
         message: '설정 목록을 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -64,7 +54,7 @@ export class SettingsService {
     }
   }
 
-  async findOne(userId: string): Promise<ApiResponse<Setting>> {
+  async findOne(userId: number): Promise<ApiResponse<Setting>> {
     try {
       const setting = await this.settingsRepository.findOne({
         where: { userId },
@@ -78,7 +68,7 @@ export class SettingsService {
       }
       return {
         success: true,
-        data: this.convertToSharedType(setting),
+        data: setting,
         message: '설정을 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -90,7 +80,7 @@ export class SettingsService {
     }
   }
 
-  async update(userId: string, updateSettingDto: UpdateSettingDto): Promise<ApiResponse<Setting>> {
+  async update(userId: number, updateSettingDto: UpdateSettingDto): Promise<ApiResponse<Setting>> {
     try {
       const setting = await this.settingsRepository.findOne({ where: { userId } });
       if (!setting) {
@@ -100,19 +90,12 @@ export class SettingsService {
         };
       }
 
-      // 업데이트할 필드들만 적용
-      if (updateSettingDto.themePreference) {
-        setting.theme = updateSettingDto.themePreference as 'light' | 'dark';
-      }
-      if (updateSettingDto.pushNotification !== undefined) {
-        setting.allowPush = updateSettingDto.pushNotification;
-      }
-
+      Object.assign(setting, updateSettingDto);
       const updatedSetting = await this.settingsRepository.save(setting);
       
       return {
         success: true,
-        data: this.convertToSharedType(updatedSetting),
+        data: updatedSetting,
         message: '설정이 성공적으로 업데이트되었습니다.',
       };
     } catch (error) {
@@ -124,7 +107,7 @@ export class SettingsService {
     }
   }
 
-  async remove(id: string): Promise<ApiResponse<void>> {
+  async remove(id: number): Promise<ApiResponse<void>> {
     try {
       const setting = await this.settingsRepository.findOne({ where: { id } });
       if (!setting) {

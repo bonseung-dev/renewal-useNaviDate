@@ -16,14 +16,7 @@ export const LEGAL_HOLIDAYS = [
   '대통령 선거',
 ] as const;
 
-// 감정 타입
-export const EMOTIONS = {
-  HAPPY: 'happy',
-  SAD: 'sad',
-  EXCITED: 'excited',
-  ANGRY: 'angry',
-  USUAL: 'usual',
-} as const;
+// 감정 타입은 enums.ts에서 관리
 
 // 게시물 가시성
 export const POST_VISIBILITY = {

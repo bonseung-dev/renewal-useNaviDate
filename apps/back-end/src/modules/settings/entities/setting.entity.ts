@@ -1,13 +1,14 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
+import { Setting as SettingInterface } from '@use-navi-date/shared';
 
 @Entity('settings')
-export class Setting {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+export class Setting implements SettingInterface {
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column()
-  userId: string;
+  userId: number;
 
   @Column({ type: 'enum', enum: ['light', 'dark'] })
   theme: 'light' | 'dark';
@@ -36,5 +37,8 @@ export class Setting {
   createdAt: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt?: Date;
+
+  @Column({ default: false })
+  isDeleted?: boolean;
 } 

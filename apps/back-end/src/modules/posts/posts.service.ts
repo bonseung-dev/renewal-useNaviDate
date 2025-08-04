@@ -11,25 +11,10 @@ export class PostsService {
     private postsRepository: Repository<PostEntity>,
   ) {}
 
-  private convertToSharedType(entity: PostEntity): Post {
-    return {
-      id: entity.id,
-      userId: entity.userId,
-      title: entity.title,
-      content: entity.content,
-      visibility: entity.visibility,
-      date: entity.date.toISOString(),
-      emotion: entity.emotion,
-      createdAt: entity.createdAt.toISOString(),
-      updatedAt: entity.updatedAt.toISOString(),
-      deletedAt: entity.deletedAt ? entity.deletedAt.toISOString() : null,
-    };
-  }
-
   async create(createPostDto: CreatePostDto): Promise<ApiResponse<Post>> {
     try {
       const post = this.postsRepository.create({
-        userId: createPostDto.coupleId || '', // 임시로 빈 문자열 설정
+        userId: createPostDto.coupleId || 0, // 임시로 0 설정
         title: createPostDto.title,
         content: createPostDto.content,
         date: createPostDto.date,
@@ -41,7 +26,7 @@ export class PostsService {
       
       return {
         success: true,
-        data: this.convertToSharedType(savedPost),
+        data: savedPost,
         message: '게시글이 성공적으로 생성되었습니다.',
       };
     } catch (error) {
@@ -60,7 +45,7 @@ export class PostsService {
       });
       return {
         success: true,
-        data: posts.map(entity => this.convertToSharedType(entity)),
+        data: posts,
         message: '게시글 목록을 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -72,7 +57,7 @@ export class PostsService {
     }
   }
 
-  async findOne(id: string): Promise<ApiResponse<Post>> {
+  async findOne(id: number): Promise<ApiResponse<Post>> {
     try {
       const post = await this.postsRepository.findOne({
         where: { id },
@@ -86,7 +71,7 @@ export class PostsService {
       }
       return {
         success: true,
-        data: this.convertToSharedType(post),
+        data: post,
         message: '게시글을 성공적으로 조회했습니다.',
       };
     } catch (error) {
@@ -98,7 +83,7 @@ export class PostsService {
     }
   }
 
-  async update(id: string, updatePostDto: Partial<CreatePostDto>): Promise<ApiResponse<Post>> {
+  async update(id: number, updatePostDto: Partial<CreatePostDto>): Promise<ApiResponse<Post>> {
     try {
       const post = await this.postsRepository.findOne({ where: { id } });
       if (!post) {
@@ -113,7 +98,7 @@ export class PostsService {
       
       return {
         success: true,
-        data: this.convertToSharedType(updatedPost),
+        data: updatedPost,
         message: '게시글이 성공적으로 업데이트되었습니다.',
       };
     } catch (error) {
@@ -125,7 +110,7 @@ export class PostsService {
     }
   }
 
-  async remove(id: string): Promise<ApiResponse<void>> {
+  async remove(id: number): Promise<ApiResponse<void>> {
     try {
       const post = await this.postsRepository.findOne({ where: { id } });
       if (!post) {

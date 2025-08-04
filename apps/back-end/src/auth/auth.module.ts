@@ -9,7 +9,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from '../modules/users/users.module';
 import { ImagesModule } from '../modules/images/images.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '../users/entities/user.entity';
+import { User } from '../modules/users/entities/user.entity';
 
 @Module({
   imports: [

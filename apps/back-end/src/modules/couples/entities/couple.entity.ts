@@ -1,16 +1,17 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
+import { Couple as CoupleInterface } from '@use-navi-date/shared';
 
 @Entity('couples')
-export class Couple {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+export class Couple implements CoupleInterface {
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column()
-  userAId: string;
+  userAId: number;
 
   @Column({ nullable: true })
-  userBId: string | null;
+  userBId: number | null;
 
   @Column()
   anniversary: string;
@@ -29,9 +30,9 @@ export class Couple {
 
   @ManyToOne(() => User, { nullable: true })
   @JoinColumn({ name: 'userAId' })
-  user1?: User;
+  userA?: User;
 
   @ManyToOne(() => User, { nullable: true })
   @JoinColumn({ name: 'userBId' })
-  user2?: User;
+  userB?: User;
 } 

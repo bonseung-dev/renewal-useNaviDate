@@ -16,7 +16,7 @@ export class PostImageService {
     private imageRepository: Repository<Image>,
   ) {}
 
-  async uploadFile(file: Express.Multer.File, postId: string): Promise<PostImage> {
+  async uploadFile(file: Express.Multer.File, postId: number): Promise<PostImage> {
     const uploadDir = path.join(process.cwd(), 'uploads', 'posts');
     
     // 디렉토리가 없으면 생성
@@ -51,7 +51,7 @@ export class PostImageService {
     return this.postImageRepository.save(postImage);
   }
 
-  async deleteFile(id: string): Promise<void> {
+  async deleteFile(id: number): Promise<void> {
     const postImage = await this.postImageRepository.findOne({ 
       where: { id },
       relations: ['image']
@@ -73,7 +73,7 @@ export class PostImageService {
     await this.postImageRepository.softDelete(id);
   }
 
-  async getFilesByPostId(postId: string): Promise<PostImage[]> {
+  async getFilesByPostId(postId: number): Promise<PostImage[]> {
     return this.postImageRepository.find({
       where: { postId },
       relations: ['image'],
@@ -81,7 +81,7 @@ export class PostImageService {
     });
   }
 
-  async updateOrder(id: string, order: number): Promise<PostImage | null> {
+  async updateOrder(id: number, order: number): Promise<PostImage | null> {
     // order 필드가 없으므로 createdAt으로 정렬
     return this.postImageRepository.findOne({ 
       where: { id },
@@ -100,30 +100,30 @@ export class PostImageService {
     });
   }
 
-  async findOne(id: string): Promise<PostImage | null> {
+  async findOne(id: number): Promise<PostImage | null> {
     return await this.postImageRepository.findOne({ 
       where: { id },
       relations: ['image']
     });
   }
 
-  async findByPostId(postId: string): Promise<PostImage[]> {
+  async findByPostId(postId: number): Promise<PostImage[]> {
     return await this.postImageRepository.find({
       where: { postId },
       relations: ['image']
     });
   }
 
-  async update(id: string, updateData: Partial<PostImage>): Promise<PostImage | null> {
+  async update(id: number, updateData: Partial<PostImage>): Promise<PostImage | null> {
     await this.postImageRepository.update(id, updateData);
     return await this.findOne(id);
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: number): Promise<void> {
     await this.postImageRepository.delete(id);
   }
 
-  async removeByPostId(postId: string): Promise<void> {
+  async removeByPostId(postId: number): Promise<void> {
     await this.postImageRepository.delete({ postId });
   }
 } 
