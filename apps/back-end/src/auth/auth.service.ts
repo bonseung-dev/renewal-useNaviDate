@@ -24,55 +24,37 @@ export class AuthService {
     params.append('redirect_uri', redirectUri);
     params.append('response_type', 'code');
     params.append('scope', scope);
-    params.append('access_type', 'offline');
-    params.append('prompt', 'consent');
+    // access_type을 'online'으로 변경하여 응답 속도 개선
+    params.append('access_type', 'online');
+    // prompt 제거하여 추가 확인 단계 생략
+    // params.append('prompt', 'consent');
     
     return `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
   }
 
   async handleGoogleCallback(code: string): Promise<AuthResponse> {
     try {
-      console.log('🔍 Google OAuth 토큰 교환 시작');
-      
       // Google OAuth 토큰 교환
       const tokenResponse = await this.exchangeCodeForToken(code);
       
-      console.log('🔍 토큰 교환 결과:', { 
-        hasAccessToken: !!tokenResponse.access_token,
-        error: tokenResponse.error 
-      });
-      
       if (!tokenResponse.access_token) {
-        console.error('🔍 토큰 교환 실패:', tokenResponse);
         return {
           success: false,
           message: 'Google 토큰을 받을 수 없습니다.',
         };
       }
 
-      console.log('🔍 Google 사용자 정보 조회 시작');
-      
       // Google 사용자 정보 가져오기
       const googleUser = await this.getGoogleUserInfo(tokenResponse.access_token);
       const { email, name, picture, sub: googleId } = googleUser;
-      
-      console.log('🔍 Google 사용자 정보:', { 
-        hasEmail: !!email,
-        hasName: !!name,
-        hasPicture: !!picture,
-        hasGoogleId: !!googleId 
-      });
 
       if (!email) {
-        console.error('🔍 이메일 정보 없음:', googleUser);
         return {
           success: false,
           message: '이메일 정보가 필요합니다.',
         };
       }
 
-      console.log('🔍 사용자 조회/생성 시작');
-      
       // 기존 사용자 확인
       let user = await this.userRepository.findOne({
         where: [
@@ -82,7 +64,6 @@ export class AuthService {
       });
 
       if (user) {
-        console.log('🔍 기존 사용자 업데이트:', user.id);
         // 기존 사용자 정보 업데이트
         user.nickname = name || user.nickname;
         user.profileImage = picture || user.profileImage;
@@ -90,7 +71,6 @@ export class AuthService {
         
         await this.userRepository.save(user);
       } else {
-        console.log('🔍 새 사용자 생성');
         // 새 사용자 생성
         user = this.userRepository.create({
           email,
@@ -102,13 +82,9 @@ export class AuthService {
         await this.userRepository.save(user);
       }
 
-      console.log('🔍 JWT 토큰 생성');
-      
       // JWT 토큰 생성
       const payload_jwt = { sub: user.id, email: user.email };
       const access_token = this.jwtService.sign(payload_jwt);
-
-      console.log('🔍 Google OAuth 성공:', user.id);
       
       return {
         success: true,
@@ -117,7 +93,7 @@ export class AuthService {
         message: 'Google 로그인이 성공했습니다.',
       };
     } catch (error) {
-      console.error('🔍 Google OAuth 오류:', error);
+      console.error('Google OAuth 오류:', error);
       return {
         success: false,
         message: 'Google 로그인에 실패했습니다.',

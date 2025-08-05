@@ -38,6 +38,14 @@ import { validate } from './config/env.validation';
         autoLoadEntities: true,
         synchronize: true,
         dropSchema: true, // 개발 환경에서만 사용 (주의!)
+        // 연결 풀 설정으로 성능 개선
+        extra: {
+          connectionLimit: 10,
+          acquireTimeout: 60000,
+          timeout: 60000,
+        },
+        // 쿼리 로깅 비활성화 (성능 향상)
+        logging: false,
       }),
       inject: [ConfigService],
     }),

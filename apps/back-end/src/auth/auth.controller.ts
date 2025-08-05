@@ -41,15 +41,7 @@ export class AuthController {
   @Get('google/callback')
   async googleOAuthCallback(@Query('code') code: string, @Res() res: Response) {
     try {
-      console.log('🔍 Google OAuth 콜백 시작:', { code: code ? '✅ 있음' : '❌ 없음' });
-      
       const result = await this.authService.handleGoogleCallback(code);
-      
-      console.log('🔍 Google OAuth 콜백 결과:', { 
-        success: result.success, 
-        message: result.message,
-        hasUser: !!result.user 
-      });
       
       if (result.success && result.user) {
         const user = result.user;
@@ -58,23 +50,22 @@ export class AuthController {
         // HttpOnly 쿠키에 토큰 저장
         res.cookie('access_token', token, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
+          secure: true, // HTTPS 환경에서는 항상 true
           sameSite: 'lax',
           maxAge: 24 * 60 * 60 * 1000, // 24시간
+          domain: process.env.NODE_ENV === 'production' ? '.sorune.org' : undefined, // 프로덕션에서 도메인 설정
         });
 
         // 프론트엔드로 리다이렉트
         const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
-        console.log('🔍 성공 리다이렉트:', `${frontendUrl}/auth/callback?success=true`);
         return res.redirect(`${frontendUrl}/auth/callback?success=true`);
       } else {
         const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
         const errorMessage = result.message || 'Google 로그인에 실패했습니다.';
-        console.log('🔍 실패 리다이렉트:', `${frontendUrl}/auth/callback?error=${encodeURIComponent(errorMessage)}`);
         return res.redirect(`${frontendUrl}/auth/callback?error=${encodeURIComponent(errorMessage)}`);
       }
     } catch (error) {
-      console.error('🔍 Google OAuth 콜백 오류:', error);
+      console.error('Google OAuth 콜백 오류:', error);
       const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
       const errorMessage = error instanceof Error ? error.message : '서버 오류가 발생했습니다.';
       return res.redirect(`${frontendUrl}/auth/callback?error=${encodeURIComponent(errorMessage)}`);
@@ -134,9 +125,10 @@ export class AuthController {
         // HttpOnly 쿠키에 토큰 저장
         res.cookie('access_token', token, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
+          secure: true, // HTTPS 환경에서는 항상 true
           sameSite: 'lax',
           maxAge: 24 * 60 * 60 * 1000, // 24시간
+          domain: process.env.NODE_ENV === 'production' ? '.sorune.org' : undefined, // 프로덕션에서 도메인 설정
         });
 
         return res.status(HttpStatus.OK).json({
@@ -175,9 +167,10 @@ export class AuthController {
         // HttpOnly 쿠키에 토큰 저장
         res.cookie('access_token', token, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
+          secure: true, // HTTPS 환경에서는 항상 true
           sameSite: 'lax',
           maxAge: 24 * 60 * 60 * 1000, // 24시간
+          domain: process.env.NODE_ENV === 'production' ? '.sorune.org' : undefined, // 프로덕션에서 도메인 설정
         });
 
         return res.status(HttpStatus.CREATED).json({

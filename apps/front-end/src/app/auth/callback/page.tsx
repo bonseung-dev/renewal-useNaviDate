@@ -14,13 +14,19 @@ const AuthCallbackContent = () => {
         const success = searchParams.get('success');
         const errorParam = searchParams.get('error');
         
+        // 쿠키 확인 (디버깅용)
+        console.log('🔍 쿠키 확인:', document.cookie);
+        
         if (success === 'true') {
           // 성공 시 메인 페이지로 리다이렉트
+          console.log('🔍 OAuth 성공, 메인 페이지로 리다이렉트');
           router.push('/');
         } else if (errorParam) {
           // 실패 시 에러 메시지 표시
+          console.error('🔍 OAuth 오류:', decodeURIComponent(errorParam));
           setError(decodeURIComponent(errorParam));
         } else {
+          console.error('🔍 알 수 없는 오류');
           setError('알 수 없는 오류가 발생했습니다.');
         }
       } catch (err) {
