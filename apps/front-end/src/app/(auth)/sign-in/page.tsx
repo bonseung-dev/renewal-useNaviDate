@@ -7,6 +7,7 @@ import { LoginFormData, loginSchema } from '@/lib/zod/auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useLoginMutation } from '@/lib/mutations/auth.mutations';
 import Link from 'next/link';
+import GoogleLoginButton from '@/components/ui/google-login-button';
 
 const Page = () => {
   const {
@@ -31,9 +32,10 @@ const Page = () => {
   };
 
   // monorepo 이전하고 추가
-  const handleGoogleLogin = () => {
-    window.location.href = '/api/auth/google';
-  };
+  // 안씁니다.
+  // const handleGoogleLogin = () => {
+  //   window.location.href = '/api/auth/google';
+  // };
 
   return (
     <form
@@ -103,7 +105,8 @@ const Page = () => {
       </div>
 
       {/* 소셜 로그인 버튼 */}
-      <div className="flex gap-[22px] mt-[16px]">
+      <GoogleLoginButton />
+      {/* <div className="flex gap-[22px] mt-[16px]">
         <button
           type="button"
           className="rounded-full p-2 bg-skin2"
@@ -123,7 +126,7 @@ const Page = () => {
             height={24}
           />
         </button>
-      </div>
+      </div> */}
 
       {/* 회원가입 링크 - 임시로 추가*/}
       <div className="mt-6 text-center">
