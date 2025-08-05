@@ -27,7 +27,7 @@ export const getFrontendUrl = (): string => {
 // Google OAuth 설정
 export const getGoogleConfig = () => {
   const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-  const redirectUri = process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI;
+  const redirectUri = process.env.NEXT_PUBLIC_GOOGLE_CALLBACK_URL;
   
   if (!clientId) {
     throw new Error('NEXT_PUBLIC_GOOGLE_CLIENT_ID is not defined');
