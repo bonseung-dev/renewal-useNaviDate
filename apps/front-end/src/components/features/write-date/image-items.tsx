@@ -22,7 +22,7 @@ const ImageItems = ({
           <Card className="w-full h-full flex justify-center items-center rounded-none">
             <CardContent className="w-full h-full p-0">
               <NextImage
-                src={image.imageUrl}
+                src={image.postImage.url}
                 alt={`업로드 이미지`}
                 width={100}
                 height={100}

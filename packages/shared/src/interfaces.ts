@@ -191,4 +191,4 @@ export interface UserResponse {
 import { Emotion, RepeatOption } from './enums';
 
 // Re-export for convenience
-export { Emotion, RepeatOption }; 
+export type { Emotion, RepeatOption }; 
