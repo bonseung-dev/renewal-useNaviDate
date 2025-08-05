@@ -12,7 +12,7 @@ Create a `.env.development` file in the root directory:
 NEXT_PUBLIC_BACKEND_URL=http://localhost:3001
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
 NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-google-client-id-here
-NEXT_PUBLIC_GOOGLE_REDIRECT_URI=http://localhost:3000/auth/callback
+NEXT_PUBLIC_GOOGLE_CALLBACK_URL=http://localhost:3000/auth/callback
 
 # API Configuration
 NEXT_PUBLIC_API_TIMEOUT=10000
@@ -27,7 +27,7 @@ Create a `.env.production` file in the root directory:
 NEXT_PUBLIC_BACKEND_URL=https://api.navidate.com
 NEXT_PUBLIC_BASE_URL=https://navidate.com
 NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-production-google-client-id
-NEXT_PUBLIC_GOOGLE_REDIRECT_URI=https://navidate.com/auth/callback
+NEXT_PUBLIC_GOOGLE_CALLBACK_URL=https://navidate.com/auth/callback
 
 # API Configuration
 NEXT_PUBLIC_API_TIMEOUT=15000
