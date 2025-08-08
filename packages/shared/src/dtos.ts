@@ -51,7 +51,7 @@ export interface UpdateCoupleDto {
 export interface CreateAnniversaryDto {
   coupleId: number;
   title: string;
-  date: Date | string;
+  date: Date;
   repeat?: RepeatOption;
   memo?: string;
   createdBy?: number;

@@ -37,7 +37,8 @@ import { validate } from './config/env.validation';
         database: configService.get('DB_NAME'),
         autoLoadEntities: true,
         synchronize: true,
-        dropSchema: true, // 개발 환경에서만 사용 (주의!)
+        // 개발 환경에서만 사용 (주의!)
+        // dropSchema: process.env.NODE_ENV === 'development',
         // 연결 풀 설정으로 성능 개선
         extra: {
           connectionLimit: 10,

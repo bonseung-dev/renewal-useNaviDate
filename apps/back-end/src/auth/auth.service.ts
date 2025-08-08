@@ -46,8 +46,8 @@ export class AuthService {
 
       // Google 사용자 정보 가져오기
       const googleUser = await this.getGoogleUserInfo(tokenResponse.access_token);
-      const { email, name, picture, sub: googleId } = googleUser;
-
+      const { email, name, picture, id } = googleUser;
+      console.log(googleUser);
       if (!email) {
         return {
           success: false,
@@ -59,7 +59,7 @@ export class AuthService {
       let user = await this.userRepository.findOne({
         where: [
           { email },
-          { googleId: googleId }
+          { googleId: id }
         ]
       });
 
@@ -67,19 +67,40 @@ export class AuthService {
         // 기존 사용자 정보 업데이트
         user.nickname = name || user.nickname;
         user.profileImage = picture || user.profileImage;
-        user.googleId = googleId;
+        user.googleId = id;
         
-        await this.userRepository.save(user);
+        const savedUser = await this.userRepository.save(user);
+        console.log('사용자 정보 업데이트 완료:', savedUser.id);
+        console.log('저장된 사용자 정보:', {
+          id: savedUser.id,
+          email: savedUser.email,
+          nickname: savedUser.nickname,
+          profileImage: savedUser.profileImage,
+          googleId: savedUser.googleId,
+          createdAt: savedUser.createdAt,
+          updatedAt: savedUser.updatedAt
+        });
+        user = savedUser;
       } else {
         // 새 사용자 생성
-        user = this.userRepository.create({
+        const newUser = this.userRepository.create({
           email,
           nickname: name || email.split('@')[0],
           profileImage: picture,
-          googleId: googleId,
+          googleId: id,
         });
 
-        await this.userRepository.save(user);
+        user = await this.userRepository.save(newUser);
+        console.log('새 사용자 생성 완료:', user.id);
+        console.log('저장된 사용자 정보:', {
+          id: user.id,
+          email: user.email,
+          nickname: user.nickname,
+          profileImage: user.profileImage,
+          googleId: user.googleId,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt
+        });
       }
 
       // JWT 토큰 생성
@@ -103,7 +124,7 @@ export class AuthService {
 
   async googleAuth(googleUser: any): Promise<AuthResponse> {
     try {
-      const { email, name, picture, sub: googleId } = googleUser;
+      const { email, name, picture, id: googleId } = googleUser;
 
       if (!email) {
         return {
@@ -126,17 +147,38 @@ export class AuthService {
         user.profileImage = picture || user.profileImage;
         user.googleId = googleId;
         
-        await this.userRepository.save(user);
+        const savedUser = await this.userRepository.save(user);
+        console.log('사용자 정보 업데이트 완료:', savedUser.id);
+        console.log('저장된 사용자 정보:', {
+          id: savedUser.id,
+          email: savedUser.email,
+          nickname: savedUser.nickname,
+          profileImage: savedUser.profileImage,
+          googleId: savedUser.googleId,
+          createdAt: savedUser.createdAt,
+          updatedAt: savedUser.updatedAt
+        });
+        user = savedUser;
       } else {
         // 새 사용자 생성
-        user = this.userRepository.create({
+        const newUser = this.userRepository.create({
           email,
           nickname: name || email.split('@')[0],
           profileImage: picture,
           googleId: googleId,
         });
 
-        await this.userRepository.save(user);
+        user = await this.userRepository.save(newUser);
+        console.log('새 사용자 생성 완료:', user.id);
+        console.log('저장된 사용자 정보:', {
+          id: user.id,
+          email: user.email,
+          nickname: user.nickname,
+          profileImage: user.profileImage,
+          googleId: user.googleId,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt
+        });
       }
 
       // JWT 토큰 생성

@@ -1,5 +1,6 @@
-import { IsString, IsDate, IsOptional, IsBoolean, MaxLength } from 'class-validator';
+import { IsString, IsDate, IsOptional, IsBoolean, MaxLength, IsEnum, IsNumber } from 'class-validator';
 import { Type } from 'class-transformer';
+import { RepeatOption } from '@use-navi-date/shared';
 
 export class CreateAnniversaryDto {
   @IsString()
@@ -17,4 +18,16 @@ export class CreateAnniversaryDto {
   @IsBoolean()
   @IsOptional()
   is_annual?: boolean;
+
+  @IsEnum(['NONE', 'YEARLY'])
+  @IsOptional()
+  repeat?: RepeatOption;
+
+  @IsString()
+  @IsOptional()
+  memo?: string;
+
+  @IsNumber()
+  @IsOptional()
+  createdBy?: number;
 } 
