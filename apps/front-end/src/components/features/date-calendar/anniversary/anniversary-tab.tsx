@@ -11,12 +11,14 @@ type AnniversaryTabProps = {
   coupleId: number;
   startDate: string;
   userId: number;
+  token: string;
 };
 
 const AnniversaryTab = ({
   coupleId,
   startDate,
   userId,
+  token,
 }: AnniversaryTabProps) => {
   const {
     anniversaries,
@@ -25,8 +27,11 @@ const AnniversaryTab = ({
     updateAnniversary: update,
     deleteAnniversary: remove,
   } = useAnniversaries(coupleId, startDate);
+  console.log(startDate, '기념일 시작 날짜');
 
-  const { partner, fetchPartnerInfo } = usePartnerInfo(coupleId, userId);
+  const { partner, fetchPartnerInfo } = usePartnerInfo(coupleId, userId, token);
+  // console.log('파트너 정보:', partner);
+
   const {
     editingAnniversary,
     isEditorOpen,

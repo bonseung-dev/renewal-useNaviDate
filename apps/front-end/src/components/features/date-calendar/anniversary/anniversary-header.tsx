@@ -1,5 +1,5 @@
+import { PartnerInfo } from '@use-navi-date/shared';
 import Image from 'next/image';
-import { PartnerInfo } from '@/types/anniversary.type';
 
 type AnniversaryHeaderProps = {
   partner: PartnerInfo | null;

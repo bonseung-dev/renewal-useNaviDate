@@ -8,9 +8,15 @@ type CalendarTabsProps = {
   coupleId: number;
   startDate: string;
   userId: number;
+  token: string;
 };
 
-const CalendarTabs = ({ coupleId, startDate, userId }: CalendarTabsProps) => {
+const CalendarTabs = ({
+  coupleId,
+  startDate,
+  userId,
+  token,
+}: CalendarTabsProps) => {
   const [activeTab, setActiveTab] = useState<'date' | 'anniversary'>('date');
 
   return (
@@ -47,6 +53,7 @@ const CalendarTabs = ({ coupleId, startDate, userId }: CalendarTabsProps) => {
             coupleId={coupleId}
             startDate={startDate}
             userId={userId}
+            token={token}
           />
         )}
       </section>

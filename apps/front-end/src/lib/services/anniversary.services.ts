@@ -7,27 +7,39 @@ import { BASE_URL } from '@/constants/url.constants';
 // couples.services.ts로 분리 예정
 export const getCoupleById = async (
   coupleId: number,
+  token: string,
 ): Promise<CoupleResponse> => {
-  const res = await fetch(`${BASE_URL}/couples?id=${coupleId}`);
+  const res = await fetch(`${BASE_URL}/couples/${coupleId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
   if (!res.ok) throw new Error('커플 정보를 불러오는데 실패했습니다');
 
-  const data = await res.json();
+  const json = await res.json();
 
-  if (Array.isArray(data)) return data[0];
+  if (!json.success)
+    throw new Error(json.message || '커플 정보를 불러오는데 실패했습니다');
 
-  return data;
+  return json.data;
 };
 
 // users.services.ts로 분리 예정
-export const getUserById = async (userId: number): Promise<UserResponse> => {
-  const res = await fetch(`${BASE_URL}/users?id=${userId}`);
+export const getUserById = async (
+  userId: number,
+  token: string,
+): Promise<UserResponse> => {
+  const res = await fetch(`${BASE_URL}/users/${userId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
   if (!res.ok) throw new Error('사용자 정보를 불러오는데 실패했습니다');
 
-  const data = await res.json();
+  const json = await res.json();
 
-  if (Array.isArray(data)) return data[0];
+  if (!json.success)
+    throw new Error(json.message || '사용자 정보를 불러오는데 실패했습니다');
 
-  return data;
+  return json.data;
 };
 
 export const getAllAnniversariesByCoupleId = async (
