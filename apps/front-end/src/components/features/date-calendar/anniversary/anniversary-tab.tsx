@@ -6,6 +6,7 @@ import { useAnniversaries } from '@/lib/hooks/date-calendar/use-anniversaries';
 import { usePartnerInfo } from '@/lib/hooks/date-calendar/use-partner-infor';
 import { useAnniversaryActions } from '@/lib/hooks/date-calendar/use-anniversary-actions';
 import AnniversaryEditor from './anniversary-form/anniversary-editor';
+import { useAnniversariesQuery } from '@/lib/hooks/date-calendar/use-anniversaries-query';
 
 type AnniversaryTabProps = {
   coupleId: number;
@@ -20,17 +21,24 @@ const AnniversaryTab = ({
   userId,
   token,
 }: AnniversaryTabProps) => {
+  // const {
+  //   anniversaries,
+  //   loadAnniversaries,
+  //   createAnniversary: add,
+  //   updateAnniversary: update,
+  //   deleteAnniversary: remove,
+  // } = useAnniversaries(coupleId, startDate, token);
   const {
     anniversaries,
-    loadAnniversaries,
     createAnniversary: add,
     updateAnniversary: update,
     deleteAnniversary: remove,
-  } = useAnniversaries(coupleId, startDate, token);
-  console.log(startDate, '기념일 시작 날짜');
+    refetch,
+    isLoading,
+    isError,
+  } = useAnniversariesQuery(coupleId, startDate, token);
 
   const { partner, fetchPartnerInfo } = usePartnerInfo(coupleId, userId, token);
-  // console.log('파트너 정보:', partner);
 
   const {
     editingAnniversary,
@@ -46,14 +54,14 @@ const AnniversaryTab = ({
   useEffect(() => {
     const loadData = async () => {
       try {
-        await Promise.all([loadAnniversaries(), fetchPartnerInfo()]);
+        await Promise.all([refetch(), fetchPartnerInfo()]);
       } catch (error) {
         console.error('초기 데이터 로딩 실패했습니다.:', error);
       }
     };
 
     loadData();
-  }, [loadAnniversaries, fetchPartnerInfo]);
+  }, [refetch, fetchPartnerInfo]);
 
   return (
     <Dialog open={isEditorOpen} onOpenChange={setIsEditorOpen}>

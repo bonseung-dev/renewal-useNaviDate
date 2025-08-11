@@ -10,7 +10,7 @@ import { Anniversary, RepeatOption } from '@use-navi-date/shared';
 type AnniversaryEditorProps = {
   coupleId: number;
   userId: number;
-  onAdd: (data: Omit<Anniversary, 'id'>, userId: number) => void;
+  onAdd: (data: Omit<Anniversary, 'id'>) => void | Promise<Anniversary>;
   onUpdate: (data: Anniversary) => void;
   initialData?: Anniversary | null;
   onSubmitSuccess?: () => void;
@@ -40,16 +40,13 @@ const AnniversaryEditor = ({
         createdBy: initialData.createdBy,
       });
     } else {
-      onAdd(
-        {
-          ...data,
-          createdBy: new Date(),
-          coupleId,
-          memo: data.memo || '',
-          createdAt: new Date(),
-        },
-        userId,
-      );
+      onAdd({
+        ...data,
+        createdBy: new Date(),
+        coupleId,
+        memo: data.memo || '',
+        createdAt: new Date(),
+      });
     }
     onSubmitSuccess?.();
   };
