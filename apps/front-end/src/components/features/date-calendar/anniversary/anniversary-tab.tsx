@@ -6,7 +6,6 @@ import { useAnniversaries } from '@/lib/hooks/date-calendar/use-anniversaries';
 import { usePartnerInfo } from '@/lib/hooks/date-calendar/use-partner-infor';
 import { useAnniversaryActions } from '@/lib/hooks/date-calendar/use-anniversary-actions';
 import AnniversaryEditor from './anniversary-form/anniversary-editor';
-import { useAnniversariesQuery } from '@/lib/hooks/date-calendar/use-anniversaries-query';
 
 type AnniversaryTabProps = {
   coupleId: number;
@@ -36,7 +35,7 @@ const AnniversaryTab = ({
     refetch,
     isLoading,
     isError,
-  } = useAnniversariesQuery(coupleId, startDate, token);
+  } = useAnniversaries(coupleId, startDate, token);
 
   const { partner, fetchPartnerInfo } = usePartnerInfo(coupleId, userId, token);
 
