@@ -9,6 +9,9 @@ export const getCoupleById = async (
   coupleId: number,
   token: string,
 ): Promise<CoupleResponse> => {
+  // const res = await fetch(`${BASE_URL}/api/couples/${coupleId}`, {
+  //   headers: { Authorization: `Bearer ${token}` },
+  // });
   const res = await fetch(`${BASE_URL}/couples/${coupleId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -47,12 +50,16 @@ export const getAllAnniversariesByCoupleId = async (
   startDate: string,
 ): Promise<Anniversary[]> => {
   try {
-    const response = await fetch(
-      `${BASE_URL}/anniversaries?coupleId=${coupleId}`,
-    );
-    if (!response.ok) throw new Error('기념일 목록을 불러오는데 실패했습니다');
+    // const response = await fetch(
+    //   `${BASE_URL}/api/anniversaries/couples/${coupleId}`,
+    // );
+    const res = await fetch(`${BASE_URL}/anniversaries`);
+    if (!res.ok) throw new Error('기념일 목록을 불러오는데 실패했습니다');
 
-    const customAnniversaries: Anniversary[] = await response.json();
+    const resData = await res.json();
+    const customAnniversaries: Anniversary[] = resData.data.filter(
+      (a: Anniversary) => a.coupleId === coupleId,
+    );
     const autoAnniversaries = generateAutoAnniversaries(startDate, coupleId);
 
     const oneYearLater = dayjs().add(1, 'year');

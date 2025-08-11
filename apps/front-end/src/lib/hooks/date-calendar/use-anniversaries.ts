@@ -12,6 +12,7 @@ export const useAnniversaries = (coupleId: number, startDate: string) => {
 
   const loadAnniversaries = useCallback(async () => {
     const data = await getAllAnniversariesByCoupleId(coupleId, startDate);
+    console.log('기념일 목록:', data);
     setAnniversaries(data);
   }, [coupleId, startDate]);
 
