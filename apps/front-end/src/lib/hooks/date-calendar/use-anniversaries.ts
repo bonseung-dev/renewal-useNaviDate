@@ -7,14 +7,22 @@ import {
   updateAnniversaryById,
 } from '@/lib/services/anniversary.services';
 
-export const useAnniversaries = (coupleId: number, startDate: string) => {
+export const useAnniversaries = (
+  coupleId: number,
+  startDate: string,
+  token: string,
+) => {
   const [anniversaries, setAnniversaries] = useState<Anniversary[]>([]);
 
   const loadAnniversaries = useCallback(async () => {
-    const data = await getAllAnniversariesByCoupleId(coupleId, startDate);
+    const data = await getAllAnniversariesByCoupleId(
+      coupleId,
+      startDate,
+      token,
+    );
     console.log('기념일 목록:', data);
     setAnniversaries(data);
-  }, [coupleId, startDate]);
+  }, [coupleId, startDate, token]);
 
   const handleCreateAnniversary = useCallback(
     async (newAnniversary: Omit<Anniversary, 'id'>) => {

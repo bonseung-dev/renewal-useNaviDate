@@ -26,7 +26,7 @@ const AnniversaryTab = ({
     createAnniversary: add,
     updateAnniversary: update,
     deleteAnniversary: remove,
-  } = useAnniversaries(coupleId, startDate);
+  } = useAnniversaries(coupleId, startDate, token);
   console.log(startDate, '기념일 시작 날짜');
 
   const { partner, fetchPartnerInfo } = usePartnerInfo(coupleId, userId, token);

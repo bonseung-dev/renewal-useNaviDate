@@ -43,13 +43,28 @@ export const getUserById = async (
 export const getAllAnniversariesByCoupleId = async (
   coupleId: number,
   startDate: string,
+  token?: string,
 ): Promise<Anniversary[]> => {
   try {
-    // const res = await fetch(`/api/anniversaries/couple/${coupleId}`);
-    const res = await fetch(`${BASE_URL}/anniversaries`);
+    // 500오류가 발생
+    // const res2 = await fetch(`/api/anniversaries/couple/${coupleId}`, {
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // });
+
+    // console.log('기념일 응답:', res2);
+
+    const res = await fetch(`/api/anniversaries`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     if (!res.ok) throw new Error('기념일 목록을 불러오는데 실패했습니다');
 
+    // console.log('기념일 응답:', res);
     const resData = await res.json();
+    // console.log('기념일 목록 응답:', resData);
     const customAnniversaries: Anniversary[] = resData.data.filter(
       (a: Anniversary) => a.coupleId === coupleId,
     );
@@ -64,9 +79,6 @@ export const getAllAnniversariesByCoupleId = async (
     return [];
   }
 };
-
-// 현재 json-server에서는 id를 string으로 자동생성하므로,
-// id를 number로 변경한 시점에서 제대로 작동하지 않을 수 있습니다.
 
 export const createAnniversary = async (
   coupleId: number,
