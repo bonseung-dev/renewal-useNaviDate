@@ -20,17 +20,18 @@ export const useAnniversaries = (
       startDate,
       token,
     );
-    console.log('기념일 목록:', data);
+    // console.log('기념일 목록:', data);
     setAnniversaries(data);
   }, [coupleId, startDate, token]);
 
   const handleCreateAnniversary = useCallback(
     async (newAnniversary: Omit<Anniversary, 'id'>) => {
-      const created = await createAnniversary(coupleId, newAnniversary);
+      // console.log('새 기념일 데이터:', newAnniversary);
+      const created = await createAnniversary(coupleId, newAnniversary, token);
       setAnniversaries((prev) => [...prev, created]);
       return created;
     },
-    [coupleId],
+    [coupleId, token],
   );
 
   const handleUpdateAnniversary = useCallback(
@@ -39,6 +40,7 @@ export const useAnniversaries = (
         const updated = await updateAnniversaryById(
           updatedAnniversary.id,
           updatedAnniversary,
+          token,
         );
         setAnniversaries((prev) =>
           prev.map((a) => (a.id === updated.id ? updated : a)),
@@ -48,17 +50,20 @@ export const useAnniversaries = (
         throw error;
       }
     },
-    [],
+    [token],
   );
 
-  const handleDeleteAnniversary = useCallback(async (id: number) => {
-    try {
-      await deleteAnniversaryById(id);
-      setAnniversaries((prev) => prev.filter((a) => a.id !== id));
-    } catch (error) {
-      throw error;
-    }
-  }, []);
+  const handleDeleteAnniversary = useCallback(
+    async (id: number) => {
+      try {
+        await deleteAnniversaryById(id, token);
+        setAnniversaries((prev) => prev.filter((a) => a.id !== id));
+      } catch (error) {
+        throw error;
+      }
+    },
+    [token],
+  );
 
   return {
     anniversaries,

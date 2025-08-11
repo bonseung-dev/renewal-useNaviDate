@@ -83,18 +83,22 @@ export const getAllAnniversariesByCoupleId = async (
 export const createAnniversary = async (
   coupleId: number,
   data: Omit<Anniversary, 'id'>,
+  token?: string,
 ): Promise<Anniversary> => {
+  if (!token) throw new Error('인증 토큰이 필요합니다.');
+
   try {
     const newAnniversary = {
       ...data,
       coupleId,
-      createdBy: new Date(),
+      createdBy: coupleId,
     };
 
     const response = await fetch(`${BASE_URL}/anniversaries`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(newAnniversary),
     });
@@ -110,12 +114,16 @@ export const createAnniversary = async (
 export const updateAnniversaryById = async (
   id: number,
   data: Anniversary,
+  token?: string,
 ): Promise<Anniversary> => {
+  if (!token) throw new Error('인증 토큰이 필요합니다.');
+
   try {
     const response = await fetch(`${BASE_URL}/anniversaries/${id}`, {
-      method: 'PUT',
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(data),
     });
@@ -128,10 +136,18 @@ export const updateAnniversaryById = async (
   }
 };
 
-export const deleteAnniversaryById = async (id: number): Promise<void> => {
+export const deleteAnniversaryById = async (
+  id: number,
+  token?: string,
+): Promise<void> => {
+  if (!token) throw new Error('인증 토큰이 필요합니다.');
+
   try {
     const response = await fetch(`${BASE_URL}/anniversaries/${id}`, {
       method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     if (!response.ok) throw new Error('기념일 삭제에 실패했습니다');

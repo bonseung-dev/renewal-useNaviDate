@@ -21,9 +21,9 @@ const AnniversaryList = ({
         기념일 목록
       </h2>
       <ul role="list">
-        {sorted.map((anniversary) => (
+        {sorted.map((anniversary, index) => (
           <AnniversaryItem
-            key={anniversary.id}
+            key={`${anniversary.id ?? index}-${index}`}
             anniversary={anniversary}
             onEdit={() => onEdit(anniversary.id)}
             onDelete={() => onDelete(anniversary.id)}
