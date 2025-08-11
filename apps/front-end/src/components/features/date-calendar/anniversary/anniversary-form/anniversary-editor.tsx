@@ -1,4 +1,3 @@
-import { Anniversary, RepeatOption } from '@/types/anniversary.type';
 import {
   DialogContent,
   DialogDescription,
@@ -6,6 +5,7 @@ import {
 } from '@/components/ui/dialog';
 import { useState } from 'react';
 import AnniversaryForm from './anniversary-form';
+import { Anniversary, RepeatOption } from '@use-navi-date/shared';
 
 type AnniversaryEditorProps = {
   coupleId: number;
@@ -46,6 +46,7 @@ const AnniversaryEditor = ({
           createdBy: new Date(),
           coupleId,
           memo: data.memo || '',
+          createdAt: new Date(),
         },
         userId,
       );

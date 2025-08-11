@@ -1,4 +1,4 @@
-import { Anniversary } from '@/types/anniversary.type';
+import { Anniversary } from '@use-navi-date/shared';
 import AnniversaryItem from './anniversary-item';
 import { useSortedAnniversaries } from '@/lib/hooks/date-calendar/use-sorted-anniversaries';
 

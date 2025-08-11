@@ -1,11 +1,11 @@
 import { useState, useCallback } from 'react';
-import { Anniversary } from '@/types/anniversary.type';
 import {
   createAnniversary,
   deleteAnniversaryById,
   getAllAnniversariesByCoupleId,
   updateAnniversaryById,
 } from '@/lib/services/anniversary.services';
+import { Anniversary } from '@use-navi-date/shared';
 
 export const useAnniversaries = (
   coupleId: number,
@@ -37,9 +37,21 @@ export const useAnniversaries = (
   const handleUpdateAnniversary = useCallback(
     async (updatedAnniversary: Anniversary) => {
       try {
+        const dataToUpdate = {
+          ...updatedAnniversary,
+          date:
+            typeof updatedAnniversary.date === 'string'
+              ? new Date(updatedAnniversary.date)
+              : updatedAnniversary.date,
+          createdBy:
+            typeof updatedAnniversary.createdBy === 'number'
+              ? updatedAnniversary.createdBy
+              : undefined,
+        };
+
         const updated = await updateAnniversaryById(
           updatedAnniversary.id,
-          updatedAnniversary,
+          dataToUpdate,
           token,
         );
         setAnniversaries((prev) =>
