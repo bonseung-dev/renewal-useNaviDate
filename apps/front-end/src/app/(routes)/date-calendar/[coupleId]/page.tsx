@@ -29,7 +29,7 @@ type Props = {
   searchParams: { [key: string]: string | undefined };
 };
 
-const Page = async ({ params, searchParams }: Props) => {
+const Page = async ({ params }: Props) => {
   const token = getServerCookie('access_token');
 
   if (!token) {
@@ -42,37 +42,43 @@ const Page = async ({ params, searchParams }: Props) => {
       return <LoginPrompt authStatus="unauthenticated" />;
     }
 
-    const coupleId = await getCoupleIdFromToken();
+    const backendUrl =
+      process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
 
-    // 커플이 없거나 URL과 불일치하는 경우
-    if (!coupleId) {
+    const res = await fetch(`${backendUrl}/couples`, {
+      headers: { Authorization: `Bearer ${token}` },
+      cache: 'no-store',
+    });
+
+    if (!res.ok) {
+      throw new Error('커플 데이터 불러오기 실패');
+    }
+
+    const result = await res.json();
+    // console.log('커플 목록:', result);
+
+    if (!result.success || !Array.isArray(result.data)) {
+      throw new Error('잘못된 커플 데이터 형식');
+    }
+
+    const myCouple = result.data.find(
+      (c: any) => c.userAId === Number(userId) || c.userBId === Number(userId),
+    );
+
+    if (!myCouple) {
       return <LoginPrompt authStatus="no-couple" userId={userId} />;
     }
-    if (coupleId !== params.coupleId.toString()) {
+
+    if (myCouple.id !== Number(params.coupleId)) {
       return <LoginPrompt authStatus="invalid-couple" userId={userId} />;
     }
 
-    // 기념일 정보 조회
-    let startDate = '';
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/couples/${coupleId}/anniversary`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+    // console.log('내 커플:', myCouple);
 
-      if (response.ok) {
-        const data = await response.json();
-        startDate = data.anniversary
-          ? new Date(data.anniversary).toISOString().split('T')[0]
-          : '';
-      }
-    } catch (error) {
-      console.error('Failed to get anniversary:', error);
-    }
+    // 기념일 시작 날짜
+    const startDate = myCouple.anniversary;
+
+    // console.log('기념일 시작 날짜:', startDate);
 
     return (
       <section aria-labelledby="calendar-heading">
@@ -80,13 +86,15 @@ const Page = async ({ params, searchParams }: Props) => {
           커플 캘린더
         </h1>
         <CalendarTabs
-          coupleId={Number(coupleId)}
+          coupleId={myCouple.id}
           startDate={startDate}
           userId={Number(userId)}
+          token={token}
         />
       </section>
     );
   } catch (error) {
+    console.error(error);
     return <LoginPrompt authStatus="error" />;
   }
 };

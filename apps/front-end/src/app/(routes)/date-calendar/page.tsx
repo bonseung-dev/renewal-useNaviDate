@@ -1,10 +1,6 @@
 import { redirect } from 'next/navigation';
 import LoginPrompt from '@/components/features/date-calendar/login-prompt';
-import {
-  getServerCookie,
-  getUserIdFromToken,
-  getCoupleIdFromToken,
-} from '@/lib/utils/cookes.utils';
+import { getServerCookie, getUserIdFromToken } from '@/lib/utils/cookes.utils';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -31,21 +27,41 @@ const Page = async ({ searchParams }: Props) => {
     return <LoginPrompt authStatus="unauthenticated" />;
   }
 
-  try {
-    const userId = await getUserIdFromToken();
-    if (!userId) {
-      return <LoginPrompt authStatus="unauthenticated" />;
-    }
-
-    const coupleId = await getCoupleIdFromToken();
-    if (coupleId) {
-      redirect(`/date-calendar/${coupleId}`);
-    }
-
-    return <LoginPrompt authStatus="no-couple" userId={userId} />;
-  } catch (error) {
-    return <LoginPrompt authStatus="error" />;
+  const userId = await getUserIdFromToken();
+  if (!userId) {
+    return <LoginPrompt authStatus="unauthenticated" />;
   }
+
+  const backendUrl =
+    process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+
+  const res = await fetch(`${backendUrl}/couples`, {
+    headers: { Authorization: `Bearer ${token}` },
+    cache: 'no-store',
+  });
+
+  if (!res.ok) {
+    throw new Error('커플 데이터 불러오기 실패');
+  }
+
+  const result = await res.json();
+  // console.log('커플 목록:', result);
+
+  if (!result.success || !Array.isArray(result.data)) {
+    throw new Error('잘못된 커플 데이터 형식');
+  }
+
+  const myCouple = result.data.find(
+    (c: any) => c.userAId === Number(userId) || c.userBId === Number(userId),
+  );
+
+  // console.log('내 커플:', myCouple);
+
+  if (myCouple) {
+    redirect(`/date-calendar/${myCouple.id}`);
+  }
+
+  return <LoginPrompt authStatus="no-couple" userId={userId} />;
 };
 
 export default Page;
