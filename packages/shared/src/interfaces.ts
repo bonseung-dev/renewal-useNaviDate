@@ -178,8 +178,6 @@ export interface PartnerInfo {
 }
 
 export interface CoupleResponse {
-  userAId: number;
-  userBId: number;
   userA: User;
   userB: User;
 }
