@@ -1,25 +1,21 @@
-import { CoupleResponse, UserResponse } from '@/types/anniversary.type';
 import dayjs from 'dayjs';
 import { Anniversary } from '@/types/anniversary.type';
 import { generateAutoAnniversaries } from '../utils/anniversary.utils';
 import { BASE_URL } from '@/constants/url.constants';
+import { CoupleResponse, UserResponse } from '@use-navi-date/shared';
 
 // couples.services.ts로 분리 예정
 export const getCoupleById = async (
   coupleId: number,
   token: string,
 ): Promise<CoupleResponse> => {
-  // const res = await fetch(`${BASE_URL}/api/couples/${coupleId}`, {
-  //   headers: { Authorization: `Bearer ${token}` },
-  // });
-  const res = await fetch(`${BASE_URL}/couples/${coupleId}`, {
+  const res = await fetch(`/api/couples/${coupleId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 
   if (!res.ok) throw new Error('커플 정보를 불러오는데 실패했습니다');
-
   const json = await res.json();
-
+  // console.log('커플 정보 요청:', json);
   if (!json.success)
     throw new Error(json.message || '커플 정보를 불러오는데 실패했습니다');
 
@@ -31,14 +27,13 @@ export const getUserById = async (
   userId: number,
   token: string,
 ): Promise<UserResponse> => {
-  const res = await fetch(`${BASE_URL}/users/${userId}`, {
+  const res = await fetch(`/api/users/${userId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 
   if (!res.ok) throw new Error('사용자 정보를 불러오는데 실패했습니다');
 
   const json = await res.json();
-
   if (!json.success)
     throw new Error(json.message || '사용자 정보를 불러오는데 실패했습니다');
 
@@ -50,9 +45,7 @@ export const getAllAnniversariesByCoupleId = async (
   startDate: string,
 ): Promise<Anniversary[]> => {
   try {
-    // const response = await fetch(
-    //   `${BASE_URL}/api/anniversaries/couples/${coupleId}`,
-    // );
+    // const res = await fetch(`/api/anniversaries/couple/${coupleId}`);
     const res = await fetch(`${BASE_URL}/anniversaries`);
     if (!res.ok) throw new Error('기념일 목록을 불러오는데 실패했습니다');
 

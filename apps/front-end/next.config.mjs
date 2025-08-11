@@ -5,7 +5,11 @@ const nextConfig = {
     outputFileTracingRoot: undefined,
   },
   images: {
-    domains: ['encrypted-tbn0.gstatic.com', 'cdn.pixabay.com'],
+    domains: [
+      'encrypted-tbn0.gstatic.com',
+      'cdn.pixabay.com',
+      'lh3.googleusercontent.com',
+    ],
   },
   async headers() {
     return [

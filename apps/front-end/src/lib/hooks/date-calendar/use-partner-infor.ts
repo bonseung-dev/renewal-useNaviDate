@@ -2,11 +2,8 @@ import {
   DEFAULT_NICKNAME,
   PLACEHOLDER_IMAGE,
 } from '@/constants/anniversary.constants';
-import {
-  getCoupleById,
-  getUserById,
-} from '@/lib/services/anniversary.services';
-import { PartnerInfo } from '@/types/anniversary.type';
+import { getCoupleById } from '@/lib/services/anniversary.services';
+import { PartnerInfo } from '@use-navi-date/shared';
 import { useCallback, useState } from 'react';
 
 export const usePartnerInfo = (
@@ -20,15 +17,18 @@ export const usePartnerInfo = (
     try {
       const couple = await getCoupleById(coupleId, token);
       // console.log('커플 정보:', couple);
-      const partnerId =
-        couple.userAId === userId ? couple.userBId : couple.userAId;
-      const partnerData = await getUserById(partnerId, token);
+
+      // 내 ID와 비교해서 파트너 정보만 추출
+      const partnerData =
+        couple.userAId === userId ? couple.userB : couple.userA;
+
+      // console.log('파트너 정보:', partnerData);
 
       const profileImage = partnerData.profileImage || PLACEHOLDER_IMAGE;
 
       setPartner({
-        id: partnerId,
-        profileImage: profileImage,
+        id: partnerData.id,
+        profileImage,
         nickname: partnerData.nickname || DEFAULT_NICKNAME,
       });
     } catch (error) {
