@@ -1,4 +1,4 @@
-import { PostTag } from '@/types/post.type';
+import { PostTag } from '@use-navi-date/shared';
 import Image from 'next/image';
 
 const WriteTag = ({

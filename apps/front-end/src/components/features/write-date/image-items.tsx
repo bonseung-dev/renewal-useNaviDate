@@ -1,6 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { CarouselItem } from '@/components/ui/carousel';
-import { PostImage } from '@/types/post.type';
+import { PostImage } from '@use-navi-date/shared';
 import NextImage from 'next/image';
 import React from 'react';
 
