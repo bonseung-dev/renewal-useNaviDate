@@ -20,7 +20,8 @@ export const usePartnerInfo = (
 
       // 내 ID와 비교해서 파트너 정보만 추출
       // console.log('내 ID:', userId);
-      const partnerData = userId === userId ? couple.userB : couple.userA;
+      const partnerData =
+        userId === couple.userA.id ? couple.userB : couple.userA;
 
       // console.log('파트너 정보:', partnerData);
 
