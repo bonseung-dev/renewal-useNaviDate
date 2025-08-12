@@ -2,7 +2,7 @@ import {
   DEFAULT_NICKNAME,
   PLACEHOLDER_IMAGE,
 } from '@/constants/anniversary.constants';
-import { getCoupleById } from '@/lib/services/anniversary.services';
+import { getCoupleById } from '@/lib/services/temp-couple.services';
 import { PartnerInfo } from '@use-navi-date/shared';
 import { useCallback, useState } from 'react';
 

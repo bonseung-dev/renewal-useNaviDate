@@ -1,57 +1,7 @@
 import dayjs from 'dayjs';
 import { generateAutoAnniversaries } from '../utils/anniversary.utils';
-import {
-  Anniversary,
-  CoupleResponse,
-  UserResponse,
-} from '@use-navi-date/shared';
-import { AnniversaryService } from '../api/services'; // 사용하려했으나 참고만 하여 구현
+import { Anniversary } from '@use-navi-date/shared';
 import { BASE_URL } from '@/constants/url.constants';
-
-//커플/유저 관련(식별자 조회 등)은 Next.js API Route(프론트->내부 API - 보안상 더 좋다고 알고 있음 but 좀 느린느낌)로 하고,
-// -- 프론트 내부 API 통신, 데이터 처리 및 화면 처리 프론트 담당
-// -- 보안상 중요하지 않은 데이터는 쿠키 사용 가능
-// -- 그게 아니라면 react-query / zustant 등의 인메모리 캐시 라이브러리 사용용
-// -- 글로벌 변수, 전역 변수 라이브러리 -> 어느 위치에서든 동일한 변수 참조 가능
-// recoil - 프로젝트 망함;, zustant - 최근 대세, redux-toolkit - 어려움;
-// 기념일 목록 같은 데이터는 독립 백엔드 API를 직접 호출하도록 사용중
-// -- 백엔드 API 사용한다는 것은 데이터 처리는 벡엔드가, 화면 처리는 백엔드에서 보내준 데이터를 프론트가 처리리
-
-// couples.services.ts로 분리 예정
-export const getCoupleById = async (
-  coupleId: number,
-  token: string,
-): Promise<CoupleResponse> => {
-  const res = await fetch(`${BASE_URL}/couples/${coupleId}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-
-  if (!res.ok) throw new Error('커플 정보를 불러오는데 실패했습니다');
-  const json = await res.json();
-  // console.log('커플 정보 요청:', json);
-  if (!json.success)
-    throw new Error(json.message || '커플 정보를 불러오는데 실패했습니다');
-
-  return json.data;
-};
-
-// users.services.ts로 분리 예정
-export const getUserById = async (
-  userId: number,
-  token: string,
-): Promise<UserResponse> => {
-  const res = await fetch(`${BASE_URL}/users/${userId}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-
-  if (!res.ok) throw new Error('사용자 정보를 불러오는데 실패했습니다');
-
-  const json = await res.json();
-  if (!json.success)
-    throw new Error(json.message || '사용자 정보를 불러오는데 실패했습니다');
-
-  return json.data;
-};
 
 export const getAllAnniversariesByCoupleId = async (
   coupleId: number,
