@@ -3,10 +3,9 @@ import { generateAutoAnniversaries } from '../utils/anniversary.utils';
 import {
   Anniversary,
   CoupleResponse,
-  CreateAnniversaryDto,
   UserResponse,
 } from '@use-navi-date/shared';
-import { AnniversaryService } from '../api/services'; // 사용하려했으나 계속 에러가 발생하여 참고만 하여 구현
+import { AnniversaryService } from '../api/services'; // 사용하려했으나 참고만 하여 구현
 import { BASE_URL } from '@/constants/url.constants';
 
 //커플/유저 관련(식별자 조회 등)은 Next.js API Route(프론트->내부 API - 보안상 더 좋다고 알고 있음 but 좀 느린느낌)로 하고,
@@ -23,7 +22,7 @@ export const getCoupleById = async (
   coupleId: number,
   token: string,
 ): Promise<CoupleResponse> => {
-  const res = await fetch(`/api/couples/${coupleId}`, {
+  const res = await fetch(`${BASE_URL}/couples/${coupleId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 
@@ -41,7 +40,7 @@ export const getUserById = async (
   userId: number,
   token: string,
 ): Promise<UserResponse> => {
-  const res = await fetch(`/api/users/${userId}`, {
+  const res = await fetch(`${BASE_URL}/users/${userId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 
@@ -60,15 +59,6 @@ export const getAllAnniversariesByCoupleId = async (
   token?: string,
 ): Promise<Anniversary[]> => {
   try {
-    // 500오류가 발생
-    // const res2 = await fetch(`/api/anniversaries/couple/${coupleId}`, {
-    //   headers: {
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    // });
-
-    // console.log('기념일 응답:', res2);
-
     const res = await fetch(`${BASE_URL}/anniversaries`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -82,17 +72,10 @@ export const getAllAnniversariesByCoupleId = async (
     const customAnniversaries: Anniversary[] = resData.data.filter(
       (a: Anniversary) => a.coupleId === coupleId,
     );
-    // 자동 생성된 기념일 객체에 필수 필드들을 추가해서 Anniversary 타입에 맞게 수정함
     const autoAnniversaries: Anniversary[] = generateAutoAnniversaries(
       startDate,
       coupleId,
-    ).map((a, idx) => ({
-      ...a,
-      createdAt: new Date(startDate),
-      updatedAt: undefined,
-      isDeleted: false,
-      id: -(idx + 1), // DB ID와 겹칠 우려가 있기 때문에 음수 임시 ID 부여
-    }));
+    );
 
     const oneYearLater = dayjs().add(1, 'year');
     return [...autoAnniversaries, ...customAnniversaries]
