@@ -1,10 +1,7 @@
 import CalendarTabs from '@/components/features/date-calendar/calendar-tabs';
 import LoginPrompt from '@/components/features/date-calendar/login-prompt';
-import {
-  getServerCookie,
-  getUserIdFromToken,
-  getCoupleIdFromToken,
-} from '@/lib/utils/cookes.utils';
+import { getMyCouple } from '@/lib/services/temp-couples-server.services';
+import { getServerCookie, getUserIdFromToken } from '@/lib/utils/cookes.utils';
 import { Metadata } from 'next';
 
 export async function generateMetadata({
@@ -26,7 +23,6 @@ export async function generateMetadata({
 
 type Props = {
   params: { coupleId: number };
-  searchParams: { [key: string]: string | undefined };
 };
 
 const Page = async ({ params }: Props) => {
@@ -42,43 +38,15 @@ const Page = async ({ params }: Props) => {
       return <LoginPrompt authStatus="unauthenticated" />;
     }
 
-    const backendUrl =
-      process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
-
-    const res = await fetch(`${backendUrl}/couples`, {
-      headers: { Authorization: `Bearer ${token}` },
-      cache: 'no-store',
-    });
-
-    if (!res.ok) {
-      throw new Error('커플 데이터 불러오기 실패');
-    }
-
-    const result = await res.json();
-    // console.log('커플 목록:', result);
-
-    if (!result.success || !Array.isArray(result.data)) {
-      throw new Error('잘못된 커플 데이터 형식');
-    }
-
-    const myCouple = result.data.find(
-      (c: any) => c.userAId === Number(userId) || c.userBId === Number(userId),
-    );
+    const myCouple = await getMyCouple(token, Number(userId));
 
     if (!myCouple) {
-      return <LoginPrompt authStatus="no-couple" userId={userId} />;
+      return <LoginPrompt authStatus="no-couple" />;
     }
 
     if (myCouple.id !== Number(params.coupleId)) {
-      return <LoginPrompt authStatus="invalid-couple" userId={userId} />;
+      return <LoginPrompt authStatus="invalid-couple" coupleId={myCouple.id} />;
     }
-
-    // console.log('내 커플:', myCouple);
-
-    // 기념일 시작 날짜
-    const startDate = myCouple.anniversary;
-
-    // console.log('기념일 시작 날짜:', startDate);
 
     return (
       <section aria-labelledby="calendar-heading">
@@ -87,7 +55,7 @@ const Page = async ({ params }: Props) => {
         </h1>
         <CalendarTabs
           coupleId={myCouple.id}
-          startDate={startDate}
+          startDate={myCouple.anniversary}
           userId={Number(userId)}
           token={token}
         />

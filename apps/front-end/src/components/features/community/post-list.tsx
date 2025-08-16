@@ -1,13 +1,14 @@
-import { CommunityPost } from '@/types/post.type';
+import { CommunityPost } from '@use-navi-date/shared';
 import CommunityStatus from './community-status';
 import PostCard from './post-card/post-card';
 
 type PostListProps = {
   posts: CommunityPost[];
   searchQuery: string;
+  userId?: number;
 };
 
-const PostList = ({ posts, searchQuery }: PostListProps) => {
+const PostList = ({ posts, searchQuery, userId }: PostListProps) => {
   return (
     <div className="flex flex-col gap-[20px] mt-5" role="list">
       {posts.length > 0 ? (
@@ -17,7 +18,7 @@ const PostList = ({ posts, searchQuery }: PostListProps) => {
             aria-labelledby={`post-${post.id}-title`}
             role="listitem"
           >
-            <PostCard post={post} />
+            <PostCard post={post} userId={userId} />
           </div>
         ))
       ) : (
