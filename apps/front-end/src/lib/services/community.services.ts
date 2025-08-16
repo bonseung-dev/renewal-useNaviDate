@@ -14,8 +14,7 @@ import {
 // 포스트 조회
 export const getAllPosts = async (
   query = '',
-  token?: string,
-): Promise<Post[]> => {
+): Promise<(Post & { images: PostImage[]; imageUrl: string | null })[]> => {
   const url = new URL(`${BASE_URL}/posts`);
   url.searchParams.append('visibility', 'public');
 
@@ -29,24 +28,12 @@ export const getAllPosts = async (
 
   const posts: Post[] = resJson.data;
 
-  // 포스트별 이미지 조회
+  // 포스트별 이미지 조회(일단 임시로 만들었지만 제대로 작동하진 않음)
   const postsWithImages = await Promise.all(
     posts.map(async (post) => {
-      if (!token) {
-        return {
-          ...post,
-          tags: [],
-          imageUrl: null,
-          images: [],
-        };
-      }
-
       try {
         const imagesRes = await fetch(
           `${BASE_URL}/post-images/post/${post.id}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
         );
         const postImages: PostImage[] = await imagesRes.json();
         const representative = postImages.find((img) => img.isRepresentative);
@@ -54,16 +41,15 @@ export const getAllPosts = async (
         return {
           ...post,
           tags: [],
-          imageUrl: representative?.imageUrl || null,
           images: postImages,
+          imageUrl: representative?.imageUrl || null,
         };
       } catch {
-        return { ...post, tags: [], imageUrl: null, images: [] };
+        return { ...post, tags: [], images: [], imageUrl: null };
       }
     }),
   );
 
-  // 검색 필터는 제목 기반만
   if (!query) return postsWithImages;
 
   return postsWithImages.filter((post) =>

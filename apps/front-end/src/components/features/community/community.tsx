@@ -25,7 +25,16 @@ const Community = () => {
   const { posts, isLoading, users, tags, images, likes, bookmarks } =
     useCommunityData(debouncedQuery);
 
-  const communityPosts = useCommunityPosts(posts, users, likes, bookmarks);
+  const postsWithUndefinedImageUrl = posts.map((post) => ({
+    ...post,
+    imageUrl: post.imageUrl === null ? undefined : post.imageUrl,
+  }));
+  const communityPosts = useCommunityPosts(
+    postsWithUndefinedImageUrl,
+    users,
+    likes,
+    bookmarks,
+  );
   const sortedPosts = useSortedPosts(communityPosts, sortOption);
 
   console.log('posts:', communityPosts);
