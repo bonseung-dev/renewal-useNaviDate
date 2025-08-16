@@ -16,19 +16,23 @@ export const getAllPosts = async (
   query = '',
 ): Promise<(Post & { images: PostImage[]; imageUrl: string | null })[]> => {
   const url = new URL(`${BASE_URL}/posts`);
+  //예전 로직 남겨두지만 제대로 작동하진 않음
   url.searchParams.append('visibility', 'public');
 
-  const response = await fetch(url.toString());
-  if (!response.ok) throw new Error('포스트 가져오기 실패');
+  const res = await fetch(url.toString());
+  if (!res.ok) throw new Error('포스트 가져오기 실패');
 
-  const resJson = await response.json();
-  if (!resJson.success || !Array.isArray(resJson.data)) {
+  const json = await res.json();
+  if (!json.success || !Array.isArray(json.data)) {
     throw new Error('포스트 가져오기 실패');
   }
 
-  const posts: Post[] = resJson.data;
+  //공개된 포스트만 필터링
+  const posts: Post[] = json.data.filter(
+    (post: Post) => post.visibility === 'public',
+  );
 
-  // 포스트별 이미지 조회(일단 임시로 만들었지만 제대로 작동하진 않음)
+  // 포스트별 이미지 조회(일단 임시로 만들었지만 제대로 작동하진 않음-Unauthorized-인증하지 않더라도 이미지를 가져올 수 있어야함)
   const postsWithImages = await Promise.all(
     posts.map(async (post) => {
       try {
@@ -56,7 +60,6 @@ export const getAllPosts = async (
     post.title.toLowerCase().includes(query.toLowerCase()),
   );
 };
-
 // 사용자 조회
 export const getAllUsers = async (): Promise<User[]> => {
   const res = await fetch(`${BASE_URL}/users`);

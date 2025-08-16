@@ -1,4 +1,5 @@
 import Community from '@/components/features/community/community';
+import { getUserIdFromToken } from '@/lib/utils/cookes.utils';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -15,7 +16,8 @@ export const metadata: Metadata = {
 };
 
 const Page = async () => {
-  return <Community />;
+  const userId = await getUserIdFromToken();
+  return <Community userId={Number(userId)} />;
 };
 
 export default Page;

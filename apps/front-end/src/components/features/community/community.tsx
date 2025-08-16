@@ -11,7 +11,11 @@ import CommunityStatus from './community-status';
 import CommunityControls from './community-controls';
 import PostList from './post-list';
 
-const Community = () => {
+type CommunityProps = {
+  userId: number;
+};
+
+const Community = ({ userId }: CommunityProps) => {
   const [sortOption, setSortOption] = useState<SortOption>(SORT_OPTIONS.LATEST);
 
   const {
@@ -61,7 +65,11 @@ const Community = () => {
         </h2>
       )}
 
-      <PostList posts={sortedPosts} searchQuery={debouncedQuery} />
+      <PostList
+        posts={sortedPosts}
+        searchQuery={debouncedQuery}
+        userId={userId}
+      />
     </section>
   );
 };
