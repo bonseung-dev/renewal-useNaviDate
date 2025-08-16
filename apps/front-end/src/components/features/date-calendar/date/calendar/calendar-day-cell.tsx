@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import Image from 'next/image';
 import { EMOTION_IMAGES } from '@/constants/emotions.constants';
 import Tooltip from '@/components/ui/tooltip';
-import { CalendarPost } from '@/types/post.type';
+import { CalendarPost } from '@use-navi-date/shared';
 
 type CalendarDayCellProps = {
   day: number | null;
@@ -52,8 +52,8 @@ const CalendarDayCell = ({
                 <div className="relative aspect-square w-full overflow-hidden rounded-full">
                   <Image
                     src={
-                      post.images?.find((img) => img.isRepresentative)
-                        ?.postImage?.url || EMOTION_IMAGES[post.emotion]
+                      post.images.find((img) => img.isRepresentative)
+                        ?.imageUrl || EMOTION_IMAGES[post.emotion]
                     }
                     alt={`${post.title} 대표 이미지`}
                     width={32}

@@ -8,7 +8,7 @@ import { Post as PostEntity } from './entities/post.entity';
 export class PostsService {
   constructor(
     @InjectRepository(PostEntity)
-    private postsRepository: Repository<PostEntity>,
+    private readonly postsRepository: Repository<PostEntity>,
   ) {}
 
   async create(createPostDto: CreatePostDto): Promise<ApiResponse<Post>> {

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { sortPosts } from '@/lib/utils/coomunity.utils';
-import { CommunityPost } from '@/types/post.type';
 import { SortOption } from '@/constants/community.constants';
+import { CommunityPost } from '@use-navi-date/shared';
 
 export const useSortedPosts = (
   posts: CommunityPost[],

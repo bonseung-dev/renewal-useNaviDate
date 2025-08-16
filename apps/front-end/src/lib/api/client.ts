@@ -80,10 +80,29 @@ export class ApiClient {
     data?: any, 
     headers?: Record<string, string>
   ): Promise<ApiResponse<T>> {
+    const url = `${this.config.baseURL}${endpoint}`;
+    
+    // FormData인 경우 Content-Type 헤더를 완전히 제거
+    const requestHeaders = { ...this.config.headers };
+    if (data instanceof FormData) {
+      delete requestHeaders['Content-Type'];
+      // FormData 전송 시 추가 헤더도 제거
+      if (headers) {
+        Object.keys(headers).forEach(key => {
+          if (key.toLowerCase() === 'content-type') {
+            delete headers[key];
+          }
+        });
+      }
+    }
+    
     return this.request<T>(endpoint, {
       method: 'POST',
-      headers,
-      body: data ? JSON.stringify(data) : undefined,
+      headers: {
+        ...requestHeaders,
+        ...headers,
+      },
+      body: data ? (data instanceof FormData ? data : JSON.stringify(data)) : undefined,
     });
   }
 

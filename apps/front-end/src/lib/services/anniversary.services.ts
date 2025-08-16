@@ -1,47 +1,31 @@
-import { CoupleResponse, UserResponse } from '@/types/anniversary.type';
 import dayjs from 'dayjs';
-import { Anniversary } from '@/types/anniversary.type';
 import { generateAutoAnniversaries } from '../utils/anniversary.utils';
+import { Anniversary } from '@use-navi-date/shared';
 import { BASE_URL } from '@/constants/url.constants';
-
-// couples.services.ts로 분리 예정
-export const getCoupleById = async (
-  coupleId: number,
-): Promise<CoupleResponse> => {
-  const res = await fetch(`${BASE_URL}/couples?id=${coupleId}`);
-  if (!res.ok) throw new Error('커플 정보를 불러오는데 실패했습니다');
-
-  const data = await res.json();
-
-  if (Array.isArray(data)) return data[0];
-
-  return data;
-};
-
-// users.services.ts로 분리 예정
-export const getUserById = async (userId: number): Promise<UserResponse> => {
-  const res = await fetch(`${BASE_URL}/users?id=${userId}`);
-  if (!res.ok) throw new Error('사용자 정보를 불러오는데 실패했습니다');
-
-  const data = await res.json();
-
-  if (Array.isArray(data)) return data[0];
-
-  return data;
-};
 
 export const getAllAnniversariesByCoupleId = async (
   coupleId: number,
   startDate: string,
+  token?: string,
 ): Promise<Anniversary[]> => {
   try {
-    const response = await fetch(
-      `${BASE_URL}/anniversaries?coupleId=${coupleId}`,
-    );
-    if (!response.ok) throw new Error('기념일 목록을 불러오는데 실패했습니다');
+    const res = await fetch(`${BASE_URL}/anniversaries`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!res.ok) throw new Error('기념일 목록을 불러오는데 실패했습니다');
 
-    const customAnniversaries: Anniversary[] = await response.json();
-    const autoAnniversaries = generateAutoAnniversaries(startDate, coupleId);
+    // console.log('기념일 응답:', res);
+    const resData = await res.json();
+    // console.log('기념일 목록 응답:', resData);
+    const customAnniversaries: Anniversary[] = resData.data.filter(
+      (a: Anniversary) => a.coupleId === coupleId,
+    );
+    const autoAnniversaries: Anniversary[] = generateAutoAnniversaries(
+      startDate,
+      coupleId,
+    );
 
     const oneYearLater = dayjs().add(1, 'year');
     return [...autoAnniversaries, ...customAnniversaries]
@@ -53,30 +37,31 @@ export const getAllAnniversariesByCoupleId = async (
   }
 };
 
-// 현재 json-server에서는 id를 string으로 자동생성하므로,
-// id를 number로 변경한 시점에서 제대로 작동하지 않을 수 있습니다.
-
 export const createAnniversary = async (
   coupleId: number,
   data: Omit<Anniversary, 'id'>,
+  token?: string,
 ): Promise<Anniversary> => {
+  if (!token) throw new Error('인증 토큰이 필요합니다.');
+
   try {
     const newAnniversary = {
       ...data,
       coupleId,
-      createdBy: new Date(),
+      createdBy: coupleId,
     };
 
-    const response = await fetch(`${BASE_URL}/anniversaries`, {
+    const res = await fetch(`${BASE_URL}/anniversaries`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(newAnniversary),
     });
 
-    if (!response.ok) throw new Error('기념일 생성에 실패했습니다');
-    return await response.json();
+    if (!res.ok) throw new Error('기념일 생성에 실패했습니다');
+    return await res.json();
   } catch (error) {
     console.error('기념일 생성 중 오류 발생:', error);
     throw error;
@@ -86,31 +71,43 @@ export const createAnniversary = async (
 export const updateAnniversaryById = async (
   id: number,
   data: Anniversary,
+  token?: string,
 ): Promise<Anniversary> => {
+  if (!token) throw new Error('인증 토큰이 필요합니다.');
+
   try {
-    const response = await fetch(`${BASE_URL}/anniversaries/${id}`, {
-      method: 'PUT',
+    const res = await fetch(`${BASE_URL}/anniversaries/${id}`, {
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(data),
     });
 
-    if (!response.ok) throw new Error('기념일 수정에 실패했습니다');
-    return await response.json();
+    if (!res.ok) throw new Error('기념일 수정에 실패했습니다');
+    return await res.json();
   } catch (error) {
     console.error('기념일 수정 중 오류 발생:', error);
     throw error;
   }
 };
 
-export const deleteAnniversaryById = async (id: number): Promise<void> => {
+export const deleteAnniversaryById = async (
+  id: number,
+  token?: string,
+): Promise<void> => {
+  if (!token) throw new Error('인증 토큰이 필요합니다.');
+
   try {
-    const response = await fetch(`${BASE_URL}/anniversaries/${id}`, {
+    const res = await fetch(`${BASE_URL}/anniversaries/${id}`, {
       method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
 
-    if (!response.ok) throw new Error('기념일 삭제에 실패했습니다');
+    if (!res.ok) throw new Error('기념일 삭제에 실패했습니다');
   } catch (error) {
     console.error('기념일 삭제 중 오류 발생:', error);
     throw error;

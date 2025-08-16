@@ -8,7 +8,7 @@ import { Bookmark as BookmarkEntity } from './entities/bookmark.entity';
 export class BookmarksService {
   constructor(
     @InjectRepository(BookmarkEntity)
-    private bookmarksRepository: Repository<BookmarkEntity>,
+    private readonly bookmarksRepository: Repository<BookmarkEntity>,
   ) {}
 
   async create(userId: number, postId: number): Promise<ApiResponse<Bookmark>> {

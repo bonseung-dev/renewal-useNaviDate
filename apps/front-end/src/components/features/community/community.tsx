@@ -11,14 +11,12 @@ import CommunityStatus from './community-status';
 import CommunityControls from './community-controls';
 import PostList from './post-list';
 
-const Community = () => {
-  const [sortOption, setSortOption] = useState<SortOption>(SORT_OPTIONS.LATEST);
-  const [, setUserId] = useState<number | null>(null);
+type CommunityProps = {
+  userId: number;
+};
 
-  useEffect(() => {
-    const stored = localStorage.getItem('userId');
-    setUserId(stored ? parseInt(stored, 10) : null); // number 변환
-  }, []);
+const Community = ({ userId }: CommunityProps) => {
+  const [sortOption, setSortOption] = useState<SortOption>(SORT_OPTIONS.LATEST);
 
   const {
     searchQuery,
@@ -31,15 +29,19 @@ const Community = () => {
   const { posts, isLoading, users, tags, images, likes, bookmarks } =
     useCommunityData(debouncedQuery);
 
+  const postsWithUndefinedImageUrl = posts.map((post) => ({
+    ...post,
+    imageUrl: post.imageUrl === null ? undefined : post.imageUrl,
+  }));
   const communityPosts = useCommunityPosts(
-    posts,
+    postsWithUndefinedImageUrl,
     users,
-    tags,
-    images,
     likes,
     bookmarks,
   );
   const sortedPosts = useSortedPosts(communityPosts, sortOption);
+
+  console.log('posts:', communityPosts);
 
   if (isLoading) return <CommunityStatus type="loading" />;
 
@@ -63,7 +65,11 @@ const Community = () => {
         </h2>
       )}
 
-      <PostList posts={sortedPosts} searchQuery={debouncedQuery} />
+      <PostList
+        posts={sortedPosts}
+        searchQuery={debouncedQuery}
+        userId={userId}
+      />
     </section>
   );
 };

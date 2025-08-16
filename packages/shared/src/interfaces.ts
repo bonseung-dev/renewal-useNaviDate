@@ -173,13 +173,13 @@ export interface CommunityPost extends Post {
 
 export interface PartnerInfo {
   id: number;
-  profileImage: Image;
+  profileImage: string | Image;
   nickname: string;
 }
 
 export interface CoupleResponse {
-  userAId: number;
-  userBId: number;
+  userA: User;
+  userB: User;
 }
 
 export interface UserResponse {
@@ -191,4 +191,4 @@ export interface UserResponse {
 import { Emotion, RepeatOption } from './enums';
 
 // Re-export for convenience
-export type { Emotion, RepeatOption }; 
+export type { Emotion, RepeatOption };

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import dayjs from 'dayjs';
-import { Anniversary } from '@/types/anniversary.type';
+import { Anniversary } from '@use-navi-date/shared';
 
 export const useSortedAnniversaries = (anniversaries: Anniversary[]) => {
   return useMemo(
