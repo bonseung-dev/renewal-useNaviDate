@@ -10,8 +10,15 @@ export const fetchPostsByCouple = async (coupleId: number, token: string) => {
 
     // console.log('포스트 데이터:', posts);
 
+    const filtered = posts.filter(
+      (post: Post & { couple?: { id: number } }) =>
+        post.couple?.id === coupleId,
+    );
+
+    // console.log('필터링된 포스트:', filtered);
+
     const calendarPosts = await Promise.all(
-      posts.map(async (post) => {
+      filtered.map(async (post) => {
         // 포스트 이미지 조회 `${BASE_URL}/postImages/post/${post.id}`,
         const postImagesRes = await fetch(
           `${BASE_URL}/post-images/post/${post.id}`,
