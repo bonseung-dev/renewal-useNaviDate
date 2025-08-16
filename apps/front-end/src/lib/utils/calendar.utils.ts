@@ -1,5 +1,4 @@
-import { Holiday } from '@/types/calendar.type';
-import { CalendarPost } from '@/types/post.type';
+import { CalendarPost, Holiday } from '@use-navi-date/shared';
 import dayjs from 'dayjs';
 
 export const getPostForDate = (posts: CalendarPost[], dateStr: string) => {

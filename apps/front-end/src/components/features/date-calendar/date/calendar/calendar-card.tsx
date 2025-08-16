@@ -1,7 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
-import type { Holiday } from '@/types/calendar.type';
-import { CalendarPost } from '@/types/post.type';
 import CalendarDayCell from './calendar-day-cell';
 import {
   generateCalendarDays,
@@ -11,6 +9,7 @@ import {
 import CalendarNavigation from './calendar-navigation';
 import CalendarHeader from './calendar-header';
 import CalendarWeekdays from './calendar-weekday';
+import { CalendarPost, Holiday } from '@use-navi-date/shared';
 
 type CalendarCardProps = {
   currentDate: Dayjs;

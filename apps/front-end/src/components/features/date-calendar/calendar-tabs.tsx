@@ -47,7 +47,7 @@ const CalendarTabs = ({
           {activeTab === 'date' ? '데이트' : '기념일'} 탭 내용
         </h2>
         {activeTab === 'date' ? (
-          <DateTab coupleId={coupleId} />
+          <DateTab coupleId={coupleId} token={token} />
         ) : (
           <AnniversaryTab
             coupleId={coupleId}
