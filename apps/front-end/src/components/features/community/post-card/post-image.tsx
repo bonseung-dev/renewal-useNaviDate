@@ -1,4 +1,4 @@
-import { CommunityPost } from '@/types/post.type';
+import { CommunityPost } from '@use-navi-date/shared';
 import Image from 'next/image';
 
 type PostImageProps = {
@@ -21,7 +21,7 @@ const PostImage = ({ images, title }: PostImageProps) => {
   return (
     <>
       <Image
-        src={displayImage.postImage.url}
+        src={displayImage.postImage?.url || ''}
         alt={`"${title}" 포스트의 대표 이미지`}
         fill
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

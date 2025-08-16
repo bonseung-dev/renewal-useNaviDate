@@ -1,7 +1,7 @@
-import { CommunityPost } from '@/types/post.type';
 import PostImage from './post-image';
 import PostHeader from './post-header';
 import PostFooter from './post-footer';
+import { CommunityPost } from '@use-navi-date/shared';
 
 type PostCardProps = {
   post: CommunityPost;

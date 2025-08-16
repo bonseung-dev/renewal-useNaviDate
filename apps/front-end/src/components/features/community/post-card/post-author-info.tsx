@@ -1,5 +1,5 @@
 import { formatDate } from '@/lib/utils/coomunity.utils';
-import { CommunityPost } from '@/types/post.type';
+import { CommunityPost } from '@use-navi-date/shared';
 import Image from 'next/image';
 
 type PostAuthorInfoProps = {
@@ -8,7 +8,10 @@ type PostAuthorInfoProps = {
 };
 
 const PostAuthorInfo = ({ author, createdAt }: PostAuthorInfoProps) => {
-  const profileUrl = author?.profileImage?.url || '/placeholder-image.png';
+  const profileUrl =
+    typeof author?.profileImage === 'string'
+      ? author.profileImage
+      : '/placeholder-image.png';
 
   return (
     <div className="flex items-center">

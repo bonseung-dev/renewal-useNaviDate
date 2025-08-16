@@ -1,8 +1,12 @@
 import { BASE_URL } from '@/constants/url.constants';
-
-import { Bookmark, Like } from '@/types/like-bookmark.type';
-import { Post, PostImage, PostTag } from '@/types/post.type';
-import { User } from '@/types/user.type';
+import {
+  Bookmark,
+  Like,
+  Post,
+  PostImage,
+  PostTag,
+  User,
+} from '@use-navi-date/shared';
 
 // 본 파일은 테스트 기간 동안 개발 및 수정 용이성을 위해 커뮤니티 관련 api 들을 임시로 모아둔 파일입니다.
 // 백엔드 db와 제대로 연결이 되면 분리할 예정입니다.
