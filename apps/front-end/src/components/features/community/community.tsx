@@ -22,11 +22,13 @@ const Community = () => {
     handleExplicitSearch,
   } = useSearchQuery();
 
-  const { posts, isLoading, users, tags, images } =
+  const { posts, isLoading, users, tags, images, likes, bookmarks } =
     useCommunityData(debouncedQuery);
 
-  const communityPosts = useCommunityPosts(posts, users, tags, images);
+  const communityPosts = useCommunityPosts(posts, users, likes, bookmarks);
   const sortedPosts = useSortedPosts(communityPosts, sortOption);
+
+  console.log('posts:', communityPosts);
 
   if (isLoading) return <CommunityStatus type="loading" />;
 

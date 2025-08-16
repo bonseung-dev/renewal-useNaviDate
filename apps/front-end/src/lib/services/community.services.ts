@@ -109,16 +109,28 @@ export const getAllPostImages = async (): Promise<PostImage[]> => {
 
 // 좋아요 조회
 export const getAllLikes = async (): Promise<Like[]> => {
-  const response = await fetch(`${BASE_URL}/likes`);
-  if (!response.ok) throw new Error('좋아요를 가져오는데 실패했습니다.');
-  return response.json();
+  const res = await fetch(`${BASE_URL}/likes`);
+  if (!res.ok) throw new Error('좋아요를 가져오는데 실패했습니다.');
+
+  const json = await res.json();
+  if (!json.success || !Array.isArray(json.data)) {
+    throw new Error('좋아요 데이터 형식이 올바르지 않습니다.');
+  }
+
+  return json.data;
 };
 
 // 북마크 조회
 export const getAllBookmarks = async (): Promise<Bookmark[]> => {
-  const response = await fetch(`${BASE_URL}/bookmarks`);
-  if (!response.ok) throw new Error('북마크를 가져오는데 실패했습니다.');
-  return response.json();
+  const res = await fetch(`${BASE_URL}/bookmarks`);
+  if (!res.ok) throw new Error('북마크를 가져오는데 실패했습니다.');
+
+  const json = await res.json();
+  if (!json.success || !Array.isArray(json.data)) {
+    throw new Error('북마크 데이터 형식이 올바르지 않습니다.');
+  }
+
+  return json.data;
 };
 
 // 좋아요 추가/삭제 함수

@@ -33,13 +33,14 @@ export const useCommunityPosts = (
         createdAt: new Date(post.createdAt),
         deletedAt: post.deletedAt ? new Date(post.deletedAt) : null,
         author,
-        tags: post.tags || [], // 구현이 필요
-        images: post.images || [], // getAllPosts에서 이미 포함
+        tags: post.tags || [],
+        images: post.images || [],
         likes: postLikes,
         likesCount: postLikes.length,
         bookmarks: postBookmarks,
         bookmarksCount: postBookmarks.length,
-        imageUrl: post.imageUrl || null, // 대표 이미지
+        imageUrl:
+          post.images?.find((img) => img.isRepresentative)?.imageUrl || null,
       };
     });
   }, [posts, users, likes, bookmarks]);
