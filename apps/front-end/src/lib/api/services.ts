@@ -208,19 +208,44 @@ export class NotificationService {
 
 // Image Service
 export class ImageService {
-  static async getImages(token: string): Promise<ApiResponse<{ images: Image[] }>> {
-    const client = createAuthenticatedApiClient(token);
-    return client.get<{ images: Image[] }>('/images');
+  static async uploadImage(file: File, token?: string): Promise<ApiResponse<Image>> {
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    if (token) {
+      const client = createAuthenticatedApiClient(token);
+      return client.post<Image>('/images/upload', formData);
+    } else {
+      // 인증 없이 업로드 - 기본 API 클라이언트 사용
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000'}/images/upload`, {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      return response.json();
+    }
   }
 
-  static async getImage(id: string, token: string): Promise<ApiResponse<{ image: Image }>> {
-    const client = createAuthenticatedApiClient(token);
-    return client.get<{ image: Image }>(`/images/${id}`);
-  }
-
-  static async deleteImage(id: string, token: string): Promise<ApiResponse<{ message: string }>> {
-    const client = createAuthenticatedApiClient(token);
-    return client.delete<{ message: string }>(`/images/${id}`);
+  static async deleteImage(id: number, token?: string): Promise<ApiResponse<void>> {
+    if (token) {
+      const client = createAuthenticatedApiClient(token);
+      return client.delete<void>(`/images/${id}`);
+    } else {
+      // 인증 없이 삭제
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000'}/images/${id}`, {
+        method: 'DELETE',
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      return response.json();
+    }
   }
 }
 

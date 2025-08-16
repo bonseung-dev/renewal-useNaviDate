@@ -11,7 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 export class ImagesService {
   constructor(
     @InjectRepository(ImageEntity)
-    private imagesRepository: Repository<ImageEntity>,
+    private readonly imagesRepository: Repository<ImageEntity>,
   ) {}
 
   async create(imageData: Partial<ImageEntity>): Promise<ApiResponse<Image>> {
@@ -51,11 +51,11 @@ export class ImagesService {
         };
       }
 
-      // 파일 크기 검증 (5MB)
-      if (file.size > 5 * 1024 * 1024) {
+      // 파일 크기 검증 (50MB)
+      if (file.size > 50 * 1024 * 1024) {
         return {
           success: false,
-          message: '파일 크기가 너무 큽니다. 최대 5MB까지 허용됩니다.',
+          message: '파일 크기가 너무 큽니다. 최대 50MB까지 허용됩니다.',
         };
       }
 
@@ -81,7 +81,7 @@ export class ImagesService {
         size: file.size,
         path: `/uploads/${filename}`,
         url: `/uploads/${filename}`,
-        userId,
+        userId: userId || undefined, // userId가 없으면 undefined로 설정
       };
 
       return await this.create(imageData);

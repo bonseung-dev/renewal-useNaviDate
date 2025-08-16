@@ -9,9 +9,9 @@ import { ChatMessage as ChatMessageEntity } from './entities/chat-message.entity
 export class ChatsService {
   constructor(
     @InjectRepository(ChatEntity)
-    private chatsRepository: Repository<ChatEntity>,
+    private readonly chatsRepository: Repository<ChatEntity>,
     @InjectRepository(ChatMessageEntity)
-    private chatMessagesRepository: Repository<ChatMessageEntity>,
+    private readonly chatMessagesRepository: Repository<ChatMessageEntity>,
   ) {}
 
   async create(userAId: number, userBId: number): Promise<ApiResponse<Chat>> {

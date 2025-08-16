@@ -9,6 +9,8 @@ const nextConfig = {
       'encrypted-tbn0.gstatic.com',
       'cdn.pixabay.com',
       'lh3.googleusercontent.com',
+      'localhost',
+      'usenavi-api.sorune.org'
     ],
   },
   async headers() {
