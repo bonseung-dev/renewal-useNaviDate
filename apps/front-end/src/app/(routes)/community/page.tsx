@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   },
 };
 
-const Page = () => {
+const Page = async () => {
   return <Community />;
 };
 

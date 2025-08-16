@@ -9,8 +9,8 @@ type PostImageProps = {
 const PostImage = ({ images, title }: PostImageProps) => {
   if (images.length === 0) {
     return (
-      <div className="absolute inset-0 flex items-center justify-center bg-skin4">
-        <span className="text-font4">이미지가 없습니다</span>
+      <div className="absolute inset-0 flex items-center justify-center bg-font4">
+        <span className="text-font5">이미지가 없습니다</span>
       </div>
     );
   }

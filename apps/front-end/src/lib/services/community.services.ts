@@ -12,75 +12,99 @@ import {
 // 백엔드 db와 제대로 연결이 되면 분리할 예정입니다.
 
 // 포스트 조회
-export const getAllPosts = async (query = ''): Promise<Post[]> => {
+export const getAllPosts = async (
+  query = '',
+  token?: string,
+): Promise<Post[]> => {
   const url = new URL(`${BASE_URL}/posts`);
   url.searchParams.append('visibility', 'public');
 
   const response = await fetch(url.toString());
   if (!response.ok) throw new Error('포스트 가져오기 실패');
 
-  const posts: unknown = await response.json();
-
-  // 타입 안정성을 위한 함수
-  const isPostArray = (
-    data: unknown,
-  ): data is Array<Post & { tags?: PostTag[] }> => {
-    return (
-      Array.isArray(data) &&
-      data.every(
-        (item) =>
-          typeof item === 'object' &&
-          item !== null &&
-          'id' in item &&
-          'title' in item,
-      )
-    );
-  };
-
-  if (!isPostArray(posts)) {
-    throw new Error('Invalid posts data format');
+  const resJson = await response.json();
+  if (!resJson.success || !Array.isArray(resJson.data)) {
+    throw new Error('포스트 가져오기 실패');
   }
 
-  if (!query) return posts;
+  const posts: Post[] = resJson.data;
 
-  return posts.filter((post) => {
-    const titleMatch = post.title.toLowerCase().includes(query.toLowerCase());
+  // 포스트별 이미지 조회
+  const postsWithImages = await Promise.all(
+    posts.map(async (post) => {
+      if (!token) {
+        return {
+          ...post,
+          tags: [],
+          imageUrl: null,
+          images: [],
+        };
+      }
 
-    // 태그 검사
-    const tagMatch =
-      Array.isArray(post.tags) &&
-      post.tags.some(
-        (tag: unknown) =>
-          typeof tag === 'object' &&
-          tag !== null &&
-          'name' in tag &&
-          typeof tag.name === 'string' &&
-          tag.name.toLowerCase().includes(query.toLowerCase()),
-      );
+      try {
+        const imagesRes = await fetch(
+          `${BASE_URL}/post-images/post/${post.id}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
+        const postImages: PostImage[] = await imagesRes.json();
+        const representative = postImages.find((img) => img.isRepresentative);
 
-    return titleMatch || tagMatch;
-  });
+        return {
+          ...post,
+          tags: [],
+          imageUrl: representative?.imageUrl || null,
+          images: postImages,
+        };
+      } catch {
+        return { ...post, tags: [], imageUrl: null, images: [] };
+      }
+    }),
+  );
+
+  // 검색 필터는 제목 기반만
+  if (!query) return postsWithImages;
+
+  return postsWithImages.filter((post) =>
+    post.title.toLowerCase().includes(query.toLowerCase()),
+  );
 };
 
 // 사용자 조회
 export const getAllUsers = async (): Promise<User[]> => {
-  const response = await fetch(`${BASE_URL}/users`);
-  if (!response.ok) throw new Error('사용자를 가져오는데 실패했습니다.');
-  return response.json();
+  const res = await fetch(`${BASE_URL}/users`);
+  if (!res.ok) throw new Error('사용자를 가져오는데 실패했습니다.');
+
+  const json = await res.json();
+  if (!json.success || !Array.isArray(json.data)) {
+    throw new Error('사용자 데이터 형식이 올바르지 않습니다.');
+  }
+
+  return json.data;
 };
 
 // 포스트 태그 조회
 export const getAllPostTags = async (): Promise<PostTag[]> => {
-  const response = await fetch(`${BASE_URL}/postTags`);
-  if (!response.ok) throw new Error('태그를 가져오는데 실패했습니다.');
-  return response.json();
+  try {
+    const res = await fetch(`${BASE_URL}/postTags`);
+    if (!res.ok) throw new Error('태그를 가져오는데 실패했습니다.');
+    const tags: PostTag[] = await res.json();
+    return tags;
+  } catch {
+    return [];
+  }
 };
 
 // 포스트 이미지 조회
 export const getAllPostImages = async (): Promise<PostImage[]> => {
-  const response = await fetch(`${BASE_URL}/postImages`);
-  if (!response.ok) throw new Error('이미지를 가져오는데 실패했습니다.');
-  return response.json();
+  try {
+    const res = await fetch(`${BASE_URL}/postImages`);
+    if (!res.ok) throw new Error('이미지를 가져오는데 실패했습니다.');
+    return res.json();
+  } catch {
+    return [];
+  }
 };
 
 // 좋아요 조회

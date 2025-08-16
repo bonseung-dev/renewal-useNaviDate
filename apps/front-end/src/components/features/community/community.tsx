@@ -13,12 +13,6 @@ import PostList from './post-list';
 
 const Community = () => {
   const [sortOption, setSortOption] = useState<SortOption>(SORT_OPTIONS.LATEST);
-  const [, setUserId] = useState<number | null>(null);
-
-  useEffect(() => {
-    const stored = localStorage.getItem('userId');
-    setUserId(stored ? parseInt(stored, 10) : null); // number 변환
-  }, []);
 
   const {
     searchQuery,
@@ -28,17 +22,10 @@ const Community = () => {
     handleExplicitSearch,
   } = useSearchQuery();
 
-  const { posts, isLoading, users, tags, images, likes, bookmarks } =
+  const { posts, isLoading, users, tags, images } =
     useCommunityData(debouncedQuery);
 
-  const communityPosts = useCommunityPosts(
-    posts,
-    users,
-    tags,
-    images,
-    likes,
-    bookmarks,
-  );
+  const communityPosts = useCommunityPosts(posts, users, tags, images);
   const sortedPosts = useSortedPosts(communityPosts, sortOption);
 
   if (isLoading) return <CommunityStatus type="loading" />;

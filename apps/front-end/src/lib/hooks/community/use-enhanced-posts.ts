@@ -15,18 +15,14 @@ import { useMemo } from 'react';
  * - 연관된 태그, 이미지, 좋아요/북마크 수 결합
  */
 export const useCommunityPosts = (
-  posts: Post[],
+  posts: (Post & { images?: PostImage[]; imageUrl?: string; tags?: any[] })[],
   users: User[],
-  tags: PostTag[],
-  images: PostImage[],
   likes: Like[],
   bookmarks: Bookmark[],
 ): CommunityPost[] => {
   return useMemo(() => {
     return posts.map((post) => {
       const author = users.find((user) => user.id === post.userId);
-      const postTags = tags.filter((tag) => tag.postId === post.id);
-      const postImages = images.filter((image) => image.postId === post.id);
       const postLikes = likes.filter((like) => like.postId === post.id);
       const postBookmarks = bookmarks.filter(
         (bookmark) => bookmark.postId === post.id,
@@ -37,13 +33,14 @@ export const useCommunityPosts = (
         createdAt: new Date(post.createdAt),
         deletedAt: post.deletedAt ? new Date(post.deletedAt) : null,
         author,
-        tags: postTags,
-        images: postImages,
+        tags: post.tags || [], // 구현이 필요
+        images: post.images || [], // getAllPosts에서 이미 포함
         likes: postLikes,
         likesCount: postLikes.length,
         bookmarks: postBookmarks,
         bookmarksCount: postBookmarks.length,
+        imageUrl: post.imageUrl || null, // 대표 이미지
       };
     });
-  }, [posts, users, tags, images, likes, bookmarks]);
+  }, [posts, users, likes, bookmarks]);
 };
