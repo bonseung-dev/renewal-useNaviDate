@@ -8,9 +8,6 @@ import {
   User,
 } from '@use-navi-date/shared';
 
-// 본 파일은 테스트 기간 동안 개발 및 수정 용이성을 위해 커뮤니티 관련 api 들을 임시로 모아둔 파일입니다.
-// 백엔드 db와 제대로 연결이 되면 분리할 예정입니다.
-
 // 포스트 조회
 export const getAllPosts = async (
   query = '',
@@ -121,6 +118,10 @@ export const getAllBookmarks = async (): Promise<Bookmark[]> => {
 
   return json.data;
 };
+
+// 좋아요 추가/삭제 로직
+// 먼저 기존 좋아요 여부 확인하기 위해서, 좋아요하고 싶은 포스터 아이디와 사용자 아이디를 이용해 조회가 가능해야함 <--백엔드에 요청해야할 부분
+// 만약 이미 좋아요가 있다면 삭제하고, 없다면 추가하는 방식으로 구현
 
 // 좋아요 추가/삭제 함수
 export const updateLike = async (
