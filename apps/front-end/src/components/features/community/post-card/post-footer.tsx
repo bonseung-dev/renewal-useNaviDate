@@ -4,7 +4,7 @@ import { CommunityPost } from '@use-navi-date/shared';
 
 type PostFooterProps = {
   author: CommunityPost['author'];
-  createdAt: Date;
+  date: Date | string;
   likes: CommunityPost['likes'];
   bookmarks: CommunityPost['bookmarks'];
   likesCount: number;
@@ -15,7 +15,7 @@ type PostFooterProps = {
 
 const PostFooter = (props: PostFooterProps) => (
   <footer className="absolute bottom-[20px] left-[20px] right-[20px] h-[36px] flex items-center justify-between">
-    <PostAuthorInfo author={props.author} createdAt={props.createdAt} />
+    <PostAuthorInfo author={props.author} date={props.date} />
     <PostActions
       postId={props.postId}
       likes={props.likes}

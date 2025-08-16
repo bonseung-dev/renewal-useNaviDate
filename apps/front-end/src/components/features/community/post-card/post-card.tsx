@@ -19,7 +19,7 @@ const PostCard = ({ post, userId }: PostCardProps) => {
         <PostHeader title={post.title} tags={post.tags} id={post.id} />
         <PostFooter
           author={post.author}
-          createdAt={post.createdAt}
+          date={post.date}
           likes={post.likes}
           bookmarks={post.bookmarks}
           likesCount={post.likesCount}
