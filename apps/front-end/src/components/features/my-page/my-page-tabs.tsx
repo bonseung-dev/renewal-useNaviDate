@@ -39,7 +39,11 @@ const MyPageTabs = ({ userId, token }: MyPageTabsProps) => {
         <h2 id={`${activeTab}-tab-content`} className="sr-only">
           {activeTab === 'post' ? '작성한 글' : '북마크'} 탭 내용
         </h2>
-        {activeTab === 'post' ? <MyPostTab /> : <MyBookmarksTab />}
+        {activeTab === 'post' ? (
+          <MyPostTab userId={userId} />
+        ) : (
+          <MyBookmarksTab userId={userId} />
+        )}
       </section>
     </article>
   );
