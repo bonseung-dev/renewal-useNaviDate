@@ -4,16 +4,21 @@ import { useRouter } from 'next/navigation';
 import { PATH } from '@/constants/path';
 import {
   createImage,
-  createPost,
   createTag,
 } from '../services/write-date.services';
+import { PostService } from '../api/services';
+import { getAuthToken } from '../utils/api';
+import { CreatePostDto } from '@use-navi-date/shared';
 
 export const useCreatePostMutation = (resetForm: () => void) => {
   const queryClient = useQueryClient();
   const router = useRouter();
 
   return useMutation({
-    mutationFn: createPost,
+    mutationFn: async (postData: CreatePostDto) => {
+      const token = await getAuthToken();
+      return PostService.createPost(postData, token as string);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.WRITE_POSTS] });
       resetForm();

@@ -11,22 +11,34 @@ type AnniversaryTabProps = {
   coupleId: number;
   startDate: string;
   userId: number;
+  token: string;
 };
 
 const AnniversaryTab = ({
   coupleId,
   startDate,
   userId,
+  token,
 }: AnniversaryTabProps) => {
+  // const {
+  //   anniversaries,
+  //   loadAnniversaries,
+  //   createAnniversary: add,
+  //   updateAnniversary: update,
+  //   deleteAnniversary: remove,
+  // } = useAnniversaries(coupleId, startDate, token);
   const {
     anniversaries,
-    loadAnniversaries,
     createAnniversary: add,
     updateAnniversary: update,
     deleteAnniversary: remove,
-  } = useAnniversaries(coupleId, startDate);
+    refetch,
+    isLoading,
+    isError,
+  } = useAnniversaries(coupleId, startDate, token);
 
-  const { partner, fetchPartnerInfo } = usePartnerInfo(coupleId, userId);
+  const { partner, fetchPartnerInfo } = usePartnerInfo(coupleId, userId, token);
+
   const {
     editingAnniversary,
     isEditorOpen,
@@ -41,14 +53,14 @@ const AnniversaryTab = ({
   useEffect(() => {
     const loadData = async () => {
       try {
-        await Promise.all([loadAnniversaries(), fetchPartnerInfo()]);
+        await Promise.all([refetch(), fetchPartnerInfo()]);
       } catch (error) {
         console.error('초기 데이터 로딩 실패했습니다.:', error);
       }
     };
 
     loadData();
-  }, [loadAnniversaries, fetchPartnerInfo]);
+  }, [refetch, fetchPartnerInfo]);
 
   return (
     <Dialog open={isEditorOpen} onOpenChange={setIsEditorOpen}>

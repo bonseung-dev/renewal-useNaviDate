@@ -1,5 +1,5 @@
+import { Anniversary } from '@use-navi-date/shared';
 import { useState } from 'react';
-import { Anniversary } from '@/types/anniversary.type';
 
 export const useAnniversaryActions = (
   updateAnniversary: (data: Anniversary) => Promise<Anniversary>,

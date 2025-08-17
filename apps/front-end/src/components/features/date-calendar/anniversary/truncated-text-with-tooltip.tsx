@@ -1,13 +1,13 @@
 type TruncatedTextProps = {
-  text: string;
+  text?: string;
   maxLength: number;
   className?: string;
 };
 
 const TruncatedTextWithTooltip = ({
-  text,
+  text = '',
   maxLength,
-  className,
+  className = '',
 }: TruncatedTextProps) => (
   <div className="relative group">
     <span className={`truncate ${className}`}>

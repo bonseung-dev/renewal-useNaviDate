@@ -1,11 +1,8 @@
-import { redirect } from 'next/navigation';
 import LoginPrompt from '@/components/features/date-calendar/login-prompt';
-import {
-  getServerCookie,
-  getUserIdFromToken,
-  getCoupleIdFromToken,
-} from '@/lib/utils/cookes.utils';
+import { getMyCouple } from '@/lib/services/temp-couples-server.services';
+import { getServerCookie, getUserIdFromToken } from '@/lib/utils/cookes.utils';
 import { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: '커플 캘린더 시작하기 || useNavidate( )',
@@ -20,43 +17,25 @@ export const metadata: Metadata = {
   },
 };
 
-type Props = {
-  searchParams: { [key: string]: string | undefined };
-};
-
-const Page = async ({ searchParams }: Props) => {
+const Page = async () => {
   const token = getServerCookie('access_token');
 
   if (!token) {
     return <LoginPrompt authStatus="unauthenticated" />;
   }
 
-  try {
-    const userId = await getUserIdFromToken();
-    if (!userId) {
-      return <LoginPrompt authStatus="unauthenticated" />;
-    }
-
-    const coupleId = await getCoupleIdFromToken();
-    if (coupleId) {
-      redirect(`/date-calendar/${coupleId}`);
-    }
-
-    return <LoginPrompt authStatus="no-couple" userId={userId} />;
-  } catch (error) {
-    return <LoginPrompt authStatus="error" />;
+  const userId = await getUserIdFromToken();
+  if (!userId) {
+    return <LoginPrompt authStatus="unauthenticated" />;
   }
+
+  const myCouple = await getMyCouple(token, Number(userId));
+
+  if (myCouple) {
+    redirect(`/date-calendar/${myCouple.id}`);
+  }
+
+  return <LoginPrompt authStatus="no-couple" />;
 };
 
 export default Page;
-
-// // 테스트용 상수 (개발 환경에서만 사용)
-// const TEST_COUPLE_ID = '1';
-// const TEST_START_DATE = '2024-01-01';
-// const TEST_USER_ID = '1';
-
-// const page = () => {
-//   return <CalendarTabs coupleId={TEST_COUPLE_ID} startDate={TEST_START_DATE} userId={TEST_USER_ID} />;
-// };
-
-// export default page;

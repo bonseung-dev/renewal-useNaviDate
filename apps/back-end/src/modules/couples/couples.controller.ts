@@ -1,10 +1,11 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { CouplesService } from './couples.service';
 import { CreateCoupleDto, ApiResponse, Couple } from '@use-navi-date/shared';
-
 @Controller('couples')
 export class CouplesController {
-  constructor(private readonly couplesService: CouplesService) {}
+  constructor(
+    private readonly couplesService: CouplesService,
+  ) {}
 
   @Post()
   create(@Body() createCoupleDto: CreateCoupleDto): Promise<ApiResponse<Couple>> {

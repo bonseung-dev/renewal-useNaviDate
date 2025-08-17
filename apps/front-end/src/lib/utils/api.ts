@@ -16,6 +16,29 @@ export class ApiError extends Error {
     this.name = 'ApiError';
   }
 }
+export async function fetchWithoutAuth(
+  url: string,
+  options: RequestInit = {},
+): Promise<Response> {
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new ApiError(
+      response.status,
+      errorData.message || `HTTP ${response.status} 오류가 발생했습니다.`,
+      errorData,
+    );
+  }
+
+  return response;
+}
 
 export async function fetchWithAuth(
   url: string,

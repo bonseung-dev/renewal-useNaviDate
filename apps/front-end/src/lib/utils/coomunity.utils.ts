@@ -1,6 +1,6 @@
 import { SORT_OPTIONS } from '@/constants/community.constants';
-import { SortOption } from '@/types/community.type';
-import { CommunityPost } from '@/types/post.type';
+import { CommunityPost, SortOption } from '@use-navi-date/shared';
+
 import { debounce } from 'lodash';
 
 // 정렬 함수
@@ -10,7 +10,7 @@ export const sortPosts = (
 ): CommunityPost[] => {
   return [...posts].sort((a, b) => {
     if (sortOption === SORT_OPTIONS.LATEST) {
-      return b.createdAt.getTime() - a.createdAt.getTime();
+      return a.createdAt.getTime() - b.createdAt.getTime();
     } else if (sortOption === SORT_OPTIONS.LIKES) {
       return b.likesCount - a.likesCount;
     } else if (sortOption === SORT_OPTIONS.BOOKMARKS) {

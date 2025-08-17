@@ -8,9 +8,15 @@ type CalendarTabsProps = {
   coupleId: number;
   startDate: string;
   userId: number;
+  token: string;
 };
 
-const CalendarTabs = ({ coupleId, startDate, userId }: CalendarTabsProps) => {
+const CalendarTabs = ({
+  coupleId,
+  startDate,
+  userId,
+  token,
+}: CalendarTabsProps) => {
   const [activeTab, setActiveTab] = useState<'date' | 'anniversary'>('date');
 
   return (
@@ -41,12 +47,13 @@ const CalendarTabs = ({ coupleId, startDate, userId }: CalendarTabsProps) => {
           {activeTab === 'date' ? '데이트' : '기념일'} 탭 내용
         </h2>
         {activeTab === 'date' ? (
-          <DateTab coupleId={coupleId} />
+          <DateTab coupleId={coupleId} token={token} />
         ) : (
           <AnniversaryTab
             coupleId={coupleId}
             startDate={startDate}
             userId={userId}
+            token={token}
           />
         )}
       </section>

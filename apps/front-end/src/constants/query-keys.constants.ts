@@ -10,6 +10,8 @@ export const QUERY_KEYS = {
   WRITE_POSTS: 'write-posts',
   WRITE_IMAGES: 'write-post-images',
   WRITE_TAGS: 'write-post-tags',
+  ANNIVERSARIES: 'anniversaries',
+  ANNIVERSARIES_BY_COUPLE: (coupleId: number) => ['anniversaries', coupleId],
 } as const;
 
 // 쿼리 키 타입 추출 (필요시 사용)

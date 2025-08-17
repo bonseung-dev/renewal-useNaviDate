@@ -1,7 +1,7 @@
 import Tooltip from '@/components/ui/tooltip';
 import { useUpdateBookmarkMutation } from '@/lib/mutations/bookmark.mutation';
 import { useUpdateLikeMutation } from '@/lib/mutations/like.mutation';
-import { CommunityPost } from '@/types/post.type';
+import { CommunityPost } from '@use-navi-date/shared';
 import { Bookmark, Heart } from 'lucide-react';
 import { useState } from 'react';
 
@@ -11,6 +11,7 @@ type PostActionsProps = {
   bookmarks: CommunityPost['bookmarks'];
   likesCount: number;
   bookmarksCount: number;
+  userId?: number;
 };
 
 const PostActions = ({
@@ -19,16 +20,14 @@ const PostActions = ({
   bookmarks,
   likesCount,
   bookmarksCount,
+  userId,
 }: PostActionsProps) => {
   const [showLikesCount, setShowLikesCount] = useState(false);
   const [showBookmarksCount, setShowBookmarksCount] = useState(false);
   const { mutate: toggleLike } = useUpdateLikeMutation();
   const { mutate: toggleBookmark } = useUpdateBookmarkMutation();
 
-  const userId =
-    typeof window !== 'undefined'
-      ? Number(localStorage.getItem('userId'))
-      : null;
+  // console.log('userId:', userId);
 
   const isLiked = likes?.some((like) => like.userId === userId);
   const isBookmarked = bookmarks?.some(

@@ -150,6 +150,17 @@ const SignUpPage = () => {
           로그인
         </Link>
       </div>
+
+      {/* 로그인 링크 */}
+      <div className="mt-6 text-center">
+        <span className="text-b-h4 text-skin2">이미 계정이 있으신가요? </span>
+        <Link
+          href="/sign-in"
+          className="text-b-h4 font-bold text-skin1 hover:underline"
+        >
+          로그인
+        </Link>
+      </div>
     </form>
   );
 };

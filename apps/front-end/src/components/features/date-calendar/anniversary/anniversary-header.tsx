@@ -1,5 +1,5 @@
+import { PartnerInfo } from '@use-navi-date/shared';
 import Image from 'next/image';
-import { PartnerInfo } from '@/types/anniversary.type';
 
 type AnniversaryHeaderProps = {
   partner: PartnerInfo | null;
@@ -7,12 +7,14 @@ type AnniversaryHeaderProps = {
 };
 
 const AnniversaryHeader = ({ partner, onAddClick }: AnniversaryHeaderProps) => {
+  const partnerImage =
+    (partner?.profileImage as string) || '/placeholder-image.png';
   return (
     <header className="w-[320px] h-[60px] flex items-center justify-between bg-skin1 rounded-[40px] px-4">
       <div className="flex items-center gap-2">
         <figure className="relative h-9 w-9 rounded-full overflow-hidden">
           <Image
-            src={partner?.profileImage.url || '/placeholder-image.png'}
+            src={partnerImage}
             alt={
               partner?.nickname
                 ? `${partner.nickname}의 프로필 이미지`

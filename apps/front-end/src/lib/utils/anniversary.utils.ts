@@ -1,4 +1,4 @@
-import { Anniversary } from '@/types/anniversary.type';
+import { Anniversary } from '@use-navi-date/shared';
 import dayjs from 'dayjs';
 
 // 자동 생성 기념일 (클라이언트 측에서 생성)
@@ -15,7 +15,8 @@ export const generateAutoAnniversaries = (
     title: `${day}일`,
     date: dayjs(startDate).add(day, 'day').format('YYYY-MM-DD'),
     repeat: 'NONE',
-    createdBy: new Date(), // 실제 생성일 기록
+    createdBy: -(index + 1),
+    createdAt: new Date(startDate),
     memo: `${SYSTEM_MEMO} 자동 생성 기념일`,
   }));
 };

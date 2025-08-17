@@ -1,11 +1,11 @@
 import AnniversaryActions from './anniversary-actions';
 import { Heart } from 'lucide-react';
-import { Anniversary } from '@/types/anniversary.type';
 import TruncatedTextWithTooltip from './truncated-text-with-tooltip';
 import {
   calculateDDay,
   isSystemAnniversary,
 } from '@/lib/utils/anniversary.utils';
+import { Anniversary } from '@use-navi-date/shared';
 
 type AnniversaryItemProps = {
   anniversary: Anniversary;
@@ -44,14 +44,27 @@ const AnniversaryItem = ({
             <AnniversaryActions onEdit={onEdit} onDelete={onDelete} />
           )}
         </div>
-        <time dateTime={anniversary.date} className="text-m-h4 text-font1">
-          {anniversary.date}
+        <time
+          dateTime={
+            typeof anniversary.date === 'string'
+              ? anniversary.date
+              : anniversary.date.toISOString()
+          }
+          className="text-m-h4 text-font1"
+        >
+          {typeof anniversary.date === 'string'
+            ? anniversary.date
+            : anniversary.date.toISOString().slice(0, 10)}
         </time>
       </div>
 
       <div className="flex flex-col items-center gap-1">
         <span className="w-[60px] h-[24px] flex items-center justify-center border border-skin1 text-skin1 text-l-title5 rounded-full px-3 py-0.5">
-          {calculateDDay(anniversary.date)}
+          {calculateDDay(
+            typeof anniversary.date === 'string'
+              ? anniversary.date
+              : anniversary.date.toISOString(),
+          )}
         </span>
       </div>
     </li>
