@@ -30,6 +30,7 @@ export const getAllPosts = async (
   );
 
   // 포스트별 이미지 조회(일단 임시로 만들었지만 제대로 작동하진 않음-Unauthorized-인증하지 않더라도 이미지를 가져올 수 있어야함)
+  // `${BASE_URL}/postImages/post/${post.id}` - 캘린더 서비스에서 사용했던 로직
   const postsWithImages = await Promise.all(
     posts.map(async (post) => {
       try {
@@ -129,6 +130,7 @@ export const updateLike = async (
   userId: number,
 ): Promise<Like | { message: string }> => {
   // 먼저 기존 좋아요 여부 확인
+  // `${BASE_URL}/user/${userId}/post/${postId}/likes`??
   const checkResponse = await fetch(
     `${BASE_URL}/likes?postId=${postId}&userId=${userId}`,
   );

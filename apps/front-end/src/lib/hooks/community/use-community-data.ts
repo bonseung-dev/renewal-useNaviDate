@@ -8,7 +8,7 @@ import {
 export const useCommunityData = (debouncedQuery: string) => {
   const { data: posts = [], isLoading: isPostsLoading } =
     useGetAllPostsQuery(debouncedQuery);
-  console.log('posts:', posts);
+  // console.log('posts:', posts);
   const { data: users = [], isLoading: isUsersLoading } = useGetAllUsersQuery();
   const { data: likes = [], isLoading: isLikesLoading } = useGetAllLikesQuery();
   const { data: bookmarks = [], isLoading: isBookmarksLoading } =

@@ -41,7 +41,7 @@ const Community = ({ userId }: CommunityProps) => {
   );
   const sortedPosts = useSortedPosts(communityPosts, sortOption);
 
-  console.log('posts:', communityPosts);
+  // console.log('posts:', communityPosts);
 
   if (isLoading) return <CommunityStatus type="loading" />;
 
