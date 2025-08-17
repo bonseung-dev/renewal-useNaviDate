@@ -12,8 +12,8 @@ export const useUploadImage = () => {
   return useMutation({
     mutationFn: async (file: File) => {
       // 토큰이 있으면 사용하고, 없으면 인증 없이 업로드
-      const token = getClientAuthToken();
-      
+      const token = getClientAuthToken() ?? undefined;
+
       const response = await ImageService.uploadImage(file, token);
       if (!response.success) {
         throw new Error(response.message || '이미지 업로드에 실패했습니다.');
@@ -37,8 +37,8 @@ export const useDeleteImage = () => {
   return useMutation({
     mutationFn: async (id: number) => {
       // 토큰이 있으면 사용하고, 없으면 인증 없이 삭제
-      const token = getClientAuthToken();
-      
+      const token = getClientAuthToken() ?? undefined;
+
       const response = await ImageService.deleteImage(id, token);
       if (!response.success) {
         throw new Error(response.message || '이미지 삭제에 실패했습니다.');
