@@ -44,7 +44,7 @@ const WriteTag = ({
 
             if (!inputValue.trim()) return;
 
-            setTags([...tags, { id: 6, postId: 7, name: inputValue }]);
+            setTags([...tags, { id: 6, postId: 7, name: inputValue, createdAt: new Date() }]);
             setInputValue('');
           }
         }}

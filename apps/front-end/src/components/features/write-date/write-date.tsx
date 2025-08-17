@@ -18,12 +18,12 @@ import { CreatePostDto, Emotion, Post, PostImage, PostTag } from '@use-navi-date
 
 const WriteDate = () => {
   const [images, setImages] = useState<PostImage[]>([]);
-  const [visibility, setVisibility] = useState<Post['visibility']>('public');
+  const [visibility, setVisibility] = useState<boolean | 'public' | 'private'>('public');
   const [emotion, setEmotion] = useState<Emotion>('Soso');
   const [title, setTitle] = useState<Post['title']>('');
   const [content, setContent] = useState<Post['content']>('');
   const [tags, setTags] = useState<PostTag[]>([]);
-  const [inputValue, setInputValue] = useState<PostTag['name']>('');
+  const [inputValue, setInputValue] = useState<string>('');
 
   const resetForm = () => {
     setVisibility('public');
@@ -45,9 +45,9 @@ const WriteDate = () => {
     date: new Date(),
     location: '서울',
     emotion: emotion,
-    images: images,
-    tags: tags,
-    isPublic: visibility,
+    images: images.map((image) => image.postImage?.url ?? ''),
+    tags: tags.map((tag) => tag.name),
+    isPublic: visibility === 'public',
     coupleId: 1,
   };
 
@@ -56,7 +56,9 @@ const WriteDate = () => {
 
     createPostMutate(newPost);
     images.forEach((image) => {
-      createImageMutate(image);
+      if (image.postImage) {
+        createImageMutate(image);
+      }
     });
     tags.forEach((tag) => {
       createTagMutate(tag);
