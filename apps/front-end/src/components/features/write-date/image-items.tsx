@@ -1,6 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { CarouselItem } from '@/components/ui/carousel';
-import { PostImage } from '@/types/post.type';
+import { PostImage } from '@use-navi-date/shared';
 import NextImage from 'next/image';
 import React from 'react';
 import { useDeleteImage } from '@/lib/queries/imageQueries';
@@ -42,7 +42,7 @@ const ImageItems = ({
           <Card className="w-full h-full flex justify-center items-center rounded-none relative">
             <CardContent className="w-full h-full p-0">
               <NextImage
-                src={image.postImage.url}
+                src={image.postImage?.url || ''}
                 alt={`업로드 이미지`}
                 width={100}
                 height={100}

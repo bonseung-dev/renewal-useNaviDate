@@ -1,4 +1,4 @@
-import { PostTag } from '@/types/post.type';
+import { PostTag } from '@use-navi-date/shared';
 import Image from 'next/image';
 
 const WriteTag = ({
@@ -44,7 +44,7 @@ const WriteTag = ({
 
             if (!inputValue.trim()) return;
 
-            setTags([...tags, { id: 6, postId: 7, name: inputValue }]);
+            setTags([...tags, { id: 6, postId: 7, name: inputValue, createdAt: new Date() }]);
             setInputValue('');
           }
         }}

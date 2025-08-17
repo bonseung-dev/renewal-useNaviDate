@@ -7,7 +7,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import ImageItems from './image-items';
-import { PostImage } from '@/types/post.type';
+import { PostImage } from '@use-navi-date/shared';
 import { useUploadImage } from '@/lib/queries/imageQueries';
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
@@ -54,6 +54,8 @@ const UploadImageCarousel = ({
           const postImage: PostImage = {
             id: uploadedImage.id,
             postId: 0, // 포스트 생성 시 설정
+            createdAt: uploadedImage.createdAt || new Date(),
+            updatedAt: uploadedImage.updatedAt || new Date(),
             postImage: {
               id: uploadedImage.id,
               filename: uploadedImage.filename,
