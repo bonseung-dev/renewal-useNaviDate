@@ -18,14 +18,14 @@ const MyPageTabs = ({ userId, token }: MyPageTabsProps) => {
       <nav aria-label="마이페이지 탭 메뉴">
         <div className="flex justify-center mb-[20px]">
           <button
-            className={`py-2 px-8 text-skin1 ${activeTab === 'post' ? 'border-b-2 border-skin1 font-bold' : 'text-L-title3 font-light'}`}
+            className={`py-2 px-8 text-skin1 ${activeTab === 'post' ? 'border-b-2 border-skin1 text-b-h3 font-bold' : 'text-l-title3 font-light'}`}
             onClick={() => setActiveTab('post')}
             aria-current={activeTab === 'post' ? 'page' : undefined}
           >
             작성한 글
           </button>
           <button
-            className={`py-2 px-8 text-skin1 ${activeTab === 'bookmarks' ? 'border-b-2 border-skin1 font-bold' : 'text-L-title3 font-light'}`}
+            className={`py-2 px-8 text-skin1 ${activeTab === 'bookmarks' ? 'border-b-2 border-skin1 text-b-h3 font-bold' : 'text-l-title3 font-light'}`}
             onClick={() => setActiveTab('bookmarks')}
             aria-current={activeTab === 'bookmarks' ? 'page' : undefined}
           >

@@ -25,14 +25,14 @@ const CalendarTabs = ({
       <nav aria-label="캘린더 탭 메뉴">
         <div className="flex justify-center mb-[20px]">
           <button
-            className={`py-2 px-8 text-skin1 ${activeTab === 'date' ? 'border-b-2 border-skin1 font-bold' : 'text-L-title3 font-light'}`}
+            className={`py-2 px-8 text-skin1 ${activeTab === 'date' ? 'border-b-2 border-skin1 font-bold text-b-h3' : 'text-l-title3 font-light'}`}
             onClick={() => setActiveTab('date')}
             aria-current={activeTab === 'date' ? 'page' : undefined}
           >
             데이트
           </button>
           <button
-            className={`py-2 px-8 text-skin1 ${activeTab === 'anniversary' ? 'border-b-2 border-skin1 font-bold' : 'text-L-title3 font-light'}`}
+            className={`py-2 px-8 text-skin1 ${activeTab === 'anniversary' ? 'border-b-2 border-skin1 font-bold text-b-h3' : 'text-l-title3 font-light'}`}
             onClick={() => setActiveTab('anniversary')}
             aria-current={activeTab === 'anniversary' ? 'page' : undefined}
           >
