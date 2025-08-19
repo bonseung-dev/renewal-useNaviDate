@@ -34,9 +34,10 @@ export class BookmarksService {
     }
   }
 
-  async findAll(): Promise<ApiResponse<Bookmark[]>> {
+  async findAll(userId: number): Promise<ApiResponse<Bookmark[]>> {
     try {
       const bookmarks = await this.bookmarksRepository.find({
+        where: { userId },
         relations: ['user', 'post'],
       });
       return {
