@@ -10,7 +10,7 @@ type MyPageTabsProps = {
   token: string;
 };
 
-const MyPageTabs = ({ userId }: MyPageTabsProps) => {
+const MyPageTabs = ({ userId, token }: MyPageTabsProps) => {
   const [activeTab, setActiveTab] = useState<'post' | 'bookmarks'>('post');
 
   const tabs: TabItem<'post' | 'bookmarks'>[] = [
@@ -26,7 +26,7 @@ const MyPageTabs = ({ userId }: MyPageTabsProps) => {
       ariaLabel="마이페이지 탭 메뉴"
       renderTabContent={(tab) =>
         tab === 'post' ? (
-          <MyPostTab userId={userId} />
+          <MyPostTab userId={userId} token={token} />
         ) : (
           <MyBookmarksTab userId={userId} />
         )
