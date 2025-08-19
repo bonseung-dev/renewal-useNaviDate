@@ -1,5 +1,5 @@
-import LogoutButton from '@/components/features/nav/log-out-test';
 import SettingsSwitches from '@/components/features/settings/settings-swtiches';
+import LogoutButton from '@/components/ui/log-out-button';
 import { getServerCookie } from '@/lib/utils/cookes.utils';
 import { ChevronRight, Store } from 'lucide-react';
 import { Metadata } from 'next';
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 const Page = () => {
   const isLoggedIn = !!getServerCookie('access_token');
   return (
-    <div className="w-[320px] pt-[12px] h-[454px]">
+    <div className="w-[320px] h-full">
       {/* Header */}
       <header className="flex items-center justify-between px-[20px]">
         <h1 className="text-b-h2 font-bold text-skin1">환경설정</h1>
@@ -49,17 +49,19 @@ const Page = () => {
       {/* 링크 목록 */}
       <nav className="mt-[20px] px-[20px]">
         <ul className="flex flex-col gap-[16px]">
-          {['약관정책', '공지사항', '튜토리얼', '개발자 소개'].map((text) => (
-            <li key={text}>
-              <Link
-                href="/settings" //임시로
-                className="flex items-center justify-between text-m-h3 text-font2 hover:text-skin1 hover:font-bold"
-              >
-                <span>{text}</span>
-                <ChevronRight size={14} />
-              </Link>
-            </li>
-          ))}
+          {['약관정책', '공지사항', '튜토리얼', '개발자 소개', '회원탈퇴'].map(
+            (text) => (
+              <li key={text}>
+                <Link
+                  href="/settings" //임시로
+                  className="flex items-center justify-between text-m-h3 text-font2 hover:text-skin1 hover:font-bold"
+                >
+                  <span>{text}</span>
+                  <ChevronRight size={14} />
+                </Link>
+              </li>
+            ),
+          )}
         </ul>
       </nav>
     </div>
