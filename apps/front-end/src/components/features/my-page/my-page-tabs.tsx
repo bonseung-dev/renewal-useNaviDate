@@ -3,49 +3,35 @@
 import { useState } from 'react';
 import MyPostTab from './my-post-tab';
 import MyBookmarksTab from './my-bookmarks-tab';
+import Tabs, { TabItem } from '@/components/ui/tabs';
 
 type MyPageTabsProps = {
   userId: number;
   token: string;
 };
 
-const MyPageTabs = ({ userId, token }: MyPageTabsProps) => {
+const MyPageTabs = ({ userId }: MyPageTabsProps) => {
   const [activeTab, setActiveTab] = useState<'post' | 'bookmarks'>('post');
 
-  return (
-    <article>
-      {/* 탭 헤더 */}
-      <nav aria-label="마이페이지 탭 메뉴">
-        <div className="flex justify-center mb-[20px]">
-          <button
-            className={`py-2 px-8 text-skin1 ${activeTab === 'post' ? 'border-b-2 border-skin1 text-b-h3 font-bold' : 'text-l-title3 font-light'}`}
-            onClick={() => setActiveTab('post')}
-            aria-current={activeTab === 'post' ? 'page' : undefined}
-          >
-            작성한 글
-          </button>
-          <button
-            className={`py-2 px-8 text-skin1 ${activeTab === 'bookmarks' ? 'border-b-2 border-skin1 text-b-h3 font-bold' : 'text-l-title3 font-light'}`}
-            onClick={() => setActiveTab('bookmarks')}
-            aria-current={activeTab === 'bookmarks' ? 'page' : undefined}
-          >
-            북마크
-          </button>
-        </div>
-      </nav>
+  const tabs: TabItem<'post' | 'bookmarks'>[] = [
+    { id: 'post', label: '작성한 글' },
+    { id: 'bookmarks', label: '북마크' },
+  ];
 
-      {/* 탭 내용 */}
-      <section aria-labelledby={`${activeTab}-tab-content`}>
-        <h2 id={`${activeTab}-tab-content`} className="sr-only">
-          {activeTab === 'post' ? '작성한 글' : '북마크'} 탭 내용
-        </h2>
-        {activeTab === 'post' ? (
+  return (
+    <Tabs
+      tabs={tabs}
+      activeTab={activeTab}
+      onChange={setActiveTab}
+      ariaLabel="마이페이지 탭 메뉴"
+      renderTabContent={(tab) =>
+        tab === 'post' ? (
           <MyPostTab userId={userId} />
         ) : (
           <MyBookmarksTab userId={userId} />
-        )}
-      </section>
-    </article>
+        )
+      }
+    />
   );
 };
 
