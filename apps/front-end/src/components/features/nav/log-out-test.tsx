@@ -26,7 +26,7 @@ const LogoutButton = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   return (
     <button
       onClick={handleLogout}
-      className="fixed bottom-[82px] mx-auto z-20 rounded bg-skin7 px-2 py-1 text-white text-b-h5 font-semibold shadow-lg hover:bg-skin7/55 transition"
+      className="rounded-full bg-skin5 border border-skin1 px-2 py-1 text-skin1 text-m-h4 hover:bg-skin7 hover:text-skin5 hover:border-skin7 transition"
     >
       로그아웃
     </button>
