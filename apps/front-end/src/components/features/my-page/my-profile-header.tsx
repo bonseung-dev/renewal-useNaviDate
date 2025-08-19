@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { PencilLine, Check } from 'lucide-react';
+import { SquarePen, SquareCheckBig } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { UserService } from '@/lib/api/services';
 import { User } from '@use-navi-date/shared';
@@ -100,9 +100,9 @@ const MyProfileHeader = ({ userId, token }: MyProfileHeaderProps) => {
         onClick={isEditing ? handleCheckClick : handleEditClick}
       >
         {isEditing ? (
-          <Check size={20} className="text-font4" />
+          <SquareCheckBig size={20} className="text-font4" />
         ) : (
-          <PencilLine size={20} className="text-font4" />
+          <SquarePen size={20} className="text-font4" />
         )}
       </button>
     </div>

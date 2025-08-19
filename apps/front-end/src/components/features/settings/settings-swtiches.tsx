@@ -47,7 +47,10 @@ const SettingsSwitches = () => {
             <span className="text-b-h4 font-bold text-skin1">{text}</span>
             <Switch
               checked={checked}
-              onCheckedChange={setChecked}
+              onCheckedChange={(val) => {
+                setChecked(val);
+                alert('현재는 UI 시연용으로 기능은 구현되어 있지 않습니다.');
+              }}
               className={cn(
                 'w-[40px] h-[20px]',
                 'data-[state=checked]:bg-skin1', // ON / 라이트 모드

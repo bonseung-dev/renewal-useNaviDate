@@ -39,7 +39,26 @@ const DateTab = ({ coupleId, token }: DateTabProps) => {
     loadData();
   }, [coupleId, currentDate, token]);
 
-  if (isLoading) return <div>Loading...</div>;
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 1500); // 예시: 1.5초 후 로딩 완료
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="w-full py-4 flex flex-low items-center justify-center gap-1">
+        {['L', 'o', 'a', 'd', 'i', 'n', 'g'].map((char, idx) => (
+          <span
+            key={idx}
+            className="inline-block text-skin1 text-lg font-bold animate-bounce"
+            style={{ animationDelay: `${idx * 0.1}s` }}
+          >
+            {char}
+          </span>
+        ))}
+      </div>
+    );
+  }
 
   // console.log('이미지', postsWithImages);
 
