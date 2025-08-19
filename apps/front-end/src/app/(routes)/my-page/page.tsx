@@ -4,9 +4,12 @@ import MyProfileHeader from '@/components/features/my-page/my-profile-header';
 import { getServerCookie, getUserIdFromToken } from '@/lib/utils/cookes.utils';
 import { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: '마이페이지 || useNavidate( )',
   description: '회원님의 정보 및 활동 내역을 확인할 수 있습니다',
+  metadataBase: new URL('https://usenavi.sorune.org'),
   robots: {
     index: false,
   },

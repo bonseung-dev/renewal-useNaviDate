@@ -6,9 +6,12 @@ import { ShoppingBag } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: '환경설정 || useNavidate( )',
   description: '알림 / 테마 등을 설정할 수 있습니다',
+  metadataBase: new URL('https://usenavi.sorune.org'),
   robots: {
     index: false,
   },
