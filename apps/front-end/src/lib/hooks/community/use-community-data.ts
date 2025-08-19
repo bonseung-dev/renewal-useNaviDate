@@ -5,7 +5,7 @@ import {
   useGetAllUsersQuery,
 } from '@/lib/queries/community.queries';
 
-export const useCommunityData = (debouncedQuery: string) => {
+export const usePostsData = (debouncedQuery: string) => {
   const { data: posts = [], isLoading: isPostsLoading } =
     useGetAllPostsQuery(debouncedQuery);
   // console.log('posts:', posts);

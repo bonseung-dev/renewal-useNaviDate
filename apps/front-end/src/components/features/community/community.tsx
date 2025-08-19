@@ -1,15 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { SortOption } from '@/types/community.type';
 import { useSearchQuery } from '@/lib/hooks/community/use-search-query';
-import { useCommunityData } from '@/lib/hooks/community/use-community-data';
 import { useCommunityPosts } from '@/lib/hooks/community/use-enhanced-posts';
 import { useSortedPosts } from '@/lib/hooks/community/use-sorted-posts';
 import { SORT_OPTIONS } from '@/constants/community.constants';
 import CommunityStatus from './community-status';
 import CommunityControls from './community-controls';
 import PostList from './post-list';
+import { usePostsData } from '@/lib/hooks/community/use-community-data';
 
 type CommunityProps = {
   userId: number;
@@ -27,7 +27,7 @@ const Community = ({ userId }: CommunityProps) => {
   } = useSearchQuery();
 
   const { posts, isLoading, users, tags, images, likes, bookmarks } =
-    useCommunityData(debouncedQuery);
+    usePostsData(debouncedQuery);
 
   const postsWithUndefinedImageUrl = posts.map((post) => ({
     ...post,

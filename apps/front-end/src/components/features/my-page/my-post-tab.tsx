@@ -1,10 +1,10 @@
-import { useCommunityData } from '@/lib/hooks/community/use-community-data';
 import { useCommunityPosts } from '@/lib/hooks/community/use-enhanced-posts';
 import PostList from '../community/post-list';
 import CommunityStatus from '../community/community-status';
 import { useGetMyPostsQuery } from '@/lib/queries/my-page.query';
 import { SORT_OPTIONS } from '@use-navi-date/shared';
 import { useSortedPosts } from '@/lib/hooks/community/use-sorted-posts';
+import { usePostsData } from '@/lib/hooks/community/use-community-data';
 
 type MyPostTabProps = {
   userId: number;
@@ -22,7 +22,7 @@ const MyPostTab = ({ userId, token }: MyPostTabProps) => {
     likes,
     bookmarks,
     isLoading: isCommunityLoading,
-  } = useCommunityData('');
+  } = usePostsData('');
 
   // 대표 이미지가 null이면 undefined 처리
   const myPostsWithUndefinedImageUrl = myPosts.map((post) => ({

@@ -1,14 +1,16 @@
-import { useCommunityData } from '@/lib/hooks/community/use-community-data';
+import { usePostsData } from '@/lib/hooks/community/use-community-data';
 import { useCommunityPosts } from '@/lib/hooks/community/use-enhanced-posts';
 import CommunityStatus from '../community/community-status';
 import PostList from '../community/post-list';
+import { useSortedPosts } from '@/lib/hooks/community/use-sorted-posts';
+import { SORT_OPTIONS } from '@use-navi-date/shared';
 
 type MyBookmarksTabProps = {
   userId: number;
 };
 
 const MyBookmarksTab = ({ userId }: MyBookmarksTabProps) => {
-  const { posts, users, likes, bookmarks, isLoading } = useCommunityData('');
+  const { posts, users, likes, bookmarks, isLoading } = usePostsData('');
 
   // 내 북마크만 필터링
   const myBookmarkPostIds = bookmarks
@@ -25,17 +27,21 @@ const MyBookmarksTab = ({ userId }: MyBookmarksTabProps) => {
     imageUrl: post.imageUrl === null ? undefined : post.imageUrl,
   }));
 
-  const bookmarkedCommunityPosts = useCommunityPosts(
+  const bookmarkedPostsByUser = useCommunityPosts(
     bookmarkedPostsWithUndefinedImageUrl,
     users,
     likes,
     bookmarks,
   );
+  const sortedPosts = useSortedPosts(
+    bookmarkedPostsByUser,
+    SORT_OPTIONS.LATEST,
+  );
 
   if (isLoading) return <CommunityStatus type="loading" />;
 
-  return bookmarkedCommunityPosts.length > 0 ? (
-    <PostList posts={bookmarkedCommunityPosts} searchQuery="" userId={userId} />
+  return sortedPosts.length > 0 ? (
+    <PostList posts={sortedPosts} searchQuery="" userId={userId} />
   ) : (
     <CommunityStatus type="no-posts" />
   );

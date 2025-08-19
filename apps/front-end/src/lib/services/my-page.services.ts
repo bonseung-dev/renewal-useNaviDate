@@ -6,11 +6,9 @@ export const getMyPosts = async (
   token?: string,
 ): Promise<(Post & { images: PostImage[]; imageUrl: string | null })[]> => {
   const res = await fetch(`${BASE_URL}/posts/my/${userId}`, {
-    headers: token
-      ? {
-          Authorization: `Bearer ${token}`,
-        }
-      : undefined,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
   if (!res.ok) throw new Error('내 포스트를 가져오는데 실패했습니다.');
 
@@ -27,17 +25,15 @@ export const getMyPosts = async (
         const imagesRes = await fetch(
           `${BASE_URL}/post-images/post/${post.id}`,
           {
-            headers: token
-              ? {
-                  Authorization: `Bearer ${token}`,
-                }
-              : undefined,
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
         );
         const postImages: PostImage[] = await imagesRes.json();
         const representative = postImages.find((img) => img.isRepresentative);
 
-        console.log(postImages, representative);
+        // console.log(postImages, representative);
 
         return {
           ...post,
