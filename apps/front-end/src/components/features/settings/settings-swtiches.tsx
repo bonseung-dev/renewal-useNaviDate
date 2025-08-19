@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Switch } from '@/components/ui/switch';
+import { cn } from '@/lib/utils';
 
 const SettingsSwitches = () => {
   const [theme, setTheme] = useState(true);
@@ -47,8 +48,12 @@ const SettingsSwitches = () => {
             <Switch
               checked={checked}
               onCheckedChange={setChecked}
-              className="w-[40px] h-[20px]"
-              thumbClassName="h-[16px] w-[16px] data-[state=checked]:translate-x-[20px]"
+              className={cn(
+                'w-[40px] h-[20px]',
+                'data-[state=checked]:bg-skin1', // ON / 라이트 모드
+                'data-[state=unchecked]:bg-skin6', // OFF / 다크 모드
+              )}
+              thumbClassName="h-[16px] w-[16px] data-[state=checked]:translate-x-[21px]"
             />
           </div>
         </div>
