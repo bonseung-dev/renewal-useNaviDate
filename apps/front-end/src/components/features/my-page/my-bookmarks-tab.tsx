@@ -7,10 +7,11 @@ import { SORT_OPTIONS } from '@use-navi-date/shared';
 
 type MyBookmarksTabProps = {
   userId: number;
+  token?: string;
 };
 
-const MyBookmarksTab = ({ userId }: MyBookmarksTabProps) => {
-  const { posts, users, likes, bookmarks, isLoading } = usePostsData('');
+const MyBookmarksTab = ({ userId, token }: MyBookmarksTabProps) => {
+  const { posts, users, likes, bookmarks, isLoading } = usePostsData('', token);
 
   // 내 북마크만 필터링
   const myBookmarkPostIds = bookmarks

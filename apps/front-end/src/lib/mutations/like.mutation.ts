@@ -10,8 +10,15 @@ export const useUpdateLikeMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ postId, userId }: { postId: number; userId: number }) =>
-      updateLike(postId, userId),
+    mutationFn: ({
+      postId,
+      userId,
+      token,
+    }: {
+      postId: number;
+      userId: number;
+      token?: string;
+    }) => updateLike(postId, userId, token),
 
     onMutate: async ({ postId, userId }) => {
       await queryClient.cancelQueries({ queryKey: [QUERY_KEYS.POSTS] });

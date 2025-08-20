@@ -5,9 +5,11 @@ import {
   useGetAllUsersQuery,
 } from '@/lib/queries/community.queries';
 
-export const usePostsData = (debouncedQuery: string) => {
-  const { data: posts = [], isLoading: isPostsLoading } =
-    useGetAllPostsQuery(debouncedQuery);
+export const usePostsData = (debouncedQuery: string, token?: string) => {
+  const { data: posts = [], isLoading: isPostsLoading } = useGetAllPostsQuery(
+    debouncedQuery,
+    token,
+  );
   // console.log('posts:', posts);
   const { data: users = [], isLoading: isUsersLoading } = useGetAllUsersQuery();
   const { data: likes = [], isLoading: isLikesLoading } = useGetAllLikesQuery();

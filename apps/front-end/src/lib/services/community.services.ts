@@ -11,12 +11,15 @@ import {
 // 포스트 조회
 export const getAllPosts = async (
   query = '',
+  token?: string,
 ): Promise<(Post & { images: PostImage[]; imageUrl: string | null })[]> => {
   const url = new URL(`${BASE_URL}/posts`);
   //예전 로직 남겨두지만 제대로 작동하진 않음
   url.searchParams.append('visibility', 'public');
 
-  const res = await fetch(url.toString());
+  const res = await fetch(url.toString(), {
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+  });
   if (!res.ok) throw new Error('포스트 가져오기 실패');
 
   const json = await res.json();
@@ -36,6 +39,9 @@ export const getAllPosts = async (
       try {
         const imagesRes = await fetch(
           `${BASE_URL}/post-images/post/${post.id}`,
+          {
+            headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+          },
         );
         const postImages: PostImage[] = await imagesRes.json();
         const representative = postImages.find((img) => img.isRepresentative);
@@ -127,14 +133,16 @@ export const getAllBookmarks = async (): Promise<Bookmark[]> => {
 // 좋아요 추가/삭제 함수
 export const updateLike = async (
   postId: number,
-  userId: number,
+  userId?: number,
+  token?: string,
 ): Promise<Like | { message: string }> => {
   // 먼저 기존 좋아요 여부 확인
   // `${BASE_URL}/user/${userId}/post/${postId}/likes`??
   const checkResponse = await fetch(
     `${BASE_URL}/likes?postId=${postId}&userId=${userId}`,
   );
-  const existingLikes = await checkResponse.json();
+  const result = await checkResponse.json();
+  const existingLikes = result.data;
 
   // 이미 좋아요가 있으면 삭제
   if (existingLikes.length > 0) {
@@ -142,6 +150,9 @@ export const updateLike = async (
       `${BASE_URL}/likes/${existingLikes[0].id}`,
       {
         method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
     );
     if (!deleteResponse.ok) throw new Error('좋아요 취소 실패');
@@ -153,6 +164,7 @@ export const updateLike = async (
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({ postId, userId }),
   });

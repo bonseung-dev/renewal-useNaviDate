@@ -13,9 +13,10 @@ import { usePostsData } from '@/lib/hooks/community/use-community-data';
 
 type CommunityProps = {
   userId: number;
+  token?: string;
 };
 
-const Community = ({ userId }: CommunityProps) => {
+const Community = ({ userId, token }: CommunityProps) => {
   const [sortOption, setSortOption] = useState<SortOption>(SORT_OPTIONS.LATEST);
 
   const {
@@ -27,7 +28,7 @@ const Community = ({ userId }: CommunityProps) => {
   } = useSearchQuery();
 
   const { posts, isLoading, users, tags, images, likes, bookmarks } =
-    usePostsData(debouncedQuery);
+    usePostsData(debouncedQuery, token);
 
   const postsWithUndefinedImageUrl = posts.map((post) => ({
     ...post,
@@ -69,6 +70,7 @@ const Community = ({ userId }: CommunityProps) => {
         posts={sortedPosts}
         searchQuery={debouncedQuery}
         userId={userId}
+        token={token}
       />
     </section>
   );

@@ -1,5 +1,5 @@
 import Community from '@/components/features/community/community';
-import { getUserIdFromToken } from '@/lib/utils/cookes.utils';
+import { getServerCookie, getUserIdFromToken } from '@/lib/utils/cookes.utils';
 import { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -20,7 +20,8 @@ export const metadata: Metadata = {
 
 const Page = async () => {
   const userId = await getUserIdFromToken();
-  return <Community userId={Number(userId)} />;
+  const token = userId ? await getServerCookie('access_token') : undefined;
+  return <Community userId={Number(userId)} token={token} />;
 };
 
 export default Page;

@@ -28,7 +28,7 @@ const MyPageTabs = ({ userId, token }: MyPageTabsProps) => {
         tab === 'post' ? (
           <MyPostTab userId={userId} token={token} />
         ) : (
-          <MyBookmarksTab userId={userId} />
+          <MyBookmarksTab userId={userId} token={token} />
         )
       }
     />

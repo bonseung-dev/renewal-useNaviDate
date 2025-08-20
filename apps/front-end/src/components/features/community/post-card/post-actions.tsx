@@ -12,6 +12,7 @@ type PostActionsProps = {
   likesCount: number;
   bookmarksCount: number;
   userId?: number;
+  token?: string;
 };
 
 const PostActions = ({
@@ -21,6 +22,7 @@ const PostActions = ({
   likesCount,
   bookmarksCount,
   userId,
+  token,
 }: PostActionsProps) => {
   const [showLikesCount, setShowLikesCount] = useState(false);
   const [showBookmarksCount, setShowBookmarksCount] = useState(false);
@@ -36,7 +38,7 @@ const PostActions = ({
 
   const handleLike = () => {
     if (!userId) return;
-    toggleLike({ postId, userId });
+    toggleLike({ postId, userId, token });
   };
 
   const handleBookmark = () => {
