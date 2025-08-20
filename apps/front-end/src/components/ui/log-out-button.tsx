@@ -15,7 +15,7 @@ const LogoutButton = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
       sessionStorage.clear();
 
       // 3. 강제 페이지 리로드
-      window.location.href = '/sign-in';
+      window.location.href = '/';
     } catch (error) {
       window.location.href = '/sign-in';
     }
