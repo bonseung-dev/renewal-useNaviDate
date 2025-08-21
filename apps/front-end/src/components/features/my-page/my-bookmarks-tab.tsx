@@ -42,7 +42,12 @@ const MyBookmarksTab = ({ userId, token }: MyBookmarksTabProps) => {
   if (isLoading) return <CommunityStatus type="loading" />;
 
   return sortedPosts.length > 0 ? (
-    <PostList posts={sortedPosts} searchQuery="" userId={userId} />
+    <PostList
+      posts={sortedPosts}
+      searchQuery=""
+      userId={userId}
+      token={token}
+    />
   ) : (
     <CommunityStatus type="no-posts" />
   );

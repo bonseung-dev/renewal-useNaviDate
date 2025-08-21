@@ -31,19 +31,24 @@ const PostActions = ({
 
   // console.log('userId:', userId);
 
-  const isLiked = likes?.some((like) => like.userId === userId);
-  const isBookmarked = bookmarks?.some(
+  const userLike = likes?.find((like) => like.userId === userId);
+  const likeId = userLike?.id;
+  const userBookmark = bookmarks?.find(
     (bookmark) => bookmark.userId === userId,
   );
+  const bookmarkId = userBookmark?.id;
 
   const handleLike = () => {
     if (!userId) return;
-    toggleLike({ postId, userId, token });
+    // console.log(likes);
+    console.log(likeId);
+    toggleLike({ postId, token, likeId });
   };
 
   const handleBookmark = () => {
     if (!userId) return;
-    toggleBookmark({ postId, userId });
+    console.log(bookmarkId);
+    toggleBookmark({ postId, token, bookmarkId });
   };
 
   return (
@@ -51,7 +56,7 @@ const PostActions = ({
       <div className="flex gap-1">
         <Tooltip content={likesCount} show={showLikesCount}>
           <button
-            aria-label={`좋아요 ${isLiked ? '취소' : ''} (현재 ${likesCount}개)`}
+            aria-label={`좋아요 ${!!likeId ? '취소' : ''} (현재 ${likesCount}개)`}
             className="w-[25px] h-[25px] flex items-center justify-center transition-all duration-200"
             onClick={handleLike}
             onMouseEnter={() => setShowLikesCount(true)}
@@ -59,7 +64,7 @@ const PostActions = ({
           >
             <Heart
               className={`w-[25px] h-[25px] transition-all duration-200 ${
-                isLiked
+                !!likeId
                   ? 'fill-white stroke-white'
                   : 'stroke-white fill-none group-hover:fill-white/50'
               }`}
@@ -69,7 +74,7 @@ const PostActions = ({
 
         <Tooltip content={bookmarksCount} show={showBookmarksCount}>
           <button
-            aria-label={`북마크 ${isBookmarked ? '취소' : ''} (현재 ${bookmarksCount}개)`}
+            aria-label={`북마크 ${!!bookmarkId ? '취소' : ''} (현재 ${bookmarksCount}개)`}
             className="w-[25px] h-[25px] flex items-center justify-center transition-all duration-200"
             onClick={handleBookmark}
             onMouseEnter={() => setShowBookmarksCount(true)}
@@ -77,7 +82,7 @@ const PostActions = ({
           >
             <Bookmark
               className={`w-[25px] h-[25px] transition-all duration-200 ${
-                isBookmarked
+                !!bookmarkId
                   ? 'fill-white stroke-white'
                   : 'stroke-white fill-none group-hover:fill-white/50'
               }`}

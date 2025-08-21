@@ -1,8 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateLike } from '../services/community.services';
 import { QUERY_KEYS } from '@/constants/query-keys.constants';
-import { Post } from '@/types/post.type';
-import { Like } from '@/types/like-bookmark.type';
 import { CommunityPost } from '@/types/post.type';
 
 // 좋아요 업데이트 뮤테이션 훅
@@ -12,81 +10,49 @@ export const useUpdateLikeMutation = () => {
   return useMutation({
     mutationFn: ({
       postId,
-      userId,
       token,
+      likeId,
     }: {
       postId: number;
-      userId: number;
       token?: string;
-    }) => updateLike(postId, userId, token),
+      likeId?: number;
+    }) => updateLike(postId, token, likeId),
 
-    onMutate: async ({ postId, userId }) => {
+    onMutate: async ({ postId, likeId }) => {
       await queryClient.cancelQueries({ queryKey: [QUERY_KEYS.POSTS] });
       await queryClient.cancelQueries({ queryKey: [QUERY_KEYS.LIKES] });
 
-      const previousPosts = queryClient.getQueryData<Post[]>([
+      const previousPosts = queryClient.getQueryData<CommunityPost[]>([
         QUERY_KEYS.POSTS,
       ]);
-      const previousLikes = queryClient.getQueryData<Like[]>([
-        QUERY_KEYS.LIKES,
-      ]);
 
+      // 낙관적 업데이트
       queryClient.setQueryData<CommunityPost[]>(
         [QUERY_KEYS.POSTS],
         (old) =>
           old?.map((post) => {
             if (post.id === postId) {
-              const isLiked = post.likes?.some(
-                (like) => like.userId === userId,
-              );
               return {
                 ...post,
-                likes: isLiked
-                  ? post.likes?.filter((like) => like.userId !== userId) || []
+                likes: likeId
+                  ? post.likes?.filter((like) => like.id !== likeId) || []
                   : [
                       ...(post.likes || []),
-                      {
-                        id: -1, // 임시 ID
-                        postId,
-                        userId,
-                        createdAt: new Date(),
-                      },
+                      { id: -1, postId, userId: -1, createdAt: new Date() },
                     ],
-                likesCount: isLiked ? post.likesCount - 1 : post.likesCount + 1,
+                likesCount: likeId ? post.likesCount - 1 : post.likesCount + 1,
               };
             }
             return post;
           }) || [],
       );
 
-      queryClient.setQueryData<Like[]>([QUERY_KEYS.LIKES], (old) => {
-        const isLiked = old?.some(
-          (like) => like.postId === postId && like.userId === userId,
-        );
-        return isLiked
-          ? old?.filter(
-              (like) => !(like.postId === postId && like.userId === userId),
-            ) || []
-          : [
-              ...(old || []),
-              {
-                id: -1,
-                postId,
-                userId,
-                createdAt: new Date(),
-              },
-            ];
-      });
-
-      return { previousPosts, previousLikes };
+      return { previousPosts };
     },
 
     onError: (err, variables, context) => {
       if (context?.previousPosts) {
         queryClient.setQueryData([QUERY_KEYS.POSTS], context.previousPosts);
-      }
-      if (context?.previousLikes) {
-        queryClient.setQueryData([QUERY_KEYS.LIKES], context.previousLikes);
       }
     },
 

@@ -22,7 +22,7 @@ const MyPostTab = ({ userId, token }: MyPostTabProps) => {
     likes,
     bookmarks,
     isLoading: isCommunityLoading,
-  } = usePostsData('');
+  } = usePostsData('', token);
 
   // 대표 이미지가 null이면 undefined 처리
   const myPostsWithUndefinedImageUrl = myPosts.map((post) => ({
@@ -43,7 +43,12 @@ const MyPostTab = ({ userId, token }: MyPostTabProps) => {
     return <CommunityStatus type="loading" />;
 
   return sortedPosts.length > 0 ? (
-    <PostList posts={sortedPosts} searchQuery="" userId={userId} />
+    <PostList
+      posts={sortedPosts}
+      searchQuery=""
+      userId={userId}
+      token={token}
+    />
   ) : (
     <CommunityStatus type="no-posts" />
   );

@@ -126,83 +126,90 @@ export const getAllBookmarks = async (): Promise<Bookmark[]> => {
   return json.data;
 };
 
-// 좋아요 추가/삭제 로직
-// 먼저 기존 좋아요 여부 확인하기 위해서, 좋아요하고 싶은 포스터 아이디와 사용자 아이디를 이용해 조회가 가능해야함 <--백엔드에 요청해야할 부분
-// 만약 이미 좋아요가 있다면 삭제하고, 없다면 추가하는 방식으로 구현
-
 // 좋아요 추가/삭제 함수
 export const updateLike = async (
   postId: number,
-  userId?: number,
   token?: string,
+  likeId?: number,
 ): Promise<Like | { message: string }> => {
-  // 먼저 기존 좋아요 여부 확인
-  // `${BASE_URL}/user/${userId}/post/${postId}/likes`??
-  const checkResponse = await fetch(
-    `${BASE_URL}/likes?postId=${postId}&userId=${userId}`,
-  );
-  const result = await checkResponse.json();
-  const existingLikes = result.data;
+  if (!token) throw new Error('로그인이 필요합니다.');
 
-  // 이미 좋아요가 있으면 삭제
-  if (existingLikes.length > 0) {
-    const deleteResponse = await fetch(
-      `${BASE_URL}/likes/${existingLikes[0].id}`,
-      {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
-    if (!deleteResponse.ok) throw new Error('좋아요 취소 실패');
+  if (likeId) {
+    // 좋아요 취소
+    const deleteRes = await fetch(`${BASE_URL}/likes/${likeId}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!deleteRes.ok) {
+      const text = await deleteRes.text();
+      console.error('좋아요 삭제 실패:', deleteRes.status, text);
+      throw new Error('좋아요 취소 실패');
+    }
+
     return { message: '좋아요 취소 성공' };
-  }
+  } else {
+    // 좋아요 추가
+    const createRes = await fetch(`${BASE_URL}/likes/${postId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-  // 없으면 추가
-  const createResponse = await fetch(`${BASE_URL}/likes`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ postId, userId }),
-  });
-  if (!createResponse.ok) throw new Error('좋아요 추가 실패');
-  return createResponse.json();
+    if (!createRes.ok) {
+      const text = await createRes.text();
+      console.error('좋아요 추가 실패:', createRes.status, text);
+      throw new Error('좋아요 추가 실패');
+    }
+
+    const newLike: Like = await createRes.json();
+    console.log('좋아요 추가 완료:', newLike);
+    return newLike;
+  }
 };
 
 // 북마크 추가/삭제 함수
 export const updateBookmark = async (
   postId: number,
-  userId: number,
+  token?: string,
+  bookmarkId?: number,
 ): Promise<Bookmark | { message: string }> => {
-  // 먼저 기존 북마크 여부 확인
-  const checkResponse = await fetch(
-    `${BASE_URL}/bookmarks?postId=${postId}&userId=${userId}`,
-  );
-  const existingBookmarks = await checkResponse.json();
+  if (!token) throw new Error('로그인이 필요합니다.');
 
-  // 이미 북마크가 있으면 삭제
-  if (existingBookmarks.length > 0) {
-    const deleteResponse = await fetch(
-      `${BASE_URL}/bookmarks/${existingBookmarks[0].id}`,
-      {
-        method: 'DELETE',
-      },
-    );
-    if (!deleteResponse.ok) throw new Error('북마크 취소 실패');
+  if (bookmarkId) {
+    // 북마크 취소:
+    const deleteRes = await fetch(`${BASE_URL}/bookmarks/${bookmarkId}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!deleteRes.ok) {
+      const text = await deleteRes.text();
+      console.error('북마크 삭제 실패:', deleteRes.status, text);
+      throw new Error('북마크 취소 실패');
+    }
+
     return { message: '북마크 취소 성공' };
-  }
+  } else {
+    // 북마크 추가
+    const createRes = await fetch(`${BASE_URL}/bookmarks/${postId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-  // 없으면 추가
-  const createResponse = await fetch(`${BASE_URL}/bookmarks`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ postId, userId }),
-  });
-  if (!createResponse.ok) throw new Error('북마크 추가 실패');
-  return createResponse.json();
+    if (!createRes.ok) {
+      const text = await createRes.text();
+      console.error('북마크 추가 실패:', createRes.status, text);
+      throw new Error('북마크 추가 실패');
+    }
+
+    const newBookmark: Bookmark = await createRes.json();
+    console.log('북마크 추가 완료:', newBookmark);
+    return newBookmark;
+  }
 };
