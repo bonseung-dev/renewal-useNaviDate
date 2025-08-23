@@ -20,6 +20,7 @@ import {
   Bookmark,
   Like,
   ApiResponse,
+  Tag,
 } from '@use-navi-date/shared';
 
 // Auth Service
@@ -382,11 +383,11 @@ export class ChatService {
 }
 export class TagService {
   static async addTag(
-    tag: PostTag,
+    tag: Tag,
     token: string,
-  ): Promise<ApiResponse<{ tag: PostTag }>> {
+  ): Promise<ApiResponse<{ tag: Tag }>> {
     const client = createAuthenticatedApiClient(token);
-    return client.post<{ tag: PostTag }>('/tags', tag);
+    return client.post<{ tag: Tag }>('/tags', tag);
   }
 
   static async deleteTag(

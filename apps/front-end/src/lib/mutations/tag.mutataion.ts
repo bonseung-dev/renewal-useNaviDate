@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { TagService } from '../api/services';
 import { getClientAuthToken } from '../utils/api';
-import { PostTag } from '@/types/post.type';
+import { Tag } from '@use-navi-date/shared';
 
 const useCreateTagMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (tag: PostTag) => {
+    mutationFn: async (tag: Tag) => {
       const token = getClientAuthToken() || '';
 
       const response = await TagService.addTag(tag, token);
