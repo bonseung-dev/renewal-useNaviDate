@@ -21,7 +21,7 @@ const PostImage = ({ images, title }: PostImageProps) => {
   return (
     <>
       <Image
-        src={displayImage.postImage?.url || ''}
+        src={displayImage.imageUrl || ''}
         alt={`"${title}" 포스트의 대표 이미지`}
         fill
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
