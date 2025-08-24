@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { ImagesModule } from './modules/images/images.module';
 import { CouplesModule } from './modules/couples/couples.module';
 import { PostsModule } from './modules/posts/posts.module';
+import { TagsModule } from './modules/tags/tags.module';
 import { BookmarksModule } from './modules/bookmarks/bookmarks.module';
 import { LikesModule } from './modules/likes/likes.module';
 import { ChatsModule } from './modules/chats/chats.module';
@@ -58,6 +59,7 @@ import { validate } from './config/env.validation';
     ImagesModule,
     CouplesModule,
     PostsModule,
+    TagsModule,
     BookmarksModule,
     LikesModule,
     ChatsModule,

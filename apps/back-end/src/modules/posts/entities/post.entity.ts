@@ -1,8 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany, ManyToMany } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { Couple } from '../../couples/entities/couple.entity';
 import { PostImage } from './post-image.entity';
-import { PostTag } from './post-tag.entity';
+import { Tag } from '../../tags/entities/tag.entity';
 import { Post as PostInterface } from '@use-navi-date/shared';
 
 @Entity('posts')
@@ -48,6 +48,6 @@ export class Post implements PostInterface {
   @OneToMany(() => PostImage, image => image.post)
   images?: PostImage[];
 
-  @OneToMany(() => PostTag, tag => tag.post)
-  tags?: PostTag[];
+  @ManyToMany(() => Tag, tag => tag.posts)
+  tags?: Tag[];
 } 
