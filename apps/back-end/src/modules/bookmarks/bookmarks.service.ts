@@ -34,26 +34,10 @@ export class BookmarksService {
     }
   }
 
-  async findByUserId(userId: number): Promise<ApiResponse<Bookmark[]>> {
-    try {
-      const bookmarks = await this.bookmarksRepository.find({ where: { userId } });
-      return {
-        success: true,
-        data: bookmarks,
-        message: '북마크 목록을 성공적으로 조회했습니다.',
-      };
-    } catch (error) {
-      return {
-        success: false,
-        error: error.message,
-        message: '북마크 목록 조회에 실패했습니다.',
-      };
-    }
-  }
-
-  async findAll(): Promise<ApiResponse<Bookmark[]>> {
+  async findAll(userId: number): Promise<ApiResponse<Bookmark[]>> {
     try {
       const bookmarks = await this.bookmarksRepository.find({
+        where: { userId },
         relations: ['user', 'post'],
       });
       return {

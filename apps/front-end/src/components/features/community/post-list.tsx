@@ -6,9 +6,10 @@ type PostListProps = {
   posts: CommunityPost[];
   searchQuery: string;
   userId?: number;
+  token?: string;
 };
 
-const PostList = ({ posts, searchQuery, userId }: PostListProps) => {
+const PostList = ({ posts, searchQuery, userId, token }: PostListProps) => {
   return (
     <div className="flex flex-col gap-[20px] mt-5" role="list">
       {posts.length > 0 ? (
@@ -18,7 +19,7 @@ const PostList = ({ posts, searchQuery, userId }: PostListProps) => {
             aria-labelledby={`post-${post.id}-title`}
             role="listitem"
           >
-            <PostCard post={post} userId={userId} />
+            <PostCard post={post} userId={userId} token={token} />
           </div>
         ))
       ) : (

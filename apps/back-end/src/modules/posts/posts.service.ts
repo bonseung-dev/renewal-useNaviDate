@@ -56,6 +56,64 @@ export class PostsService {
       };
     }
   }
+  
+  async findAllPublic(): Promise<ApiResponse<Post[]>> {
+    try {
+      const posts = await this.postsRepository.find({
+        relations: ['user', 'couple'],
+        where: {
+          visibility: 'public',
+        }
+      });
+      return {
+        success: true,
+        data: posts,
+        message: '공개 게시글 목록을 성공적으로 조회했습니다.',
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: '공개 게시글 목록 조회에 실패했습니다.',
+      };
+    }
+  }
+
+  async findAllCouple(coupleId: number): Promise<ApiResponse<Post[]>> {
+    try {
+      const posts = await this.postsRepository.find({
+        where: { couple: { id: coupleId } },
+      });
+      return {
+        success: true,
+        data: posts,
+        message: '커플 게시글 목록을 성공적으로 조회했습니다.',
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: '커플 게시글 목록 조회에 실패했습니다.',
+      };
+    }
+  }
+
+  async findMyPosts(userId: number): Promise<ApiResponse<Post[]>> {
+    try {
+      const posts = await this.postsRepository.find({ where: { user: { id: userId } } });
+    return {
+      success: true,
+      data: posts,
+      message: '내 게시글 목록을 성공적으로 조회했습니다.',
+    };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: '내 게시글 목록 조회에 실패했습니다.',
+      };
+    }
+  }
 
   async findOne(id: number): Promise<ApiResponse<Post>> {
     try {

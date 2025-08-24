@@ -4,9 +4,12 @@ import { getServerCookie, getUserIdFromToken } from '@/lib/utils/cookes.utils';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: '커플 캘린더 시작하기 || useNavidate( )',
   description: '커플 캘린더를 이용해보세요',
+  metadataBase: new URL('https://usenavi.sorune.org'),
   robots: {
     index: false,
   },

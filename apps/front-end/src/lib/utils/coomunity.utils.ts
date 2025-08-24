@@ -10,7 +10,7 @@ export const sortPosts = (
 ): CommunityPost[] => {
   return [...posts].sort((a, b) => {
     if (sortOption === SORT_OPTIONS.LATEST) {
-      return a.createdAt.getTime() - b.createdAt.getTime();
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
     } else if (sortOption === SORT_OPTIONS.LIKES) {
       return b.likesCount - a.likesCount;
     } else if (sortOption === SORT_OPTIONS.BOOKMARKS) {
