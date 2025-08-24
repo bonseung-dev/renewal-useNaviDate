@@ -12,7 +12,7 @@ export class BookmarksController {
     return this.bookmarksService.create(userId, postId);
   }
 
-  @Get('/:userId')
+  @Get('my/:userId')  // 유저 아이디로 북마크 조회
   findByUserId(@Param('userId', ParseIntPipe) userId: number): Promise<ApiResponse<Bookmark[]>> {
     return this.bookmarksService.findByUserId(userId);
   }
