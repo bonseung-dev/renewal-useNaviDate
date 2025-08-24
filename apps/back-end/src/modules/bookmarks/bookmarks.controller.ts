@@ -12,6 +12,11 @@ export class BookmarksController {
     return this.bookmarksService.create(userId, postId);
   }
 
+  @Get('/:userId')
+  findByUserId(@Param('userId', ParseIntPipe) userId: number): Promise<ApiResponse<Bookmark[]>> {
+    return this.bookmarksService.findByUserId(userId);
+  }
+
   @Get()
   findAll(@Request() req): Promise<ApiResponse<Bookmark[]>> {
     const userId = req.user?.id;

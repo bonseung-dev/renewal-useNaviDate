@@ -187,6 +187,11 @@ export interface UserResponse {
   nickname?: string;
 }
 
+export interface Tag extends BaseEntity {
+  name: string;
+  posts: Post[];
+}
+
 // Import types from enums
 import { Emotion, RepeatOption } from './enums';
 
