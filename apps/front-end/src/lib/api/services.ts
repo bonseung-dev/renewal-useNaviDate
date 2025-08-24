@@ -26,7 +26,23 @@ import {
 // Auth Service
 export class AuthService {
   static async login(credentials: LoginDto): Promise<AuthResponse> {
-    return apiClient.post<AuthResponse>('/auth/login', credentials);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000'}/auth/login`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(credentials),
+        credentials: 'include', // 쿠키 저장
+      },
+    );
+
+    if (!res.ok) {
+      throw new Error('로그인 실패');
+    }
+
+    return res.json();
   }
 
   static async register(userData: CreateUserDto): Promise<AuthResponse> {
@@ -381,6 +397,7 @@ export class ChatService {
     return client.delete<{ message: string }>(`/chats/${id}`);
   }
 }
+
 export class TagService {
   static async addTag(
     tag: Tag,
@@ -398,3 +415,4 @@ export class TagService {
     return client.delete<{ message: string }>(`/tags/${id}`);
   }
 }
+

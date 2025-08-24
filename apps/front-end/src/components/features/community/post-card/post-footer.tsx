@@ -11,6 +11,7 @@ type PostFooterProps = {
   bookmarksCount: number;
   postId: number;
   userId?: number;
+  token?: string;
 };
 
 const PostFooter = (props: PostFooterProps) => (
@@ -23,6 +24,7 @@ const PostFooter = (props: PostFooterProps) => (
       likesCount={props.likesCount}
       bookmarksCount={props.bookmarksCount}
       userId={props.userId}
+      token={props.token}
     />
   </footer>
 );

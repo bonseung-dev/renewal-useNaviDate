@@ -12,8 +12,23 @@ export class PostsController {
   }
 
   @Get()
+  findAllPublic(): Promise<ApiResponse<SharedPost[]>> {
+    return this.postsService.findAllPublic();
+  }
+
+  @Get('all')
   findAll(): Promise<ApiResponse<SharedPost[]>> {
     return this.postsService.findAll();
+  }
+
+  @Get('couple/:coupleId')
+  findAllCouple(@Param('coupleId', ParseIntPipe) coupleId: number): Promise<ApiResponse<SharedPost[]>> {
+    return this.postsService.findAllCouple(coupleId);
+  }
+
+  @Get('my/:userId')
+  findMyPosts(@Param('userId', ParseIntPipe) userId: number): Promise<ApiResponse<SharedPost[]>> {
+    return this.postsService.findMyPosts(userId);
   }
 
   @Get(':id')

@@ -4,6 +4,8 @@ import { getMyCouple } from '@/lib/services/temp-couples-server.services';
 import { getServerCookie, getUserIdFromToken } from '@/lib/utils/cookes.utils';
 import { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata({
   params,
 }: {

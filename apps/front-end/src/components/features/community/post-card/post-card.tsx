@@ -6,9 +6,10 @@ import { CommunityPost } from '@use-navi-date/shared';
 type PostCardProps = {
   post: CommunityPost;
   userId?: number;
+  token?: string;
 };
 
-const PostCard = ({ post, userId }: PostCardProps) => {
+const PostCard = ({ post, userId, token }: PostCardProps) => {
   return (
     <article
       className="w-[280px] h-[320px] rounded-[20px] overflow-hidden relative shadow-shadow1"
@@ -26,6 +27,7 @@ const PostCard = ({ post, userId }: PostCardProps) => {
           bookmarksCount={post.bookmarksCount}
           postId={post.id}
           userId={userId}
+          token={token}
         />
       </div>
     </article>
