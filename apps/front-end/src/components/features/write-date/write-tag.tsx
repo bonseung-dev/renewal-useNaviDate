@@ -48,7 +48,7 @@ const WriteTag = ({
         createdAt: new Date(),
         updatedAt: new Date(),
         name: trimmedValue,
-        userId: 0, // 필요시 실제 userId 전달
+        posts: [],
       };
 
       const response = await createTagMutation.mutateAsync(tagData);
