@@ -189,7 +189,7 @@ export interface UserResponse {
 
 export interface Tag extends BaseEntity {
   name: string;
-  posts: Post[];
+  posts?: Post[];
 }
 
 // Import types from enums
