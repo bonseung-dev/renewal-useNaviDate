@@ -100,5 +100,9 @@ export interface UpdateUserDto {
   profileImage?: string;
 }
 
+export interface CreateTagDto {
+  name: string;
+}
+
 // Import types from enums
-import { Emotion, RepeatOption } from './enums'; 
+import { Emotion, RepeatOption } from './enums';
