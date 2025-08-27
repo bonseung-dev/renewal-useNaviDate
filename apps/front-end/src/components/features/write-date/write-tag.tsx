@@ -1,6 +1,6 @@
 import useCreateTagMutation, {
   useDeleteTagMutation,
-} from '@/lib/mutations/tag.mutataion';
+} from '@/lib/mutations/tag.mutation';
 import { PostTag, Tag } from '@use-navi-date/shared';
 import { XIcon, Loader2 } from 'lucide-react';
 import { useState } from 'react';
