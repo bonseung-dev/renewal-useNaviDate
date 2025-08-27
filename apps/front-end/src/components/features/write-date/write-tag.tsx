@@ -13,8 +13,8 @@ const WriteTag = ({
 }: {
   tags: PostTag[];
   setTags: React.Dispatch<React.SetStateAction<PostTag[]>>;
-  inputValue: PostTag['name'];
-  setInputValue: (inputValue: PostTag['name']) => void;
+  inputValue: string;
+  setInputValue: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const [uploadingTags, setUploadingTags] = useState<Set<string>>(new Set());
   const createTagMutation = useCreateTagMutation();
