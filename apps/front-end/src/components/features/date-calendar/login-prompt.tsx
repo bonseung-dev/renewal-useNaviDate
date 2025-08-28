@@ -6,10 +6,10 @@ type AuthStatus = 'unauthenticated' | 'no-couple' | 'invalid-couple' | 'error';
 
 type LoginPromptProps = {
   authStatus: AuthStatus;
-  userId?: string;
+  coupleId?: number;
 };
 
-const LoginPrompt = ({ authStatus, userId }: LoginPromptProps) => {
+const LoginPrompt = ({ authStatus, coupleId }: LoginPromptProps) => {
   const promptConfig = {
     unauthenticated: {
       title: '로그인 필요',
@@ -27,7 +27,7 @@ const LoginPrompt = ({ authStatus, userId }: LoginPromptProps) => {
       title: '잘못된 접근',
       description: '접근 권한이 없는 커플 캘린더입니다.',
       buttonText: '내 커플 공간으로 이동',
-      link: userId ? `/date-calendar/${userId}` : '/couple-space',
+      link: coupleId ? `/date-calendar/${coupleId}` : '/couple-space',
     },
     error: {
       title: '오류 발생',

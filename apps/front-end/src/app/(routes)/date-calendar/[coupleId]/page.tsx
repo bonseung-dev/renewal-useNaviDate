@@ -1,11 +1,10 @@
 import CalendarTabs from '@/components/features/date-calendar/calendar-tabs';
 import LoginPrompt from '@/components/features/date-calendar/login-prompt';
-import {
-  getServerCookie,
-  getUserIdFromToken,
-  getCoupleIdFromToken,
-} from '@/lib/utils/cookes.utils';
+import { getMyCouple } from '@/lib/services/temp-couples-server.services';
+import { getServerCookie, getUserIdFromToken } from '@/lib/utils/cookes.utils';
 import { Metadata } from 'next';
+
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({
   params,
@@ -26,10 +25,9 @@ export async function generateMetadata({
 
 type Props = {
   params: { coupleId: number };
-  searchParams: { [key: string]: string | undefined };
 };
 
-const Page = async ({ params, searchParams }: Props) => {
+const Page = async ({ params }: Props) => {
   const token = getServerCookie('access_token');
 
   if (!token) {
@@ -42,36 +40,14 @@ const Page = async ({ params, searchParams }: Props) => {
       return <LoginPrompt authStatus="unauthenticated" />;
     }
 
-    const coupleId = await getCoupleIdFromToken();
+    const myCouple = await getMyCouple(token, Number(userId));
 
-    // 커플이 없거나 URL과 불일치하는 경우
-    if (!coupleId) {
-      return <LoginPrompt authStatus="no-couple" userId={userId} />;
-    }
-    if (coupleId !== params.coupleId.toString()) {
-      return <LoginPrompt authStatus="invalid-couple" userId={userId} />;
+    if (!myCouple) {
+      return <LoginPrompt authStatus="no-couple" />;
     }
 
-    // 기념일 정보 조회
-    let startDate = '';
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/couples/${coupleId}/anniversary`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-        startDate = data.anniversary
-          ? new Date(data.anniversary).toISOString().split('T')[0]
-          : '';
-      }
-    } catch (error) {
-      console.error('Failed to get anniversary:', error);
+    if (myCouple.id !== Number(params.coupleId)) {
+      return <LoginPrompt authStatus="invalid-couple" coupleId={myCouple.id} />;
     }
 
     return (
@@ -80,13 +56,15 @@ const Page = async ({ params, searchParams }: Props) => {
           커플 캘린더
         </h1>
         <CalendarTabs
-          coupleId={Number(coupleId)}
-          startDate={startDate}
+          coupleId={myCouple.id}
+          startDate={myCouple.anniversary}
           userId={Number(userId)}
+          token={token}
         />
       </section>
     );
   } catch (error) {
+    console.error(error);
     return <LoginPrompt authStatus="error" />;
   }
 };

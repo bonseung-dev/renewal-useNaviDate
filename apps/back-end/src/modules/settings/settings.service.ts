@@ -8,7 +8,7 @@ import { Setting as SettingEntity } from './entities/setting.entity';
 export class SettingsService {
   constructor(
     @InjectRepository(SettingEntity)
-    private settingsRepository: Repository<SettingEntity>,
+    private readonly settingsRepository: Repository<SettingEntity>,
   ) {}
 
   async create(userId: number): Promise<ApiResponse<Setting>> {

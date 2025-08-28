@@ -1,4 +1,4 @@
-import { CommunityPost } from '@/types/post.type';
+import { CommunityPost } from '@use-navi-date/shared';
 import Image from 'next/image';
 
 type PostImageProps = {
@@ -9,8 +9,8 @@ type PostImageProps = {
 const PostImage = ({ images, title }: PostImageProps) => {
   if (images.length === 0) {
     return (
-      <div className="absolute inset-0 flex items-center justify-center bg-skin4">
-        <span className="text-font4">이미지가 없습니다</span>
+      <div className="absolute inset-0 flex items-center justify-center bg-font4">
+        <span className="text-font5">이미지가 없습니다</span>
       </div>
     );
   }
@@ -21,7 +21,7 @@ const PostImage = ({ images, title }: PostImageProps) => {
   return (
     <>
       <Image
-        src={displayImage.postImage.url}
+        src={displayImage.imageUrl || ''}
         alt={`"${title}" 포스트의 대표 이미지`}
         fill
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

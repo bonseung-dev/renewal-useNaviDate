@@ -8,13 +8,9 @@ import { useQuery } from '@tanstack/react-query';
 const BookmarkButton = ({ post }: { post: Post }) => {
   /* userId 불러오는 로직 추가 필요 (현재 임시 값) */
   const userId = 123;
+  const token = '<temp_token>';
 
   const { mutate: toggleBookmark } = useUpdateBookmarkMutation();
-
-  const handleBookmark = () => {
-    if (!userId) return;
-    toggleBookmark({ postId: post.id, userId });
-  };
 
   const getBookmark = async () => {
     const response = await fetch(`${BASE_URL}/bookmarks?postId=${post.id}`, {
@@ -31,6 +27,14 @@ const BookmarkButton = ({ post }: { post: Post }) => {
     queryKey: [QUERY_KEYS.BOOKMARKS],
     queryFn: getBookmark,
   });
+
+  const userBookmark = bookmark?.find((bookmark) => bookmark.userId === userId);
+  const bookmarkId = userBookmark?.id;
+
+  const handleBookmark = () => {
+    if (!userId) return;
+    toggleBookmark({ postId: post.id, token, bookmarkId });
+  };
 
   return (
     <>

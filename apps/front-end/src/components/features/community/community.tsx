@@ -1,24 +1,23 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { SortOption } from '@/types/community.type';
 import { useSearchQuery } from '@/lib/hooks/community/use-search-query';
-import { useCommunityData } from '@/lib/hooks/community/use-community-data';
 import { useCommunityPosts } from '@/lib/hooks/community/use-enhanced-posts';
 import { useSortedPosts } from '@/lib/hooks/community/use-sorted-posts';
 import { SORT_OPTIONS } from '@/constants/community.constants';
 import CommunityStatus from './community-status';
 import CommunityControls from './community-controls';
 import PostList from './post-list';
+import { usePostsData } from '@/lib/hooks/community/use-community-data';
 
-const Community = () => {
+type CommunityProps = {
+  userId: number;
+  token?: string;
+};
+
+const Community = ({ userId, token }: CommunityProps) => {
   const [sortOption, setSortOption] = useState<SortOption>(SORT_OPTIONS.LATEST);
-  const [, setUserId] = useState<number | null>(null);
-
-  useEffect(() => {
-    const stored = localStorage.getItem('userId');
-    setUserId(stored ? parseInt(stored, 10) : null); // number 변환
-  }, []);
 
   const {
     searchQuery,
@@ -29,17 +28,21 @@ const Community = () => {
   } = useSearchQuery();
 
   const { posts, isLoading, users, tags, images, likes, bookmarks } =
-    useCommunityData(debouncedQuery);
+    usePostsData(debouncedQuery, token);
 
+  const postsWithUndefinedImageUrl = posts.map((post) => ({
+    ...post,
+    imageUrl: post.imageUrl === null ? undefined : post.imageUrl,
+  }));
   const communityPosts = useCommunityPosts(
-    posts,
+    postsWithUndefinedImageUrl,
     users,
-    tags,
-    images,
     likes,
     bookmarks,
   );
   const sortedPosts = useSortedPosts(communityPosts, sortOption);
+
+  // console.log('posts:', communityPosts);
 
   if (isLoading) return <CommunityStatus type="loading" />;
 
@@ -63,7 +66,12 @@ const Community = () => {
         </h2>
       )}
 
-      <PostList posts={sortedPosts} searchQuery={debouncedQuery} />
+      <PostList
+        posts={sortedPosts}
+        searchQuery={debouncedQuery}
+        userId={userId}
+        token={token}
+      />
     </section>
   );
 };

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
-import { Anniversary, RepeatOption } from '@/types/anniversary.type';
+import { Anniversary, RepeatOption } from '@use-navi-date/shared';
 
 export const useAnniversaryForm = (
   editingAnniversary: Anniversary | null | undefined,

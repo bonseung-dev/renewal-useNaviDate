@@ -8,7 +8,7 @@ import { Anniversary as AnniversaryEntity } from './entities/anniversary.entity'
 export class AnniversariesService {
   constructor(
     @InjectRepository(AnniversaryEntity)
-    private anniversariesRepository: Repository<AnniversaryEntity>,
+    private readonly anniversariesRepository: Repository<AnniversaryEntity>,
   ) {}
 
   async create(createAnniversaryDto: CreateAnniversaryDto): Promise<ApiResponse<Anniversary>> {

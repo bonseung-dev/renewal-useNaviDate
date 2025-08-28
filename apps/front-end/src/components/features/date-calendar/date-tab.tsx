@@ -3,16 +3,16 @@ import dayjs, { Dayjs } from 'dayjs';
 import { getHolidaysByMonth } from '@/lib/services/holiday.services';
 import AnalysisButton from './date/analysis-button';
 import DateAnalysis from './date/date-analysis';
-import { Holiday } from '@/types/calendar.type';
 import { fetchPostsByCouple } from '@/lib/services/calendar.services';
-import { CalendarPost } from '@/types/post.type';
 import CalendarCard from './date/calendar/calendar-card';
+import { CalendarPost, Holiday } from '@use-navi-date/shared';
 
 type DateTabProps = {
   coupleId: number;
+  token: string;
 };
 
-const DateTab = ({ coupleId }: DateTabProps) => {
+const DateTab = ({ coupleId, token }: DateTabProps) => {
   const [currentDate, setCurrentDate] = useState<Dayjs>(dayjs());
   const [holidays, setHolidays] = useState<Holiday[]>([]);
   const [postsWithImages, setPostsWithImages] = useState<CalendarPost[]>([]);
@@ -25,7 +25,7 @@ const DateTab = ({ coupleId }: DateTabProps) => {
       try {
         const [holidaysData, postsData] = await Promise.all([
           getHolidaysByMonth(currentDate.year(), currentDate.month() + 1),
-          fetchPostsByCouple(coupleId),
+          fetchPostsByCouple(coupleId, token),
         ]);
         setHolidays(holidaysData);
         setPostsWithImages(postsData);
@@ -37,9 +37,30 @@ const DateTab = ({ coupleId }: DateTabProps) => {
     };
 
     loadData();
-  }, [coupleId, currentDate]);
+  }, [coupleId, currentDate, token]);
 
-  if (isLoading) return <div>Loading...</div>;
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 1500); // 예시: 1.5초 후 로딩 완료
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="w-full py-4 flex flex-low items-center justify-center gap-1">
+        {['L', 'o', 'a', 'd', 'i', 'n', 'g'].map((char, idx) => (
+          <span
+            key={idx}
+            className="inline-block text-skin1 text-lg font-bold animate-bounce"
+            style={{ animationDelay: `${idx * 0.1}s` }}
+          >
+            {char}
+          </span>
+        ))}
+      </div>
+    );
+  }
+
+  // console.log('이미지', postsWithImages);
 
   return (
     <div className="w-full flex flex-col items-center">

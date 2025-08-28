@@ -1,14 +1,17 @@
 import { formatDate } from '@/lib/utils/coomunity.utils';
-import { CommunityPost } from '@/types/post.type';
+import { CommunityPost } from '@use-navi-date/shared';
 import Image from 'next/image';
 
 type PostAuthorInfoProps = {
   author: CommunityPost['author'];
-  createdAt: Date;
+  date: Date | string;
 };
 
-const PostAuthorInfo = ({ author, createdAt }: PostAuthorInfoProps) => {
-  const profileUrl = author?.profileImage?.url || '/placeholder-image.png';
+const PostAuthorInfo = ({ author, date }: PostAuthorInfoProps) => {
+  const profileUrl =
+    typeof author?.profileImage === 'string'
+      ? author.profileImage
+      : '/placeholder-image.png';
 
   return (
     <div className="flex items-center">
@@ -28,9 +31,13 @@ const PostAuthorInfo = ({ author, createdAt }: PostAuthorInfoProps) => {
         </p>
         <time
           className="text-l-title4 font-light text-skin5"
-          dateTime={createdAt.toISOString()}
+          dateTime={
+            typeof date === 'string'
+              ? new Date(date).toISOString()
+              : date.toISOString()
+          }
         >
-          {formatDate(createdAt)}
+          {formatDate(typeof date === 'string' ? new Date(date) : date)}
         </time>
       </div>
     </div>

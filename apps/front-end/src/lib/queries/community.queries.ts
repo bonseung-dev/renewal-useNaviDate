@@ -13,10 +13,13 @@ import { QUERY_KEYS } from '@/constants/query-keys.constants';
 // 백엔드 db와 제대로 연결이 되면 분리할 예정입니다.
 
 // 게시물 조회 쿼리
-export const useGetAllPostsQuery = (debouncedQuery: string = '') => {
+export const useGetAllPostsQuery = (
+  debouncedQuery: string = '',
+  token?: string,
+) => {
   return useQuery({
     queryKey: [QUERY_KEYS.POSTS, { search: debouncedQuery }],
-    queryFn: () => getAllPosts(debouncedQuery),
+    queryFn: () => getAllPosts(debouncedQuery, token),
     enabled: true,
   });
 };

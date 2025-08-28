@@ -14,19 +14,19 @@ import {
   useCreatePostMutation,
   useCreatePostTagsMutation,
 } from '@/lib/mutations/write-date.mutation';
-import { Emotion, Post, PostImage, PostTag } from '@/types/post.type';
+import { CreatePostDto, Emotion, Post, PostImage, PostTag } from '@use-navi-date/shared';
 
 const WriteDate = () => {
   const [images, setImages] = useState<PostImage[]>([]);
-  const [visibility, setVisibility] = useState<Post['visibility']>(false);
+  const [visibility, setVisibility] = useState<boolean | 'public' | 'private'>('public');
   const [emotion, setEmotion] = useState<Emotion>('Soso');
   const [title, setTitle] = useState<Post['title']>('');
   const [content, setContent] = useState<Post['content']>('');
   const [tags, setTags] = useState<PostTag[]>([]);
-  const [inputValue, setInputValue] = useState<PostTag['name']>('');
+  const [inputValue, setInputValue] = useState<string>('');
 
   const resetForm = () => {
-    setVisibility(false);
+    setVisibility('public');
     setEmotion('Soso');
     setTitle('');
     setContent('');
@@ -39,16 +39,16 @@ const WriteDate = () => {
   const { mutate: createImageMutate } = useCreatePostImagesMutation();
   const { mutate: createTagMutate } = useCreatePostTagsMutation();
 
-  const newPost: Post = {
-    id: 1, //임시 Id
-    userId: 2, //임시 Id
-    visibility,
-    emotion,
-    date: '2025-01-01',
-    title,
-    content,
-    createdAt: new Date(),
-    deletedAt: new Date(),
+  const newPost: CreatePostDto = {
+    title: title,
+    content: content,
+    date: new Date(),
+    location: '서울',
+    emotion: emotion,
+    images: images.map((image) => image.postImage?.url ?? ''),
+    tags: tags.map((tag) => tag.name),
+    isPublic: visibility === 'public',
+    coupleId: 1,
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -56,7 +56,9 @@ const WriteDate = () => {
 
     createPostMutate(newPost);
     images.forEach((image) => {
-      createImageMutate(image);
+      if (image.postImage) {
+        createImageMutate(image);
+      }
     });
     tags.forEach((tag) => {
       createTagMutate(tag);

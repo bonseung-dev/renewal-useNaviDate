@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, Delete, Request, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Param, Delete, Request, ParseIntPipe, Req } from '@nestjs/common';
 import { BookmarksService } from './bookmarks.service';
 import { ApiResponse, Bookmark } from '@use-navi-date/shared';
 
@@ -12,9 +12,15 @@ export class BookmarksController {
     return this.bookmarksService.create(userId, postId);
   }
 
+  @Get('my/:userId')  // 유저 아이디로 북마크 조회
+  findByUserId(@Param('userId', ParseIntPipe) userId: number): Promise<ApiResponse<Bookmark[]>> {
+    return this.bookmarksService.findByUserId(userId);
+  }
+
   @Get()
-  findAll(): Promise<ApiResponse<Bookmark[]>> {
-    return this.bookmarksService.findAll();
+  findAll(@Request() req): Promise<ApiResponse<Bookmark[]>> {
+    const userId = req.user?.id;
+    return this.bookmarksService.findAll(userId);
   }
 
   @Get(':id')
