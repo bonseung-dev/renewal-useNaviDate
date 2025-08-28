@@ -1,4 +1,5 @@
 import { IsString, IsNotEmpty, IsOptional, IsArray } from 'class-validator';
+import { ApiResponse, Tag } from '@use-navi-date/shared';
 
 export class CreateTagDto {
   @IsString()
@@ -19,3 +20,5 @@ export class UpdateTagDto {
   @IsNotEmpty()
   name?: string;
 }
+
+export { ApiResponse, Tag };

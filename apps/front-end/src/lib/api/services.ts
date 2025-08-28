@@ -399,6 +399,13 @@ export class ChatService {
 }
 
 export class TagService {
+  static async getTags(
+    token: string,
+  ): Promise<ApiResponse<{ tags: Tag[] }>> {
+    const client = createAuthenticatedApiClient(token);
+    return client.get<{ tags: Tag[] }>('/tags');
+  }
+
   static async addTag(
     tag: Tag,
     token: string,

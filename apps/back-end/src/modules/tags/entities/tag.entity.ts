@@ -31,5 +31,5 @@ export class Tag implements TagInterface {
       referencedColumnName: 'id',
     },
   })
-  posts?: Post[];
+  posts: Post[];
 }
