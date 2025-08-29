@@ -2,10 +2,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from '@/constants/query-keys.constants';
 import { useRouter } from 'next/navigation';
 import { PATH } from '@/constants/path';
-import {
-  createImage,
-  createTag,
-} from '../services/write-date.services';
 import { PostService } from '../api/services';
 import { getAuthToken } from '../utils/api';
 import { CreatePostDto } from '@use-navi-date/shared';
@@ -28,28 +24,6 @@ export const useCreatePostMutation = (resetForm: () => void) => {
     onError: (error) => {
       console.error('게시글 등록 실패:', error);
       alert('게시글 등록에 실패했습니다. 다시 시도해주세요.');
-    },
-  });
-};
-
-export const useCreatePostImagesMutation = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: createImage,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.WRITE_IMAGES] });
-    },
-  });
-};
-
-export const useCreatePostTagsMutation = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: createTag,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.WRITE_TAGS] });
     },
   });
 };

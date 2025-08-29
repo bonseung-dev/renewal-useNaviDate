@@ -9,16 +9,20 @@ import WriteTag from '@/components/features/write-date/write-tag';
 import UploadImageCarousel from '@/components/features/write-date/upload-image-carousel';
 import WriteContent from '@/components/features/write-date/write-content';
 import { useState } from 'react';
+import { useCreatePostMutation } from '@/lib/mutations/write-date.mutation';
 import {
-  useCreatePostImagesMutation,
-  useCreatePostMutation,
-  useCreatePostTagsMutation,
-} from '@/lib/mutations/write-date.mutation';
-import { CreatePostDto, Emotion, Post, PostImage, PostTag } from '@use-navi-date/shared';
+  CreatePostDto,
+  Emotion,
+  Post,
+  PostImage,
+  PostTag,
+} from '@use-navi-date/shared';
 
 const WriteDate = () => {
   const [images, setImages] = useState<PostImage[]>([]);
-  const [visibility, setVisibility] = useState<boolean | 'public' | 'private'>('public');
+  const [visibility, setVisibility] = useState<boolean | 'public' | 'private'>(
+    'public',
+  );
   const [emotion, setEmotion] = useState<Emotion>('Soso');
   const [title, setTitle] = useState<Post['title']>('');
   const [content, setContent] = useState<Post['content']>('');
@@ -36,8 +40,6 @@ const WriteDate = () => {
   };
 
   const { mutate: createPostMutate } = useCreatePostMutation(resetForm);
-  const { mutate: createImageMutate } = useCreatePostImagesMutation();
-  const { mutate: createTagMutate } = useCreatePostTagsMutation();
 
   const newPost: CreatePostDto = {
     title: title,
@@ -55,14 +57,6 @@ const WriteDate = () => {
     e.preventDefault();
 
     createPostMutate(newPost);
-    images.forEach((image) => {
-      if (image.postImage) {
-        createImageMutate(image);
-      }
-    });
-    tags.forEach((tag) => {
-      createTagMutate(tag);
-    });
   };
 
   return (

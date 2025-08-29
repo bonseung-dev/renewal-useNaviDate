@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ImageService } from '../api/services';
-import { Image } from '@use-navi-date/shared';
 import { getClientAuthToken } from '../utils/api';
 
 /**
