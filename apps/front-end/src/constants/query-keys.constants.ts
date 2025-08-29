@@ -7,9 +7,9 @@ export const QUERY_KEYS = {
   IMAGES: 'community-post-images',
   LIKES: 'community-likes',
   BOOKMARKS: 'community-bookmarks',
-  WRITE_POSTS: 'write-posts',
-  WRITE_IMAGES: 'write-post-images',
-  WRITE_TAGS: 'write-post-tags',
+  WRITE_POSTS: 'posts',
+  WRITE_IMAGES: 'images',
+  WRITE_TAGS: 'tags',
   ANNIVERSARIES: 'anniversaries',
   ANNIVERSARIES_BY_COUPLE: (coupleId: number) => ['anniversaries', coupleId],
 } as const;
