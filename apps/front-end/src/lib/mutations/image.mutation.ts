@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ImageService } from '../api/services';
 import { getClientAuthToken } from '../utils/api';
+import { QUERY_KEYS } from '@/constants/query-keys.constants';
 
 /**
  * 이미지 업로드
@@ -22,7 +23,7 @@ export const useUploadImage = () => {
     },
     onSuccess: () => {
       // 이미지 업로드 성공 시 관련 쿼리 무효화
-      queryClient.invalidateQueries({ queryKey: ['images'] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.WRITE_IMAGES] });
     },
   });
 };
@@ -47,7 +48,7 @@ export const useDeleteImage = () => {
     },
     onSuccess: () => {
       // 이미지 삭제 성공 시 관련 쿼리 무효화
-      queryClient.invalidateQueries({ queryKey: ['images'] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.WRITE_IMAGES] });
     },
   });
 };
