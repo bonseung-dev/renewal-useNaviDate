@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/carousel';
 import ImageItems from './image-items';
 import { PostImage } from '@use-navi-date/shared';
-import { useUploadImage } from '@/lib/queries/imageQueries';
+import { useUploadImage } from '@/lib/mutations/image.mutation';
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 
@@ -27,29 +27,31 @@ const UploadImageCarousel = ({
 
     if (files) {
       const fileArray = Array.from(files);
-      
+
       // 파일 크기 검증 (50MB)
       const maxSize = 50 * 1024 * 1024; // 50MB
-      const oversizedFiles = fileArray.filter(file => file.size > maxSize);
-      
+      const oversizedFiles = fileArray.filter((file) => file.size > maxSize);
+
       if (oversizedFiles.length > 0) {
-        alert(`다음 파일들이 너무 큽니다 (최대 50MB): ${oversizedFiles.map(f => f.name).join(', ')}`);
+        alert(
+          `다음 파일들이 너무 큽니다 (최대 50MB): ${oversizedFiles.map((f) => f.name).join(', ')}`,
+        );
         return;
       }
-      
+
       // 업로드 중인 파일들을 추적
-      const fileNames = fileArray.map(file => file.name);
-      setUploadingFiles(prev => new Set([...Array.from(prev), ...fileNames]));
+      const fileNames = fileArray.map((file) => file.name);
+      setUploadingFiles((prev) => new Set([...Array.from(prev), ...fileNames]));
 
       try {
         // 각 파일을 백엔드에 업로드
         const uploadPromises = fileArray.map(async (file) => {
           const uploadedImage = await uploadImageMutation.mutateAsync(file);
-          
+
           if (!uploadedImage) {
             throw new Error('이미지 업로드에 실패했습니다.');
           }
-          
+
           // PostImage 형태로 변환
           const postImage: PostImage = {
             id: uploadedImage.id,
@@ -82,9 +84,9 @@ const UploadImageCarousel = ({
         // 에러 처리 (사용자에게 알림 등)
       } finally {
         // 업로드 완료된 파일들을 추적에서 제거
-        setUploadingFiles(prev => {
+        setUploadingFiles((prev) => {
           const newSet = new Set(Array.from(prev));
-          fileNames.forEach(name => newSet.delete(name));
+          fileNames.forEach((name) => newSet.delete(name));
           return newSet;
         });
       }

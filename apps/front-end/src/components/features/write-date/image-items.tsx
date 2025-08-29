@@ -3,7 +3,7 @@ import { CarouselItem } from '@/components/ui/carousel';
 import { PostImage } from '@use-navi-date/shared';
 import NextImage from 'next/image';
 import React from 'react';
-import { useDeleteImage } from '@/lib/queries/imageQueries';
+import { useDeleteImage } from '@/lib/mutations/image.mutation';
 import { useState } from 'react';
 
 const ImageItems = ({
@@ -17,17 +17,17 @@ const ImageItems = ({
   const deleteImageMutation = useDeleteImage();
 
   const deleteImage = async (id: number) => {
-    setDeletingIds(prev => new Set([...Array.from(prev), id]));
-    
+    setDeletingIds((prev) => new Set([...Array.from(prev), id]));
+
     try {
       await deleteImageMutation.mutateAsync(id);
       // 로컬 상태에서 이미지 제거
-      setImages(images.filter(img => img.id !== id));
+      setImages(images.filter((img) => img.id !== id));
     } catch (error) {
       console.error('이미지 삭제 실패:', error);
       // 에러 처리 (사용자에게 알림 등)
     } finally {
-      setDeletingIds(prev => {
+      setDeletingIds((prev) => {
         const newSet = new Set(Array.from(prev));
         newSet.delete(id);
         return newSet;
