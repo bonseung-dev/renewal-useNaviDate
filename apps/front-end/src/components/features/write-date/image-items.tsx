@@ -3,7 +3,7 @@ import { CarouselItem } from '@/components/ui/carousel';
 import { PostImage } from '@use-navi-date/shared';
 import NextImage from 'next/image';
 import React from 'react';
-import { useDeleteImage } from '@/lib/mutations/image.mutation';
+import { useDeleteImageMutation } from '@/lib/mutations/image.mutation';
 import { useState } from 'react';
 
 const ImageItems = ({
@@ -14,7 +14,7 @@ const ImageItems = ({
   setImages: (images: PostImage[]) => void;
 }) => {
   const [deletingIds, setDeletingIds] = useState<Set<number>>(new Set());
-  const deleteImageMutation = useDeleteImage();
+  const deleteImageMutation = useDeleteImageMutation();
 
   const deleteImage = async (id: number) => {
     setDeletingIds((prev) => new Set([...Array.from(prev), id]));

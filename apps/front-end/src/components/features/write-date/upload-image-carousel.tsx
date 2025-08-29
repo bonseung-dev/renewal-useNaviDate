@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/carousel';
 import ImageItems from './image-items';
 import { PostImage } from '@use-navi-date/shared';
-import { useUploadImage } from '@/lib/mutations/image.mutation';
+import { useUploadImageMutation } from '@/lib/mutations/image.mutation';
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 
@@ -20,7 +20,7 @@ const UploadImageCarousel = ({
   setImages: (images: PostImage[]) => void;
 }) => {
   const [uploadingFiles, setUploadingFiles] = useState<Set<string>>(new Set());
-  const uploadImageMutation = useUploadImage();
+  const uploadImageMutation = useUploadImageMutation();
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;

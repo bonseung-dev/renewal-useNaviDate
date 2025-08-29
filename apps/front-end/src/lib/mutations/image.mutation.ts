@@ -6,7 +6,7 @@ import { QUERY_KEYS } from '@/constants/query-keys.constants';
 /**
  * 이미지 업로드
  */
-export const useUploadImage = () => {
+export const useUploadImageMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -31,7 +31,7 @@ export const useUploadImage = () => {
 /**
  * 이미지 삭제
  */
-export const useDeleteImage = () => {
+export const useDeleteImageMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
